@@ -1,0 +1,11 @@
+.catchphrase {
+  align-content: center;
+  justify-content: center;
+  display: flex;
+}
+
+.homeBtnWrapper {
+  align-content: center;
+  justify-content: center;
+  display: flex;
+}
