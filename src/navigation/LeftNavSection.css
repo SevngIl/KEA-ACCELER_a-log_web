@@ -1,0 +1,17 @@
+.LeftNavSection {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+.LeftNavSection .container {
+    display: flex;
+    margin: 4%;
+    padding: 4%;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+    height: 500px;
+    border-radius: 50px;
+    background-color: white;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}

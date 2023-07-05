@@ -1,11 +1,18 @@
-.catchphrase {
-  align-content: center;
-  justify-content: center;
-  display: flex;
+.Home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 80vh;
+}
+.Home .catchphrase {
+    align-content: center;
+    justify-content: center;
+    display: flex;
 }
 
-.homeBtnWrapper {
-  align-content: center;
-  justify-content: center;
-  display: flex;
+.Home .homeBtnWrapper {
+    align-content: center;
+    justify-content: center;
+    display: flex;
 }
