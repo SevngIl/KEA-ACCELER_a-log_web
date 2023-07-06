@@ -1,54 +1,57 @@
-/* ProjectBoard.css */
+.ProjectBoard {
+  width: 100%;
+}
 
 .ProjectBoard .ProjectBoardName {
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    font-weight: bold;
-    display: flex;
-    margin-top: 3%;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  display: flex;
+  margin-top: 3%;
 }
 
 .ProjectBoard .project-board {
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    height: 100vh;
-    overflow: auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  height: 100vh;
+  overflow: auto;
+  width: 100%;
 }
 
 .ProjectBoard .BoardColumn {
-    width: 80%;
-    height: 80%;
-    padding: 10px;
-    border: 1px solid black;
-    overflow-y: auto;
+  width: 90%;
+  height: 80%;
+  padding: 10px;
+  border: 1px solid black;
+  overflow-y: auto;
 }
 
 .ProjectBoard .BoardColumn-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .ProjectBoard .BoardColumn-title {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .ProjectBoard .create-issue-btn {
-    background-color: #5939df;
-    border: none;
-    color: white;
-    padding: 5px 15px;
-    text-align: center;
-    font-size: 1.2rem;
-    margin: 4px 2px;
-    cursor: pointer;
-    transition-duration: 0.4s;
-    border-radius: 10px;
+  background-color: #5939df;
+  border: none;
+  color: white;
+  padding: 5px 15px;
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+  border-radius: 10px;
 }
 
 .ProjectBoard .create-issue-btn:hover {
-    background-color: #7a61d4;
+  background-color: #7a61d4;
 }
