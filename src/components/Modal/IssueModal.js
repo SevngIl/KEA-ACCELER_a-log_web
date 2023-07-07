@@ -10,21 +10,22 @@ const IssueModal = ({ show, handleClose, handleAddIssue }) => {
   const [issueContent, setIssueContent] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewSource, setPreviewSource] = useState(null);
-  const [issueStatus, setIssueStatus] = useState("To Do");
+  const [issueStatus, setIssueStatus] = useState("TO DO");
   const [assignee, setAssignee] = useState("할당되지 않음");
   const reporter = "한승일";
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
   const handleSubmit = () => {
-    handleAddIssue(issueContent);
+    handleAddIssue(issueContent, issueStatus, previewSource);
     setIssueContent("");
     setSelectedFile(null);
     setPreviewSource(null);
-    setIssueStatus("To Do");
+    setIssueStatus("TO DO");
     setAssignee("할당되지 않음");
     setStartDate(new Date());
     setEndDate(new Date());
+    handleClose();
   };
 
   const handleFileChange = (e) => {
@@ -55,9 +56,10 @@ const IssueModal = ({ show, handleClose, handleAddIssue }) => {
           <Form.Group className="issueStatus mb-3" controlId="issueStatus">
             <Form.Label>상태</Form.Label>
             <Form.Select value={issueStatus} onChange={(e) => setIssueStatus(e.target.value)}>
-              <option value="To Do">To Do</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Done">Done</option>
+              <option value="TO DO">TO DO</option>
+              <option value="IN PROGRESS">IN PROGRESS</option>
+              <option value="DONE">DONE</option>
+              <option value="EMERGENCY">EMERGENCY</option>
             </Form.Select>
           </Form.Group>
 
@@ -96,7 +98,7 @@ const IssueModal = ({ show, handleClose, handleAddIssue }) => {
         <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
-        <Button variant="primary" onClick={handleSubmit}>
+        <Button variant="primary" onClick={() => handleSubmit(issueContent, issueStatus)}>
           Create Issue
         </Button>
       </Modal.Footer>
