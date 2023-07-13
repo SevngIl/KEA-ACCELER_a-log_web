@@ -33,10 +33,12 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+  margin-top: 2%;
 }
 
 .ProjectBoard .BoardColumn-title {
   margin-bottom: 10px;
+  font-size: 1.5rem;
 }
 
 .ProjectBoard .create-issue-btn {
@@ -71,7 +73,9 @@
 }
 
 .BoardColumn .BoardIssue .BoardIssueIMG {
+  margin-top: 5px;
 }
 
 .BoardColumn .BoardIssue .BoardIssueContent {
+  font-weight: bold;
 }
