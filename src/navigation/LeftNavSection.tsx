@@ -18,7 +18,7 @@ export const LeftNavSection = () => {
                 </div>
                 <div>Release</div>
                 <div>
-                    <Button>Notes</Button>
+                    <Button onClick={() => navigate("/ReleaseNote")}>Notes</Button>
                 </div>
             </div>
             <Outlet />
