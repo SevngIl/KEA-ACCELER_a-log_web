@@ -1,0 +1,4 @@
+.topicDate .topic_date-picker-group {
+  display: flex;
+  flex-direction: column;
+}
