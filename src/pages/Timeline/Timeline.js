@@ -23,7 +23,7 @@ export const Timeline = () => {
   const handleItemMove = (itemId, dragTime, newGroupOrder) => {
     const newTopics = topics.map((topic) => {
       if (topic.id === itemId) {
-        return { ...topic, start_time: moment(dragTime), end_time: moment(dragTime + (topic.end_time - topic.start_time)) };
+        return { ...topic, start_time: moment(dragTime), end_time: moment(dragTime + (topic.end_time - topic.start_time)) }; // 옮긴 시간대 + 기존의 기간
       } else {
         return topic;
       }
@@ -48,16 +48,23 @@ export const Timeline = () => {
     setTopics(newTopics);
   };
 
+  // 처음 화면에서 보는 날짜를 현재 시간 기준으로 과거 1년 미래 1년으로 함
+  const oneYearAgo = moment().subtract(1, "year");
+  const oneYearFromNow = moment().add(1, "year");
+
   return (
     <div className="Timeline">
       <div className="ProjectTimelineName">Project Timeline</div>
       <CalendarTimeline
+        key={topics.length} //추가될때마다 렌더링되게 함
         groups={groups}
         items={topics}
         defaultTimeStart={moment().add(-12, "hour")}
         defaultTimeEnd={moment().add(12, "hour")}
         onItemMove={handleItemMove}
         onItemResize={handleItemResize}
+        // minTime={oneYearAgo.valueOf()}
+        // maxTime={oneYearFromNow.valueOf()}
       />
       <Button className="create-topic-btn" onClick={handleShowModal}>
         Create Topic
