@@ -16,7 +16,10 @@
   align-content: center;
   justify-content: center;
   display: flex;
-  color: white;
+  /* color: white; */
+  background: linear-gradient(to right, white, rgb(152, 150, 150));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-top: 10%;
 }
 
