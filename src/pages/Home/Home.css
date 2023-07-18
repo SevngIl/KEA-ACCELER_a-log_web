@@ -1,18 +1,45 @@
 .Home {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 100vh;
 }
+
+.Home .page1 {
+  background: linear-gradient(to right bottom, #1d0e5c, #6b56cc);
+  width: 100%;
+  height: 100%;
+}
+
 .Home .catchphrase {
-    align-content: center;
-    justify-content: center;
-    display: flex;
+  align-content: center;
+  justify-content: center;
+  display: flex;
+  /* color: white; */
+  background: linear-gradient(to right, white, rgb(152, 150, 150));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-top: 10%;
 }
 
 .Home .homeBtnWrapper {
-    align-content: center;
-    justify-content: center;
-    display: flex;
+  align-content: center;
+  justify-content: center;
+  display: flex;
+}
+
+.Home .GetStarted {
+  background: linear-gradient(to right, #728dec, #31279b);
+  border-color: #31279b;
+  color: white;
+  border-radius: 15;
+  transition: background 0.9s ease-in-out;
+  margin-top: 5%;
+  font-size: 1.3rem;
+}
+
+.Home .GetStarted:hover {
+  box-shadow: 0 0.5em 0.5em -0.4em yellow;
+  border-color: yellow;
 }

@@ -1,5 +1,9 @@
 import { Button } from "react-bootstrap";
 
 export const CreateReleaseNote = () => {
-    return <div>CreateReleaseNote</div>;
+  return (
+    <div className="CreateReleaseNote">
+      <div className="CreateReleaseNote_header">Create Release Note</div>
+    </div>
+  );
 };

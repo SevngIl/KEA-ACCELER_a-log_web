@@ -1,5 +1,6 @@
 .Timeline {
   width: 100%;
+  overflow: auto;
 }
 
 .Timeline .ProjectTimelineName {
