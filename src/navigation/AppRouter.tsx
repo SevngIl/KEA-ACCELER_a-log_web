@@ -6,22 +6,28 @@ import Home from "../pages/Home/Home";
 import { Timeline } from "../pages/Timeline/Timeline";
 import { ReleaseNote } from "../pages/ReleaseNote/ReleaseNote";
 import { CreateReleaseNote } from "../pages/ReleaseNote/CreateReleaseNote";
+import Login from "../pages/Login/Login";
+import Register from "../pages/Register/Register";
+import RegisterForm from "../pages/Register/Registerform";
 
 const AppRouter = (): JSX.Element => {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route element={<TopNavBar />}>
-                    <Route path="/" element={<Home />} />
-                    <Route element={<LeftNavSection />}>
-                        <Route path="/Board" element={<Board />} />
-                        <Route path="/Timeline" element={<Timeline />} />
-                        <Route path="/ReleaseNote" element={<ReleaseNote />} />
-                        <Route path="/CreateReleaseNote" element={<CreateReleaseNote />} />
-                    </Route>
-                </Route>
-            </Routes>
-        </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route element={<TopNavBar />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/registerform" element={<RegisterForm />} />
+          <Route element={<LeftNavSection />}>
+            <Route path="/Board" element={<Board />} />
+            <Route path="/Timeline" element={<Timeline />} />
+            <Route path="/ReleaseNote" element={<ReleaseNote />} />
+            <Route path="/CreateReleaseNote" element={<CreateReleaseNote />} />
+          </Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 };
 export default AppRouter;

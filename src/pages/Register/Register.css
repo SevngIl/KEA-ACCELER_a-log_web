@@ -1,0 +1,38 @@
+.Register {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.Register .center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Register .logo-center {
+  width: 125px;
+  height: auto;
+  margin-bottom: 2rem;
+}
+.Register .button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 2rem;
+}
+
+.Register .login-button {
+  width: 200px;
+  margin-top: 1rem;
+}
+
+.Register .github-button {
+  width: 200px;
+  background-color: rgba(89, 57, 223, 0.7);
+  color: white;
+  border: none;
+}
