@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./MyProjects.css";
 import { Link, useNavigate } from "react-router-dom";
+import plusImage from "../../assets/images/plus1.png";
 
 const MyProjects = () => {
   const [projects, setProjects] = useState([
@@ -15,6 +16,10 @@ const MyProjects = () => {
     navigate("/CreateProject");
   };
 
+  useEffect(() => {
+    const storedProjects = JSON.parse(localStorage.getItem("projects")) || [];
+    setProjects(storedProjects);
+  }, []);
   return (
     <div className="MyProjects">
       <div className="top-buttons">
@@ -30,13 +35,17 @@ const MyProjects = () => {
         <div className="projects-container">
           {projects.map((project, index) => (
             <div className="project-card" key={index}>
-              <h3>{project.name}</h3>
-              <p>{project.key}</p>
-              <p>{project.leader}</p>
+              <Link to={`/Board`} key={index} className="project-link">
+                <h3>{project.name}</h3>
+                <p>{project.key}</p>
+                <p>{project.leader}</p>
+              </Link>
             </div>
           ))}
           <div className="project-add">
-            <button onClick={addProject}>+</button>
+            <button onClick={addProject}>
+              <img src={plusImage} alt="add project" className="add-btn" />
+            </button>
           </div>
         </div>
       </div>

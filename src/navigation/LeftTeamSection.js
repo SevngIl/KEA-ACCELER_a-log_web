@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./LeftTeamSection.css";
 import { Button } from "react-bootstrap";
 import CreateTeamModal from "../components/Modal/CreateTeamModal";
@@ -12,6 +12,14 @@ const LeftTeamSection = () => {
   const addTeam = (newTeam) => {
     setTeams([...teams, newTeam]);
   };
+
+  useEffect(() => {
+    // 로컬 스토리지에서 팀 정보 가져오기
+    const storedTeams = JSON.parse(localStorage.getItem("teams")) || [];
+
+    // 가져온 팀 정보를 상태에 설정
+    setTeams(storedTeams.map((team) => team.name));
+  }, []);
 
   return (
     <div className="LeftTeamSection">

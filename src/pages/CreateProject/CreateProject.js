@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import "./CreateProject.css";
 
@@ -6,14 +7,32 @@ const CreateProject = () => {
   const [projectName, setProjectName] = useState("");
   const [projectKey, setProjectKey] = useState("");
   const [projectLeader, setProjectLeader] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Here, you might want to update your backend with the new project info
-    console.log(projectName, projectKey);
+    const newProject = {
+      name: projectName,
+      key: projectKey,
+      leader: projectLeader,
+    };
+
+    // 로컬 스토리지에서 프로젝트 가져오기
+    const currentProjects = JSON.parse(localStorage.getItem("projects")) || [];
+
+    // 새 프로젝트 추가하기
+    currentProjects.push(newProject);
+
+    // 업데이트된 프로젝트를 로컬스토리지에 저장
+    localStorage.setItem("projects", JSON.stringify(currentProjects));
+
+    // 입력칸 초기화
     setProjectName("");
     setProjectKey("");
     setProjectLeader("");
+
+    alert("프로젝트가 추가되었습니다");
+    navigate("/MyProjects");
   };
 
   return (

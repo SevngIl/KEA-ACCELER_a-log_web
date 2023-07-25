@@ -8,6 +8,21 @@ const CreateTeamModal = ({ addTeam, show, handleClose }) => {
 
   const handleCreateTeam = (event) => {
     event.preventDefault();
+
+    const newTeam = {
+      name: teamName,
+      user: inviteUser,
+    };
+
+    // 로컬 스토리지에서 팀 정보 가져오기
+    const currentTeams = JSON.parse(localStorage.getItem("teams")) || [];
+
+    // 새 팀 추가하기
+    currentTeams.push(newTeam);
+
+    // 업데이트된 팀 정보를 로컬 스토리지에 저장
+    localStorage.setItem("teams", JSON.stringify(currentTeams));
+
     addTeam(teamName);
     setTeamName("");
     handleClose();
