@@ -1,0 +1,58 @@
+.CreateProject {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.CreateProject .Project-Detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10%;
+}
+
+.CreateProject .Project-Detail .Project-subdetail {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3%;
+  margin-bottom: 7%;
+}
+
+.CreateProject .projectName {
+  margin-bottom: 10%;
+}
+
+.CreateProject .projectKey {
+  margin-bottom: 10%;
+}
+
+.CreateProject .projectName .projectName_input {
+  width: 300px;
+}
+
+.CreateProject .projectKey .projectKey_input {
+  width: 200px;
+}
+
+.CreateProject p {
+  margin-bottom: 30px;
+}
+
+.CreateProject .form-group {
+  margin-bottom: 20px;
+}
+
+.CreateProject .btn-secondary {
+  margin-right: 10px;
+}
+
+.CreateProject .button-group {
+  display: flex;
+  justify-content: flex-end; /* aligns the buttons to the right */
+  width: 100%;
+  gap: 10px;
+  margin-top: 20%;
+}
