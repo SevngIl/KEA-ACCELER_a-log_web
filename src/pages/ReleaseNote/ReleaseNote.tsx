@@ -6,6 +6,7 @@ import { RNBadge } from "../../components/RNBadge";
 import { ReleaseNoteData } from "../../interfaces/releaseNote.interface";
 import { BsDot } from "react-icons/bs";
 import { useEffect, useState } from "react";
+import FadeIn from "../../animation/FadeIn";
 
 const Mock: ReleaseNoteData[] = [
     {
@@ -59,7 +60,7 @@ export const ReleaseNote = () => {
     const navigation = useNavigate();
     return (
         <div className="ReleaseNote">
-            <div className="mainWrapper">
+            <FadeIn className="mainWrapper">
                 <div className="topWrapper">
                     <h1>ReleaseNotes</h1>
 
@@ -91,12 +92,14 @@ export const ReleaseNote = () => {
                         </FloatingWrapper>
                     ))}
                 </div>
-            </div>
-            <FloatingWrapper className="rightNavigation" width="150px" height="fit-content">
-                {Mock.map((it) => (
-                    <a className="navContent">{it.version}</a>
-                ))}
-            </FloatingWrapper>
+            </FadeIn>
+            <FadeIn>
+                <FloatingWrapper className="rightNavigation" width="150px" height="fit-content">
+                    {Mock.map((it) => (
+                        <a className="navContent">{it.version}</a>
+                    ))}
+                </FloatingWrapper>
+            </FadeIn>
         </div>
     );
 };
