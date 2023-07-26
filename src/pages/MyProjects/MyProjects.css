@@ -1,6 +1,8 @@
 .MyProjects {
   width: 100%;
+  background-color: #e9e3f5;
 }
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 
 .MyProjects .top-buttons {
   display: flex;
@@ -8,33 +10,54 @@
   margin-top: 5%;
 }
 
-.MyProjects .top-button-link1 {
+.MyProjects .top-button-link1,
+.MyProjects .top-button-link2 {
   text-decoration: none;
-  color: black;
+
   font-size: 2rem;
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-weight: 500;
+  transition: transform 0.3s ease;
+}
+
+.MyProjects .top-button-link1 {
   margin-left: 20%;
   margin-right: 5%;
+  color: black;
 }
 
 .MyProjects .top-button-link2 {
-  text-decoration: none;
-  color: black;
-  font-size: 2rem;
   margin-right: 20%;
   margin-left: 5%;
+  color: gray;
+}
+
+.MyProjects .top-button-link1:hover,
+.MyProjects .top-button-link2:hover {
+  transform: translateY(-5px);
 }
 
 .MyProjects .projects-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  margin-right: 25px;
 }
 
 .MyProjects .project-card {
-  border: 1px solid black;
+  border: none;
   margin: 10px;
   padding: 10px;
   width: calc((100% / 3) - 20px);
+  border-radius: 15px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.MyProjects .project-card:hover {
+  transform: scale(1.05);
+}
+
+.MyProjects .project-info {
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
 }
 
 .MyProjects .project-card .project-link {
@@ -46,10 +69,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
+  border: none;
   margin: 10px;
   padding: 10px;
   width: calc((100% / 3) - 20px);
+  border-radius: 15px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.MyProjects .project-add:hover {
+  transform: scale(1.05);
 }
 
 .MyProjects .project-add button {

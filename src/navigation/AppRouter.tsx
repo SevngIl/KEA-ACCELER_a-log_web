@@ -12,6 +12,7 @@ import RegisterForm from "../pages/Register/Registerform";
 import MyProjects from "../pages/MyProjects/MyProjects";
 import LeftTeamSection from "./LeftTeamSection";
 import CreateProject from "../pages/CreateProject/CreateProject";
+import MyIssues from "../pages/MyIssues/MyIssues";
 
 const AppRouter = (): JSX.Element => {
   return (
@@ -24,6 +25,7 @@ const AppRouter = (): JSX.Element => {
           <Route path="/registerform" element={<RegisterForm />} />
           <Route element={<LeftTeamSection />}>
             <Route path="/myProjects" element={<MyProjects />} />
+            <Route path="/myIssues" element={<MyIssues />} />
             <Route path="/CreateProject" element={<CreateProject />} />
           </Route>
           <Route element={<LeftNavSection />}>

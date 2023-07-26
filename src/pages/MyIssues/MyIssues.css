@@ -1,0 +1,69 @@
+.MyIssues {
+  width: 100%;
+  background-color: #e9e3f5;
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
+.MyIssues .top-buttons {
+  display: flex;
+  flex-direction: row;
+  margin-top: 5%;
+  width: 100%;
+}
+
+.MyIssues .top-button-link1,
+.MyIssues .top-button-link2 {
+  text-decoration: none;
+
+  font-size: 2rem;
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-weight: 500;
+  transition: transform 0.3s ease;
+}
+
+.MyIssues .top-button-link1 {
+  margin-left: 20%;
+  margin-right: 5%;
+  color: gray;
+}
+
+.MyIssues .top-button-link2 {
+  margin-right: 20%;
+  margin-left: 5%;
+  color: black;
+}
+
+.MyIssues .top-button-link1:hover,
+.MyIssues .top-button-link2:hover {
+  transform: translateY(-5px);
+}
+
+.MyIssues .Issue-container {
+  display: flex;
+  width: 80%;
+  margin-top: 5%;
+  align-items: flex-start;
+  height: 60vh;
+}
+
+.MyIssues .Issue-container .TODO .TODO-head,
+.MyIssues .Issue-container .TODO .TODO-body {
+  text-align: left;
+}
+
+.MyIssues .Issue-container .TODO .TODO-head,
+.MyIssues .Issue-container .INPROGRESS .INPROGRESS-head,
+.MyIssues .Issue-container .DONE .DONE-head {
+  font-size: 2rem;
+}
+
+.MyIssues .Issue-container .TODO .TODO-body,
+.MyIssues .Issue-container .INPROGRESS .INPROGRESS-body,
+.MyIssues .Issue-container .DONE .DONE-body {
+  font-size: 1.2rem;
+  margin-bottom: 7%;
+}
