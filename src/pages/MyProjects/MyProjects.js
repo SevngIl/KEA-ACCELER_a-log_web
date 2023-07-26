@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./MyProjects.css";
 import { Link, useNavigate } from "react-router-dom";
 import plusImage from "../../assets/images/plus1.png";
+import { FloatingWrapper } from "../../components/FloatingWrapper";
 
 const MyProjects = () => {
   const [projects, setProjects] = useState([
@@ -23,10 +24,10 @@ const MyProjects = () => {
   return (
     <div className="MyProjects">
       <div className="top-buttons">
-        <Link to="/my-projects" className="top-button-link1">
+        <Link to="/myProjects" className="top-button-link1">
           My Projects
         </Link>
-        <Link to="/assigned-to-me" className="top-button-link2">
+        <Link to="/myIssues" className="top-button-link2">
           Assigned to me
         </Link>
       </div>
@@ -34,19 +35,19 @@ const MyProjects = () => {
         <h2>Projects</h2>
         <div className="projects-container">
           {projects.map((project, index) => (
-            <div className="project-card" key={index}>
+            <FloatingWrapper className="project-card" key={index}>
               <Link to={`/Board`} key={index} className="project-link">
-                <h3>{project.name}</h3>
-                <p>{project.key}</p>
-                <p>{project.leader}</p>
+                <h3 className="project-info">{project.name}</h3>
+                <p className="project-info">{project.key}</p>
+                <p className="project-info">{project.leader}</p>
               </Link>
-            </div>
+            </FloatingWrapper>
           ))}
-          <div className="project-add">
+          <FloatingWrapper className="project-add">
             <button onClick={addProject}>
               <img src={plusImage} alt="add project" className="add-btn" />
             </button>
-          </div>
+          </FloatingWrapper>
         </div>
       </div>
     </div>

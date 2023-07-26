@@ -32,7 +32,7 @@ const CreateProject = () => {
     setProjectLeader("");
 
     alert("프로젝트가 추가되었습니다");
-    navigate("/MyProjects");
+    navigate("/myProjects");
   };
 
   return (
