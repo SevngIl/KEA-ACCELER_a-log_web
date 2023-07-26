@@ -17,7 +17,7 @@ export default function Home() {
             <br /> to manage team and <br /> build products
           </h1>
           <div className="homeBtnWrapper">
-            <Button className="GetStarted hvr-grow" onClick={() => navigation("/Board")}>
+            <Button className="GetStarted hvr-grow" onClick={() => navigation("/myProjects")}>
               Get Started
               <img src={StartImg} alt="start" style={{ marginLeft: "10px", height: "20px" }} />
             </Button>

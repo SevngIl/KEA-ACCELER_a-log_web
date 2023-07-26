@@ -9,6 +9,9 @@ import { CreateReleaseNote } from "../pages/ReleaseNote/CreateReleaseNote";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import RegisterForm from "../pages/Register/Registerform";
+import MyProjects from "../pages/MyProjects/MyProjects";
+import LeftTeamSection from "./LeftTeamSection";
+import CreateProject from "../pages/CreateProject/CreateProject";
 
 const AppRouter = (): JSX.Element => {
   return (
@@ -19,6 +22,10 @@ const AppRouter = (): JSX.Element => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/registerform" element={<RegisterForm />} />
+          <Route element={<LeftTeamSection />}>
+            <Route path="/myProjects" element={<MyProjects />} />
+            <Route path="/CreateProject" element={<CreateProject />} />
+          </Route>
           <Route element={<LeftNavSection />}>
             <Route path="/Board" element={<Board />} />
             <Route path="/Timeline" element={<Timeline />} />
