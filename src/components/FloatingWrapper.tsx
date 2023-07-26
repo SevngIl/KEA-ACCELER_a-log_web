@@ -4,11 +4,12 @@ interface Size {
     width?: string;
     height?: string;
     borderRadius?: string;
+    padding?: string;
 }
 
 export const FloatingWrapper = styled.div<Size>`
     display: flex;
-    padding: 4%;
+    padding: ${(props) => props.padding || "4%"};
     flex-direction: column;
     align-items: center;
     width: ${(props) => props.width || ""};

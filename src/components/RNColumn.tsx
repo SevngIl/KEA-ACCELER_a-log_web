@@ -5,6 +5,7 @@ import "./RNColumn.css";
 import { RNColumnContentData, RNTag } from "../interfaces/releaseNote.interface";
 import { Button } from "react-bootstrap";
 import { useState } from "react";
+import { TextButton } from "./Buttons";
 
 const RNColumnContent: RNColumnContentData[] = [{ key: 0, content: "" }];
 
@@ -21,13 +22,13 @@ export const RNColumn = ({ tag }: { tag: RNTag }) => {
             </div>
             {data.map((it) => (
                 <div className="rnBoxItem" key={it.key}>
-                    <button className="deleteColumnBtn" onClick={() => deleteItem(it.key)}>
+                    <TextButton className="deleteColumnBtn" onClick={() => deleteItem(it.key)}>
                         X
-                    </button>
+                    </TextButton>
                     <BsDot />
                     <input className="rnBoxItemContent" />
                     <div>
-                        <button className="connectIssueBtn">Connect Issue</button>
+                        <TextButton className="connectIssueBtn">Connect Issue</TextButton>
                     </div>
                 </div>
             ))}

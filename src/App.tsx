@@ -1,9 +1,14 @@
 import "./App.css";
+import { AuthenticationContextProvider } from "./authentication/authentication.context";
 import AppRouter from "./navigation/AppRouter";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function App() {
-    return <AppRouter />;
-}
+const App: React.FC = () => {
+    return (
+        <AuthenticationContextProvider>
+            <AppRouter />
+        </AuthenticationContextProvider>
+    );
+};
 
 export default App;

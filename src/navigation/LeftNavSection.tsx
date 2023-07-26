@@ -19,17 +19,23 @@ export const LeftNavSection = () => {
                 <div className="planning_container">
                     <div className="planning">Planning</div>
                     <div className="Timeline">
-                        <Button onClick={() => navigate("/Timeline")}>TimeLine</Button>
+                        <Button variant="outline-primary" onClick={() => navigate("/Timeline")}>
+                            TimeLine
+                        </Button>
                     </div>
                     <div className="Board">
-                        <Button onClick={() => navigate("/Board")}>Board</Button>
+                        <Button variant="outline-primary" onClick={() => navigate("/Board")}>
+                            Board
+                        </Button>
                     </div>
                 </div>
 
                 <div className="release_container">
                     <div className="release">Release</div>
                     <div className="Notes">
-                        <Button onClick={() => navigate("/ReleaseNote")}>Notes</Button>
+                        <Button variant="outline-primary" onClick={() => navigate("/ReleaseNote")}>
+                            Notes
+                        </Button>
                     </div>
                 </div>
             </FloatingWrapper>

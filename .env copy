@@ -1,0 +1,4 @@
+# GitHub Auth
+
+REACT_APP_CLIENT_ID=
+GH_LOGIN_REDIRECT_URL=http://localhost:3000/login
