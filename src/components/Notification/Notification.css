@@ -1,0 +1,51 @@
+.Notification .offcanvas-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.Notification .button-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.Notification .issue-date {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 2%;
+}
+
+.Notification .issue-container .issue-msg-time {
+  display: flex;
+  flex-direction: row;
+}
+
+.Notification .issue-container .issue-msg-time .issue-msg {
+  /* margin-left: 0.5rem; */
+}
+
+.Notification .issue-container .issue-msg-time .issue-time {
+  margin-left: 1rem;
+  color: gray;
+}
+
+.Notification .issue-container .issue-img-content {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1%;
+}
+
+.Notification .issue-container .issue-img-content .issue-content {
+  margin-left: 0.5rem;
+}
+
+.Notification .issue-container .issue-img-content .checkImg {
+  width: 1.4rem;
+  height: auto;
+}
+
+.Notification .issue-container .issue-status {
+  margin-left: 2rem;
+}
