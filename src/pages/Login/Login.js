@@ -56,9 +56,10 @@ const Login = () => {
                     args[name] = value;
                 }
                 // 추출된 전달인자들을 반환한다.
+                navigate(`/registerform`, { state: { email: "asdf@gmail.com" } });
                 return args;
             }
-            // navigate(`/post/${props.id}`, { state: { id: props.id } });
+            urlArgs();
         }
     }, []);
 

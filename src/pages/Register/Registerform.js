@@ -2,14 +2,17 @@ import React, { useState, useEffect, useRef } from "react";
 import Button from "react-bootstrap/Button";
 import "./Registerform.css";
 import logo from "../../assets/logo/alog-logo.png";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FloatingWrapper } from "../../components/FloatingWrapper";
 import FadeIn from "../../animation/FadeIn";
 import Overlay from "react-bootstrap/Overlay";
 import Tooltip from "react-bootstrap/Tooltip";
 
 const RegisterForm = () => {
-    const [email, setEmail] = useState("");
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const [email, setEmail] = useState();
     const [emailMessage, setEmailMessage] = useState("");
     const [checkNumber, setCheckNumber] = useState("");
     const [password, setPassword] = useState("");
@@ -18,12 +21,22 @@ const RegisterForm = () => {
     const [isEmailValid, setIsEmailValid] = useState(false);
     const [isPasswordValid, setIsPasswordValid] = useState(false);
 
-    const navigate = useNavigate();
-
     const emailRef = useRef();
     const [showEmailTip, setShowEmailTip] = useState(false);
     const passwordRef = useRef();
     const [showPasswordTip, setShowPasswordTip] = useState(false);
+
+    const [isGitHubReg, setIsGitHubReg] = useState(false);
+    useEffect(() => {
+        if (location.state) {
+            setEmail(location.state.email);
+            setIsGitHubReg(true);
+            setPassword("********");
+            setCheckNumber("********");
+        }
+        console.log(location);
+    }, []);
+
     useEffect(() => {
         const emailPattern = /^\S+@\S+\.\S+$/;
         if (email) {
@@ -65,6 +78,7 @@ const RegisterForm = () => {
     const handleRegister = () => {
         if (isEmailValid && isPasswordValid) {
             alert("회원가입에 성공하였습니다");
+            navigate("/");
         } else if (!isEmailValid) {
             alert("이메일 형식을 확인하세요");
         } else if (!isPasswordValid) {
@@ -84,7 +98,15 @@ const RegisterForm = () => {
                         <div className="subform-container">
                             <div>Email</div>
                             <div className="email-container">
-                                <input ref={emailRef} type="text" placeholder="Enter your email address..." value={email} onChange={(e) => setEmail(e.target.value)} />
+                                <input
+                                    className={isGitHubReg ? "isGitHubReg" : null}
+                                    disabled={isGitHubReg}
+                                    ref={emailRef}
+                                    type="text"
+                                    placeholder="Enter your email address..."
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
                                 <Button variant="dark" className="check-button" disabled={!isEmailValid}>
                                     Check
                                 </Button>
@@ -101,7 +123,14 @@ const RegisterForm = () => {
                         <div className="subform-container">
                             <div>Check Number</div>
                             <div className="checknum-container">
-                                <input type="text" placeholder="Enter your check number..." value={checkNumber} onChange={(e) => setCheckNumber(e.target.value)} />
+                                <input
+                                    className={isGitHubReg ? "isGitHubReg" : null}
+                                    disabled={isGitHubReg}
+                                    type="text"
+                                    placeholder="Enter your check number..."
+                                    value={checkNumber}
+                                    onChange={(e) => setCheckNumber(e.target.value)}
+                                />
                                 <Button variant="dark" className="check-button">
                                     Check
                                 </Button>
@@ -110,7 +139,15 @@ const RegisterForm = () => {
 
                         <div className="subform-container">
                             <div>Password</div>
-                            <input ref={passwordRef} type="password" placeholder="Enter your password..." value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <input
+                                className={isGitHubReg ? "isGitHubReg" : null}
+                                disabled={isGitHubReg}
+                                ref={passwordRef}
+                                type="password"
+                                placeholder="Enter your password..."
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
                             <Overlay target={passwordRef.current} show={showPasswordTip} placement="left">
                                 {(props) => (
                                     <Tooltip id="overlay-example" {...props}>
@@ -124,7 +161,13 @@ const RegisterForm = () => {
                             <div>Nickname</div>
                             <div className="nickname-container">
                                 <input type="text" placeholder="Enter your nickname..." value={nickName} onChange={(e) => setNickName(e.target.value)} />
-                                <Button variant="dark" className="check-button">
+                                <Button
+                                    variant="dark"
+                                    className="check-button"
+                                    onClick={() => {
+                                        alert("사용 가능한 닉네임입니다.");
+                                    }}
+                                >
                                     Check
                                 </Button>
                             </div>
