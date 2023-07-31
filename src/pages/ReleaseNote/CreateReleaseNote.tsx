@@ -141,7 +141,7 @@ export const CreateReleaseNote = () => {
                         <div className="detailsWrapper">
                             <div className="rnTag">AL-123</div>
                             <h6>
-                                Version : V<input className="versionInput" value={version} onChange={(e) => setVersion(e.target.value)} placeholder={data.version} />
+                                Version : <input className="versionInput" value={version} onChange={(e) => setVersion(e.target.value)} placeholder={"V0.0.0"} />
                             </h6>
                             <h6>
                                 Update Date :{" "}
