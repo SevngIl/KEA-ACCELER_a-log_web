@@ -11,7 +11,6 @@ import Tooltip from "react-bootstrap/Tooltip";
 const RegisterForm = () => {
     const navigate = useNavigate();
     const location = useLocation();
-
     const [email, setEmail] = useState();
     const [emailMessage, setEmailMessage] = useState("");
     const [checkNumber, setCheckNumber] = useState("");
