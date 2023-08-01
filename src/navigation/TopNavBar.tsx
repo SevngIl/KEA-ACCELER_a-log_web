@@ -8,18 +8,11 @@ import { Button } from "react-bootstrap";
 import Logo from "../assets/logo/alog-logo.png";
 import { useNavigate } from "react-router-dom";
 import { TextButton } from "../components/Buttons";
-<<<<<<< HEAD
 
 import Notification from "../components/Notification/Notification";
 import { AuthenticationContext } from "../service/authentication/authentication.context";
 import MyWork from "../components/MyWork/MyWork";
 
-=======
-import { AuthenticationContext } from "../authentication/authentication.context";
-import Notification from "../components/Notification/Notification";
-import MyWork from "../components/MyWork/MyWork";
-
->>>>>>> develop
 interface LoggedInNavProps {
   onNotificationClick: () => void;
   onMyWorkClick: () => void;
