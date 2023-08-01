@@ -10,24 +10,21 @@ import { useNavigate } from "react-router-dom";
 import { TextButton } from "../components/Buttons";
 import { AuthenticationContext } from "../authentication/authentication.context";
 import Notification from "../components/Notification/Notification";
+import MyWork from "../components/MyWork/MyWork";
 
 interface LoggedInNavProps {
   onNotificationClick: () => void;
+  onMyWorkClick: () => void;
 }
 
-const LoggedInNav = ({ onNotificationClick }: LoggedInNavProps) => {
+const LoggedInNav = ({ onNotificationClick, onMyWorkClick }: LoggedInNavProps) => {
   const { OnLogout } = useContext(AuthenticationContext);
+
   return (
     <>
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="me-auto">
-          <NavDropdown title="내 작업" id="basic-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-          </NavDropdown>
+          <TextButton onClick={onMyWorkClick}>내 작업</TextButton>
           <NavDropdown title="프로젝트" id="basic-nav-dropdown">
             <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
             <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
@@ -87,6 +84,7 @@ const LoggedOutNav = () => {
 export const TopNavBar = () => {
   const { isLogin } = useContext(AuthenticationContext);
   const [showNotification, setShowNotification] = useState(false);
+  const [showMyWork, setShowMyWork] = useState(false);
 
   const handleNotificationClick = () => {
     setShowNotification(true);
@@ -94,6 +92,14 @@ export const TopNavBar = () => {
 
   const handleCloseNotification = () => {
     setShowNotification(false);
+  };
+
+  const handleMyWorkClick = () => {
+    setShowMyWork(true);
+  };
+
+  const handleCloseMywork = () => {
+    setShowMyWork(false);
   };
 
   return (
@@ -105,10 +111,11 @@ export const TopNavBar = () => {
             A-Log
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          {isLogin === true ? <LoggedInNav onNotificationClick={handleNotificationClick} /> : <LoggedOutNav />}
+          {isLogin === true ? <LoggedInNav onNotificationClick={handleNotificationClick} onMyWorkClick={handleMyWorkClick} /> : <LoggedOutNav />}
         </Container>
       </Navbar>
       <Notification show={showNotification} handleClose={handleCloseNotification} />
+      <MyWork show={showMyWork} handleClose={handleCloseMywork} />
       <Outlet />
     </div>
   );
