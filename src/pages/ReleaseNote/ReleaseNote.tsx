@@ -11,8 +11,12 @@ import FadeIn from "../../animation/FadeIn";
 export const ReleaseNote = () => {
     const navigation = useNavigate();
 
-    const [RNData, setRNData] = useState<ReleaseNoteData[]>(JSON.parse(sessionStorage.getItem("RNData")!));
-
+    const [RNData, setRNData] = useState<ReleaseNoteData[]>(JSON.parse(localStorage.getItem("RNData")!));
+    useEffect(() => {
+        if (RNData === null) {
+            setRNData([]);
+        }
+    });
     return (
         <div className="ReleaseNote">
             <FadeIn className="mainWrapper">

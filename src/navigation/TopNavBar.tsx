@@ -8,7 +8,7 @@ import { Button } from "react-bootstrap";
 import Logo from "../assets/logo/alog-logo.png";
 import { useNavigate } from "react-router-dom";
 import { TextButton } from "../components/Buttons";
-import { AuthenticationContext } from "../authentication/authentication.context";
+import { AuthenticationContext } from "../service/authentication/authentication.context";
 
 const LoggedInNav = () => {
     const { OnLogout } = useContext(AuthenticationContext);

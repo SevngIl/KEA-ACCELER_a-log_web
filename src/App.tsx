@@ -1,5 +1,5 @@
 import "./App.css";
-import { AuthenticationContextProvider } from "./authentication/authentication.context";
+import { AuthenticationContextProvider } from "./service/authentication/authentication.context";
 import AppRouter from "./navigation/AppRouter";
 import "bootstrap/dist/css/bootstrap.min.css";
 

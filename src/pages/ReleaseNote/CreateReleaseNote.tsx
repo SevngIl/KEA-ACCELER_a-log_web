@@ -118,7 +118,7 @@ export const CreateReleaseNote = () => {
         data.date = updateDate;
         const RNData = [...Mock];
         RNData.unshift(newRNData);
-        sessionStorage.setItem("RNData", JSON.stringify(RNData));
+        localStorage.setItem("RNData", JSON.stringify(RNData));
         console.log(RNData);
         navigate("/releasenote");
     };
