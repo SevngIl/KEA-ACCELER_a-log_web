@@ -2,12 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import "./Login.css";
 import logo from "../../assets/logo/alog-logo.png";
-import { LoginRequestHandler } from "../../authentication/authentication.service";
+import { GitHubLoginRequestHandler } from "../../service/authentication/authentication.service";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FloatingWrapper } from "../../components/FloatingWrapper";
 import FadeIn from "../../animation/FadeIn";
 import { TextButton } from "../../components/Buttons";
-import { AuthenticationContext } from "../../authentication/authentication.context";
+import { AuthenticationContext } from "../../service/authentication/authentication.context";
 
 const Login = () => {
     const location = useLocation();
@@ -56,9 +56,10 @@ const Login = () => {
                     args[name] = value;
                 }
                 // 추출된 전달인자들을 반환한다.
+                navigate(`/registerform`, { state: { email: "asdf@gmail.com" } });
                 return args;
             }
-            // navigate(`/post/${props.id}`, { state: { id: props.id } });
+            urlArgs();
         }
     }, []);
 
@@ -84,7 +85,7 @@ const Login = () => {
                         <Button
                             className="github-button"
                             onClick={() => {
-                                LoginRequestHandler();
+                                GitHubLoginRequestHandler();
                             }}
                         >
                             Continue with Github
