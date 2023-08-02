@@ -1,0 +1,48 @@
+.MyWork .offcanvas-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.MyWork .button-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.MyWork .header-buttons {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.MyWork .header-buttons .assigned-button {
+  font-weight: 500;
+}
+
+.MyWork .header-buttons .recent-button {
+  color: gray;
+}
+
+.MyWork .task-type {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 2%;
+}
+
+.MyWork .issue-container {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.MyWork .issue-container .checkImg {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.MyWork .issue-container .issue-content {
+  font-size: 1.2rem;
+}

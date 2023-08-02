@@ -1,9 +1,44 @@
 .Timeline {
-    width: 100%;
-    overflow: auto;
-    margin-top: 2%;
+  width: 100%;
+  overflow: auto;
+  margin-top: 2%;
 }
 
 .Timeline .ProjectTimelineName {
-    margin-bottom: 2%;
+  margin-bottom: 2%;
+}
+
+.Timeline .ViewMode-button {
+  margin: 5px;
+  padding: 5px 10px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.Timeline .ViewMode-button.active {
+  background-color: #636262;
+  color: #ddd;
+}
+
+/** custom popup  */
+.details-container {
+  width: 210px;
+  background-color: #fff;
+  color: #434141;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  height: auto;
+}
+
+.details-container > h5,
+.details-container > p {
+  border-top: 2px solid #ddd;
+  margin: 0;
+  padding: 10px;
+  font-size: 0.7rem;
+}
+
+.details-container > h5 {
+  border-top: none;
 }
