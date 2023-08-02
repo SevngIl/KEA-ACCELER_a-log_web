@@ -136,7 +136,7 @@ const RegisterForm = () => {
                                 <Button
                                     variant="dark"
                                     className="check-button"
-                                    disabled={!isEmailValid && !emailNumberChecked}
+                                    disabled={!isEmailValid || emailNumberChecked}
                                     onClick={() => {
                                         CheckEmailHandler();
                                     }}
@@ -157,15 +157,15 @@ const RegisterForm = () => {
                             <div>Check Number</div>
                             <div className="checknum-container">
                                 <input
-                                    className={isGitHubReg || !emailNumberSent ? "isGitHubReg" : null}
-                                    disabled={isGitHubReg || !emailNumberSent}
+                                    className={isGitHubReg || !emailNumberSent || emailNumberChecked ? "isGitHubReg" : null}
+                                    disabled={isGitHubReg || !emailNumberSent || emailNumberChecked}
                                     type="text"
-                                    placeholder="Enter your check number..."
+                                    placeholder="Check Code"
                                     value={checkNumber}
                                     onChange={(e) => setCheckNumber(e.target.value)}
                                 />
                                 <Button
-                                    disabled={!emailNumberSent}
+                                    disabled={!emailNumberSent || emailNumberChecked}
                                     variant="dark"
                                     className="check-button"
                                     onClick={() => {
