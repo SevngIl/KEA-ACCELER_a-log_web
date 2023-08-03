@@ -143,20 +143,27 @@ export const Timeline = () => {
   useEffect(() => {
     if (!gantt) return;
 
-    QuarterDay.current.addEventListener("click", () => changeViewMode("Quarter Day", QuarterDay));
-    HalfDay.current.addEventListener("click", () => changeViewMode("Half Day", HalfDay));
-    Day.current.addEventListener("click", () => changeViewMode("Day", Day));
-    Week.current.addEventListener("click", () => changeViewMode("Week", Week));
-    Month.current.addEventListener("click", () => changeViewMode("Month", Month));
-    Year.current.addEventListener("click", () => changeViewMode("Year", Year));
+    const handleQuarterDayClick = () => changeViewMode("Quarter Day", QuarterDay);
+    const handleHalfDayClick = () => changeViewMode("Half Day", HalfDay);
+    const handleDayClick = () => changeViewMode("Day", Day);
+    const handleWeekClick = () => changeViewMode("Week", Week);
+    const handleMonthClick = () => changeViewMode("Month", Month);
+    const handleYearClick = () => changeViewMode("Year", Year);
+
+    QuarterDay.current.addEventListener("click", handleQuarterDayClick);
+    HalfDay.current.addEventListener("click", handleHalfDayClick);
+    Day.current.addEventListener("click", handleDayClick);
+    Week.current.addEventListener("click", handleWeekClick);
+    Month.current.addEventListener("click", handleMonthClick);
+    Year.current.addEventListener("click", handleYearClick);
 
     return () => {
-      QuarterDay.current.removeEventListener("click", () => changeViewMode("Quarter Day", QuarterDay));
-      HalfDay.current.removeEventListener("click", () => changeViewMode("Half Day", HalfDay));
-      Day.current.removeEventListener("click", () => changeViewMode("Day", Day));
-      Week.current.removeEventListener("click", () => changeViewMode("Week", Week));
-      Month.current.removeEventListener("click", () => changeViewMode("Month", Month));
-      Year.current.removeEventListener("click", () => changeViewMode("Year", Year));
+      QuarterDay.current?.removeEventListener("click", handleQuarterDayClick);
+      HalfDay.current?.removeEventListener("click", handleHalfDayClick);
+      Day.current?.removeEventListener("click", handleDayClick);
+      Week.current?.removeEventListener("click", handleWeekClick);
+      Month.current?.removeEventListener("click", handleMonthClick);
+      Year.current?.removeEventListener("click", handleYearClick);
     };
   }, [gantt]);
 

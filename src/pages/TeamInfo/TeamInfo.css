@@ -1,0 +1,81 @@
+.TeamInfo {
+  width: 100%;
+  background-color: #e9e3f5;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+}
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
+.TeamInfo .Teams {
+  width: 80vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.TeamInfo .Teams .myTeam {
+  display: flex;
+  justify-content: center;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+}
+
+.TeamInfo .teams-container {
+  display: flex;
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+}
+
+.TeamInfo .team-card {
+  border: none;
+  margin: 10px;
+  padding: 10px;
+  width: calc((80vw / 3) - 20px);
+  border-radius: 15px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.TeamInfo .team-card:hover {
+  transform: scale(1.05);
+}
+
+.TeamInfo .team-info {
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+}
+
+.TeamInfo .team-card .team-link {
+  text-decoration: none;
+  color: black;
+}
+
+.TeamInfo .team-add {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  margin: 10px;
+  padding: 10px;
+  width: calc((100% / 3) - 20px);
+  border-radius: 15px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.TeamInfo .team-add:hover {
+  transform: scale(1.05);
+}
+
+.TeamInfo .team-add button {
+  border: none;
+  background-color: transparent;
+}
+
+.TeamInfo .team-add .add-btn {
+  width: 40px;
+}
+
+.TeamInfo .team-setting {
+  text-decoration: none;
+  color: inherit;
+}
