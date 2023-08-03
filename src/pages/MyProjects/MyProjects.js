@@ -4,7 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import plusImage from "../../assets/images/plus1.png";
 import { FloatingWrapper } from "../../components/FloatingWrapper";
 import FadeIn from "../../animation/FadeIn";
-
+import projectImg from "../../assets/images/project.png";
+import { CiSettings } from "react-icons/ci";
 const MyProjects = () => {
     const [projects, setProjects] = useState([
         { name: "Project1", key: "key1", leader: "Leader1" },
@@ -37,11 +38,19 @@ const MyProjects = () => {
                 <div className="projects-container">
                     {projects.map((project, index) => (
                         <FloatingWrapper className="project-card" key={index}>
-                            <Link to={`/Board`} key={index} className="project-link">
-                                <h4 className="project-info">{project.name}</h4>
-                                <p className="project-info">{project.key}</p>
-                                <p className="project-info">{project.leader}</p>
-                            </Link>
+                            <div className="projectSettingBtn" onClick={() => navigate("/projectSetting")}>
+                                <CiSettings size={"24px"} />
+                            </div>
+
+                            <img src={projectImg} className="projectImg" onClick={() => navigate("/Board")} />
+                            <div className="projectDescription" onClick={() => navigate("/Board")}>
+                                <div className="project-title">{project.name}</div>
+                                <div>
+                                    <div className="project-info">TEAM : ACCELER</div>
+                                    <div className="project-info">KEY : {project.key}</div>
+                                    <div className="project-info">LEAD : {project.leader}</div>
+                                </div>
+                            </div>
                         </FloatingWrapper>
                     ))}
                     <FloatingWrapper className="project-add">
