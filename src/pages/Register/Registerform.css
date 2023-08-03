@@ -59,6 +59,13 @@
     width: 70px;
     height: 40px;
     margin-left: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.RegisterForm .spinner {
+    max-width: 24px;
+    max-height: 24px;
 }
 
 .RegisterForm .checknum-container {
@@ -73,6 +80,9 @@
 .RegisterForm .register-button {
     margin-top: 10%;
     width: 100px;
+}
+.RegisterForm .nickname-container {
+    display: flex;
 }
 
 .RegisterForm .check-button,

@@ -55,6 +55,7 @@
     width: calc((100% / 3) - 20px);
     border-radius: 15px;
     transition: transform 0.3s ease-in-out;
+    overflow: hidden;
 }
 
 .MyProjects .project-card:hover {

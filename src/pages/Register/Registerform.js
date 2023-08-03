@@ -8,16 +8,18 @@ import FadeIn from "../../animation/FadeIn";
 import Overlay from "react-bootstrap/Overlay";
 import Tooltip from "react-bootstrap/Tooltip";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
+import Spinner from "react-bootstrap/Spinner";
 
 const RegisterForm = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const { OnDupNNCheck, OnRegister } = useContext(AuthenticationContext);
+    const { OnDupNNCheck, OnRegister, OnEmailVerifySend, OnEmailVerify } = useContext(AuthenticationContext);
 
     const [email, setEmail] = useState();
     const [emailNumberChecked, setEmailNumberChecked] = useState(false);
     const [emailNumberSent, setEmailNumberSent] = useState(false);
+    const [emailNumberSending, setEmailNumberSending] = useState(false);
     const [emailMessage, setEmailMessage] = useState("");
     const [checkNumber, setCheckNumber] = useState("");
     const [password, setPassword] = useState("");
@@ -95,12 +97,17 @@ const RegisterForm = () => {
     };
 
     const CheckEmailHandler = async () => {
-        alert("이메일로 인증번호를 전송했습니다.");
-        setEmailNumberSent(true);
+        setEmailNumberSending(true);
+        await OnEmailVerifySend(email).then((res) => {
+            setEmailNumberSending(false);
+            if (res.data == "You are already signed up") {
+                return;
+            }
+            setEmailNumberSent(true);
+        });
     };
     const CheckEmailMessageHandler = async () => {
-        alert("이메일 인증번호를 확인했습니다.");
-        setEmailNumberChecked(true);
+        setEmailNumberChecked(await OnEmailVerify(email, checkNumber));
     };
     const CheckNNHandler = async () => {
         if ((await OnDupNNCheck(nickName)) == true) {
@@ -136,12 +143,12 @@ const RegisterForm = () => {
                                 <Button
                                     variant="dark"
                                     className="check-button"
-                                    disabled={!isEmailValid || emailNumberChecked}
+                                    disabled={!isEmailValid || emailNumberChecked || emailNumberSending}
                                     onClick={() => {
                                         CheckEmailHandler();
                                     }}
                                 >
-                                    Check
+                                    {emailNumberSending ? <Spinner className="spinner" animation="border" /> : "Check"}
                                 </Button>
                             </div>
                             <Overlay target={emailRef.current} show={showEmailTip} placement="left">
@@ -191,7 +198,7 @@ const RegisterForm = () => {
                             <Overlay target={passwordRef.current} show={showPasswordTip} placement="left">
                                 {(props) => (
                                     <Tooltip id="overlay-example" {...props}>
-                                        <span className={`message ${setIsPasswordValid ? "success" : "error"}`}>{passwordMessage}</span>
+                                        <span className={`message ${isPasswordValid ? "success" : "error"}`}>{passwordMessage}</span>
                                     </Tooltip>
                                 )}
                             </Overlay>
