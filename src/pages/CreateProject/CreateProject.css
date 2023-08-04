@@ -3,6 +3,13 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+  background-color: #e9e3f5;
+  height: 95vh;
+  margin-right: 10%;
+}
+
+.CreateProject .CreateProject-container {
+  margin-top: 5%;
 }
 
 .CreateProject .Project-Detail {
@@ -51,7 +58,7 @@
 
 .CreateProject .button-group {
   display: flex;
-  justify-content: flex-end; /* aligns the buttons to the right */
+  justify-content: flex-end;
   width: 100%;
   gap: 10px;
   margin-top: 20%;

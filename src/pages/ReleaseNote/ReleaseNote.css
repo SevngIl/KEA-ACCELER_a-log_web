@@ -1,56 +1,63 @@
 .ReleaseNote {
-    margin-top: 2%;
-    width: 100%;
-    display: flex;
-    margin-right: 4%;
+  margin-top: 2%;
+  width: 100%;
+  display: flex;
+  margin-right: 4%;
 }
 .ReleaseNote .createNewBtn {
-    margin-left: 20px;
-    height: 40px;
+  margin-left: 20px;
+  height: 40px;
 }
 .ReleaseNote .topWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .ReleaseNote .mainWrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 100%;
-    padding-right: 6%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding-right: 6%;
 }
 
 .ReleaseNote .releaseNoteList {
-    width: 100%;
+  width: 100%;
 }
 .ReleaseNote .releaseNote {
-    margin-top: 40px;
-    align-items: start;
-    width: 100%;
-    min-width: 400px;
+  margin-top: 40px;
+  align-items: start;
+  width: 100%;
+  min-width: 400px;
 }
 .ReleaseNote .releaseNote .date {
-    margin-left: 12px;
+  margin-left: 12px;
 }
 .ReleaseNote .releaseNote .content {
-    margin-top: 6px;
-    margin-bottom: 6px;
-    display: flex;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  display: flex;
 }
 .ReleaseNote .releaseNote .content .text {
-    padding-left: 4px;
+  padding-left: 4px;
 }
 .ReleaseNote .releaseNote .titleWrapper {
-    display: flex;
+  display: flex;
+  width: 100%;
 }
 .ReleaseNote .releaseNote .releaseNoteContentItem {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    width: 100%;
-    padding-top: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  width: 100%;
+  padding-top: 12px;
 }
 .ReleaseNote .rightNavigation {
-    padding-top: 40px;
-    padding-bottom: 40px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.ReleaseNote .moveCreateRN {
+  width: 30px;
+  margin-left: auto;
+  cursor: pointer;
 }
