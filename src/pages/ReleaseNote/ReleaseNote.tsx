@@ -7,6 +7,7 @@ import { ReleaseNoteData } from "../../interfaces/releaseNote.interface";
 import { BsDot } from "react-icons/bs";
 import { Dispatch, useEffect, useState } from "react";
 import FadeIn from "../../animation/FadeIn";
+import move from "../../assets/images/move.png";
 
 export const ReleaseNote = () => {
   const navigation = useNavigate();
@@ -29,6 +30,7 @@ export const ReleaseNote = () => {
                   <div className="titleWrapper">
                     <h5 className="version">{it.version}</h5>
                     <div className="date">{it.date}</div>
+                    <img src={move} className="moveCreateRN" onClick={() => navigation("/CreateReleaseNote", { state: it })} />
                   </div>
 
                   {it.content.map(
