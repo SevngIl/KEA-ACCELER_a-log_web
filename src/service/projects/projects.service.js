@@ -50,3 +50,23 @@ export const GetProjectDetail = async (projectPk) => {
     throw new Error("프로젝트 조회 중 오류가 발생했습니다.");
   }
 };
+
+export const PatchUpdateProject = async (projectPk, name, description, teamPk, pmPk) => {
+  const projectData = {
+    name,
+    description,
+    teamPk,
+    pmPk,
+  };
+
+  console.log("Request body:", projectData);
+
+  try {
+    const res = await axios.patch(`${PROJECT_API_URL}/api/projects/${projectPk}`, projectData);
+    console.log(res);
+    return res;
+  } catch (err) {
+    console.error("프로젝트 수정 중 오류 발생:", err.response ? err.response.data : err.message);
+    throw new Error("프로젝트 수정 중 오류가 발생했습니다.");
+  }
+};
