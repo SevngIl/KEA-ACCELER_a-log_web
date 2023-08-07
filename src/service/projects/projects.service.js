@@ -39,3 +39,14 @@ export const GetProjects = async (keyword, sortType, page, size) => {
     throw new Error("프로젝트 조회 중 오류가 발생했습니다.");
   }
 };
+
+export const GetProjectDetail = async (projectPk) => {
+  try {
+    const res = await axios.get(`${PROJECT_API_URL}/api/projects/${projectPk}`);
+    console.log("Response:", res);
+    return res;
+  } catch (err) {
+    console.error("프로젝트 조회 중 오류 발생:", err.response ? err.response.data : err.message);
+    throw new Error("프로젝트 조회 중 오류가 발생했습니다.");
+  }
+};
