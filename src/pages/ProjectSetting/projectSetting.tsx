@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FloatingWrapper } from "../../components/FloatingWrapper";
 import "./ProjectSetting.css";
 import { AiOutlineArrowLeft } from "react-icons/ai";
-import { GetProjectDetail, PatchUpdateProject } from "../../service/projects/projects.service";
+import { GetProjectDetail, PatchUpdateProject, DeleteProject } from "../../service/projects/projects.service";
 
 export const ProjectSetting = () => {
   const [name, setName] = useState("");
@@ -13,7 +13,7 @@ export const ProjectSetting = () => {
   const [pmPk, setPmPk] = useState(0); // number로 변경
 
   const navigate = useNavigate();
-  const { projectPk } = useParams();
+  const { projectPk, projectName } = useParams();
 
   const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,6 +22,19 @@ export const ProjectSetting = () => {
       alert("프로젝트 수정이 완료되었습니다.");
     } catch (err) {
       alert("프로젝트 수정 중 오류가 발생했습니다.");
+    }
+  };
+
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm("이 프로젝트를 삭제하시겠습니까?");
+    if (confirmDelete) {
+      try {
+        await DeleteProject(projectPk);
+        alert("프로젝트 삭제가 완료되었습니다.");
+        navigate("/myProjects"); // 삭제 후 리디렉션할 페이지
+      } catch (err) {
+        alert("프로젝트 삭제 중 오류가 발생했습니다.");
+      }
     }
   };
 
@@ -55,10 +68,10 @@ export const ProjectSetting = () => {
           <div>전체 프로젝트</div>
         </div>
 
-        <h5 className="leftMenuItem" onClick={() => navigate("/projectSetting")}>
+        <h5 className="leftMenuItem" onClick={() => navigate(`/projectSetting/${projectPk}/${projectName}`)}>
           세부 사항
         </h5>
-        <h5 className="leftMenuItem" onClick={() => navigate("/projectAccess")}>
+        <h5 className="leftMenuItem" onClick={() => navigate(`/projectAccess/${projectPk}/${projectName}`)}>
           액세스
         </h5>
       </FloatingWrapper>
@@ -120,6 +133,9 @@ export const ProjectSetting = () => {
               </Form.Group>
 
               <div className="button-group">
+                <Button className="delete-button" variant="outline-danger" onClick={handleDelete}>
+                  삭제
+                </Button>
                 <Button className="save-button" variant="outline-success" type="submit">
                   저장
                 </Button>

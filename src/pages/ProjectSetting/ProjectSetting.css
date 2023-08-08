@@ -6,13 +6,13 @@
   background-color: #e9e3f5;
 }
 
-.Project-Detail {
+.ProjectSetting .Project-Detail {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.Project-Detail-header {
+.ProjectSetting .Project-Detail-header {
   margin-bottom: 10%;
 }
 
@@ -42,10 +42,15 @@
 
 .ProjectSetting .button-group {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.save-button {
+.ProjectSetting .delete-button {
+  margin-top: 10%;
+}
+
+.ProjectSetting .save-button {
   margin-top: 10%;
 }
 
@@ -80,6 +85,7 @@
 .ProjectSetting .arrow {
   margin-right: 10px;
 }
+
 .ProjectSetting {
   width: 100%;
   height: 100vh;

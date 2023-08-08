@@ -22,6 +22,7 @@ const MyProjects = () => {
       .then((res) => {
         if (res.status === 200) {
           setProjects(res.data.data.content);
+          console.log(res.data.data.content);
         }
       })
       .catch((err) => {
@@ -46,7 +47,7 @@ const MyProjects = () => {
           {projects &&
             projects.map((project, index) => (
               <FloatingWrapper className="project-card" key={index}>
-                <div className="projectSettingBtn" onClick={() => navigate(`/projectSetting/${project.pk}`)}>
+                <div className="projectSettingBtn" onClick={() => navigate(`/projectSetting/${project.pk}/${project.name}`)}>
                   <CiSettings size={"24px"} />
                 </div>
 

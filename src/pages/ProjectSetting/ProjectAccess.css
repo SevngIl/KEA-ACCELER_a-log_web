@@ -1,0 +1,90 @@
+.ProjectAccess {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  padding: 4%;
+  background-color: #e9e3f5;
+}
+
+.ProjectAccess .projectNameWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.ProjectAccess .prevPageWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+  width: 100%;
+  font-weight: 600;
+  padding-bottom: 40px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid rgb(128, 128, 128);
+}
+.ProjectAccess .leftMenuItem {
+  margin-top: 20px;
+  cursor: pointer;
+}
+.ProjectAccess .icon {
+  width: 30px;
+  height: 30px;
+  background-color: beige;
+  border-radius: 15px;
+  margin-right: 10px;
+}
+.ProjectAccess .arrow {
+  margin-right: 10px;
+}
+
+.ProjectAccess .ProjectAccess-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 5%;
+}
+
+.ProjectAccess .ProjectAccess-header-title {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.ProjectAccess .add-button {
+  align-self: flex-end;
+}
+
+.ProjectAccess .ProjectAccess-body {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.ProjectAccess-body-title {
+  font-size: 1.4rem;
+  display: flex;
+  text-align: left;
+}
+
+.ProjectAccess .ProjectMember {
+  display: flex;
+}
+
+.ProjectAccess .ProjectMember-search {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.ProjectAccess .ProjectMember-search .searchbar {
+  width: 300px;
+}
+
+.ProjectMember-list table {
+  border-collapse: collapse;
+}
+
+.ProjectMember-list th,
+.ProjectMember-list td {
+  border: none;
+}
