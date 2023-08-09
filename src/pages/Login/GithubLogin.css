@@ -1,0 +1,21 @@
+.GithubLogin {
+    margin-top: 10%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+.GithubLogin .container {
+    width: fit-content;
+    justify-content: center;
+}
+.GithubLogin .ghLogo {
+    width: 200px;
+}
+.GithubLogin .loadingWrapper {
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    width: 170px;
+    justify-content: space-between;
+}

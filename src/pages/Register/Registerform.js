@@ -9,6 +9,7 @@ import Overlay from "react-bootstrap/Overlay";
 import Tooltip from "react-bootstrap/Tooltip";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
 import Spinner from "react-bootstrap/Spinner";
+import { EmailVerifyModal } from "../../components/Modal/EmailVerifyModal";
 
 const RegisterForm = () => {
     const navigate = useNavigate();
@@ -16,7 +17,9 @@ const RegisterForm = () => {
 
     const { OnDupNNCheck, OnRegister, OnEmailVerifySend, OnEmailVerify } = useContext(AuthenticationContext);
 
-    const [email, setEmail] = useState();
+    const [checkCodeModalShow, setCheckCodeModalShow] = useState(false);
+
+    const [email, setEmail] = useState("");
     const [emailNumberChecked, setEmailNumberChecked] = useState(false);
     const [emailNumberSent, setEmailNumberSent] = useState(false);
     const [emailNumberSending, setEmailNumberSending] = useState(false);
@@ -39,6 +42,8 @@ const RegisterForm = () => {
         if (location.state) {
             setEmail(location.state.email);
             setIsGitHubReg(true);
+            setIsEmailValid(true);
+            setIsPasswordValid(true);
             setPassword("********");
             setCheckNumber("********");
         }
@@ -85,8 +90,11 @@ const RegisterForm = () => {
 
     const handleRegister = () => {
         if (setEmailNumberChecked && isPasswordValid && isNNValid) {
-            OnRegister(email, password, nickName);
-            navigate("/");
+            if (isGitHubReg === true) {
+            } else {
+                OnRegister(email, password, nickName);
+                navigate("/");
+            }
         } else if (!setEmailNumberChecked) {
             alert("이메일 인증을 해주세요.");
         } else if (!isNNValid) {
@@ -104,10 +112,17 @@ const RegisterForm = () => {
                 return;
             }
             setEmailNumberSent(true);
+            setCheckCodeModalShow(true);
         });
     };
     const CheckEmailMessageHandler = async () => {
-        setEmailNumberChecked(await OnEmailVerify(email, checkNumber));
+        const res = await OnEmailVerify(email, checkNumber);
+        if (res === true) {
+            setEmailNumberChecked(res);
+            setCheckCodeModalShow(false);
+        } else {
+            alert("인증번호를 다시 확인해주세요");
+        }
     };
     const CheckNNHandler = async () => {
         if ((await OnDupNNCheck(nickName)) == true) {
@@ -119,8 +134,19 @@ const RegisterForm = () => {
         }
     };
 
+    const HandleCheckModalClose = () => {
+        setCheckCodeModalShow(false);
+    };
+
     return (
         <FadeIn className="RegisterForm" childClassName="childClassName">
+            <EmailVerifyModal
+                show={checkCodeModalShow}
+                handleClose={HandleCheckModalClose}
+                checkNumber={checkNumber}
+                setCheckNumber={setCheckNumber}
+                CheckEmailMessageHandler={CheckEmailMessageHandler}
+            />
             <FloatingWrapper>
                 <FadeIn childClassName="childClassName">
                     <div className="center">
@@ -160,7 +186,7 @@ const RegisterForm = () => {
                             </Overlay>
                         </div>
 
-                        <div className="subform-container">
+                        {/* <div className="subform-container">
                             <div>Check Number</div>
                             <div className="checknum-container">
                                 <input
@@ -182,7 +208,7 @@ const RegisterForm = () => {
                                     Check
                                 </Button>
                             </div>
-                        </div>
+                        </div> */}
 
                         <div className="subform-container">
                             <div>Password</div>
