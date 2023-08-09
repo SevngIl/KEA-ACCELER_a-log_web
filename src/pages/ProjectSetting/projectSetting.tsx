@@ -5,6 +5,7 @@ import { FloatingWrapper } from "../../components/FloatingWrapper";
 import "./ProjectSetting.css";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { GetProjectDetail, PatchUpdateProject, DeleteProject } from "../../service/projects/projects.service";
+import React from "react";
 
 export const ProjectSetting = () => {
   const [name, setName] = useState("");
