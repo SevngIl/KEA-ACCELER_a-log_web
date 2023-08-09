@@ -1,6 +1,6 @@
 import { KeyboardEvent, ChangeEvent, useState, useEffect, useContext } from "react";
 import { Button, Form, Table } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FloatingWrapper } from "../../components/FloatingWrapper";
 import "./ProjectAccess.css";
 import { AiOutlineArrowLeft } from "react-icons/ai";
@@ -11,6 +11,8 @@ import { AuthenticationContext } from "../../service/authentication/authenticati
 
 export const ProjectAccess = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { projectPk, projectName } = useParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState("");
@@ -68,17 +70,17 @@ export const ProjectAccess = () => {
 
         <div className="projectNameWrapper">
           <div className="icon"></div>
-          <h2>A-Log</h2>
+          <h2>{location.state.name}</h2>
         </div>
         <div className="prevPageWrapper">
           <AiOutlineArrowLeft className="arrow" size={24} />
           <div>전체 프로젝트</div>
         </div>
 
-        <h5 className="leftMenuItem" onClick={() => navigate(`/projectSetting/${projectPk}/${projectName}`)}>
+        <h5 className="leftMenuItem" onClick={() => navigate(`/projectSetting/${projectPk}`, { state: location.state })}>
           세부 사항
         </h5>
-        <h5 className="leftMenuItem" onClick={() => navigate(`/projectAccess/${projectPk}/${projectName}`)}>
+        <h5 className="leftMenuItem" onClick={() => navigate(`/projectAccess/${projectPk}`, { state: location.state })}>
           액세스
         </h5>
       </FloatingWrapper>

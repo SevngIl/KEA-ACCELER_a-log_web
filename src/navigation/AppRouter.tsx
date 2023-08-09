@@ -30,8 +30,8 @@ const AppRouter = (): JSX.Element => {
           <Route path="/registerform" element={<RegisterForm />} />
           <Route path="/teamInfo" element={<TeamInfo />} />
           <Route path="/teamSetting" element={<TeamSetting />} />
-          <Route path="/projectSetting/:projectPk/:projectName" element={<ProjectSetting />} />
-          <Route path="/projectAccess/:projectPk/:projectName" element={<ProjectAccess />} />
+          <Route path="/projectSetting/:projectPk" element={<ProjectSetting />} />
+          <Route path="/projectAccess/:projectPk" element={<ProjectAccess />} />
           <Route path="/profile" element={<Profile />} />
           <Route element={<LeftTeamSection />}>
             <Route path="/myProjects" element={<MyProjects />} />
@@ -39,10 +39,10 @@ const AppRouter = (): JSX.Element => {
             <Route path="/CreateProject" element={<CreateProject />} />
           </Route>
           <Route element={<LeftNavSection />}>
-            <Route path="/Board" element={<Board />} />
-            <Route path="/Timeline" element={<Timeline />} />
-            <Route path="/ReleaseNote" element={<ReleaseNote />} />
-            <Route path="/CreateReleaseNote" element={<CreateReleaseNote />} />
+            <Route path="/Board/:projectPk" element={<Board />} />
+            <Route path="/Timeline/:projectPk" element={<Timeline />} />
+            <Route path="/ReleaseNote/:projectPk" element={<ReleaseNote />} />
+            <Route path="/CreateReleaseNote/:projectPk" element={<CreateReleaseNote />} />
           </Route>
         </Route>
       </Routes>

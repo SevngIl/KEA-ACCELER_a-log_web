@@ -53,12 +53,12 @@ const MyProjects = () => {
           {projects &&
             projects.map((project, index) => (
               <FloatingWrapper className="project-card" key={index}>
-                <div className="projectSettingBtn" onClick={() => navigate(`/projectSetting/${project.pk}/${project.name}`)}>
+                <div className="projectSettingBtn" onClick={() => navigate(`/projectSetting/${project.pk}`, { state: { pk: project.pk, name: project.name } })}>
                   <CiSettings size={"24px"} />
                 </div>
 
-                <img src={projectImg} className="projectImg" onClick={() => navigate("/Board")} />
-                <div className="projectDescription" onClick={() => navigate("/Board")}>
+                <img src={projectImg} className="projectImg" onClick={() => navigate(`/Board/${project.pk}`)} />
+                <div className="projectDescription" onClick={() => navigate(`/Board/${project.pk}`)}>
                   <div className="project-title">{project.name}</div>
                   <div>
                     <div className="project-info">TEAM PK: {project.teamPk}</div>
