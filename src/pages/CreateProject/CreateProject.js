@@ -1,39 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import "./CreateProject.css";
 import { FloatingWrapper } from "../../components/FloatingWrapper";
+import { ProjectsContext } from "../../service/projects/projects.context";
 
 const CreateProject = () => {
-  const [projectName, setProjectName] = useState("");
-  const [projectKey, setProjectKey] = useState("");
-  const [projectLeader, setProjectLeader] = useState("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [teamPk, setTeamPk] = useState("");
+  const [pmPk, setPmPk] = useState("");
   const navigate = useNavigate();
+  const { PostCreateProjects } = useContext(ProjectsContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const newProject = {
-      name: projectName,
-      key: projectKey,
-      leader: projectLeader,
-    };
 
-    // 로컬 스토리지에서 프로젝트 가져오기
-    const currentProjects = JSON.parse(localStorage.getItem("projects")) || [];
+    PostCreateProjects(name, description, parseInt(teamPk), parseInt(pmPk))
+      .then((res) => {
+        if (res.code === 201 || 200) {
+          alert("프로젝트가 추가되었습니다");
+          navigate("/myProjects");
+        }
+      })
+      .catch((err) => {
+        alert(err.message);
+        console.log(name, description, teamPk, pmPk);
+      });
 
-    // 새 프로젝트 추가하기
-    currentProjects.push(newProject);
-
-    // 업데이트된 프로젝트를 로컬스토리지에 저장
-    localStorage.setItem("projects", JSON.stringify(currentProjects));
-
-    // 입력칸 초기화
-    setProjectName("");
-    setProjectKey("");
-    setProjectLeader("");
-
-    alert("프로젝트가 추가되었습니다");
-    navigate("/myProjects");
+    setName("");
+    setDescription("");
+    setTeamPk("");
+    setPmPk("");
   };
 
   return (
@@ -47,35 +45,28 @@ const CreateProject = () => {
         <Form onSubmit={handleSubmit}>
           <Form.Group className="projectName" controlId="projectName">
             <Form.Label>이름</Form.Label>
+            <Form.Control className="projectName_input" type="text" placeholder="Enter project name" value={name} onChange={(e) => setName(e.target.value)} />
+          </Form.Group>
+
+          <Form.Group className="projectDesc" controlId="projectDesc">
+            <Form.Label>설명</Form.Label>
             <Form.Control
-              className="projectName_input"
+              className="projectDesc_input"
               type="text"
-              placeholder="Enter project name"
-              value={projectName}
-              onChange={(e) => setProjectName(e.target.value)}
+              placeholder="Enter project description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </Form.Group>
 
-          <Form.Group className="projectKey" controlId="projectKey">
-            <Form.Label>키</Form.Label>
-            <Form.Control
-              className="projectKey_input"
-              type="text"
-              placeholder="Enter project key"
-              value={projectKey}
-              onChange={(e) => setProjectKey(e.target.value)}
-            />
+          <Form.Group className="teamPk" controlId="teamPk">
+            <Form.Label>팀 PK</Form.Label>
+            <Form.Control className="teamPk_input" type="number" placeholder="Enter team PK" value={teamPk} onChange={(e) => setTeamPk(e.target.value)} />
           </Form.Group>
 
-          <Form.Group className="projectLeader" controlId="projectLeader">
-            <Form.Label>Leader</Form.Label>
-            <Form.Control
-              className="projectLeader_input"
-              type="text"
-              placeholder="Enter project leader"
-              value={projectLeader}
-              onChange={(e) => setProjectLeader(e.target.value)}
-            />
+          <Form.Group className="pmPk" controlId="pmPk">
+            <Form.Label>PM PK</Form.Label>
+            <Form.Control className="pmPk_input" type="number" placeholder="Enter PM PK" value={pmPk} onChange={(e) => setPmPk(e.target.value)} />
           </Form.Group>
 
           <div className="button-group">

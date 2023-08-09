@@ -4,8 +4,8 @@
   align-items: center;
   width: 100%;
   background-color: #e9e3f5;
-  height: 95vh;
   margin-right: 10%;
+  min-height: 95vh;
 }
 
 .CreateProject .CreateProject-container {
@@ -32,7 +32,11 @@
   margin-bottom: 10%;
 }
 
-.CreateProject .projectKey {
+.CreateProject .projectDesc {
+  margin-bottom: 10%;
+}
+
+.CreateProject .teamPk {
   margin-bottom: 10%;
 }
 
@@ -40,7 +44,11 @@
   width: 300px;
 }
 
-.CreateProject .projectKey .projectKey_input {
+.CreateProject .teamPk .teamPk_input {
+  width: 200px;
+}
+
+.CreateProject .pmPk .pmPk_input {
   width: 200px;
 }
 
