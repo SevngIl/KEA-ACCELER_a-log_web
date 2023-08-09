@@ -7,10 +7,14 @@ import FadeIn from "../../animation/FadeIn";
 import projectImg from "../../assets/images/project.png";
 import { CiSettings } from "react-icons/ci";
 import { ProjectsContext } from "../../service/projects/projects.context";
+import { AuthenticationContext } from "../../service/authentication/authentication.context";
 
 const MyProjects = () => {
   const [projects, setProjects] = useState([]);
   const { GetProjects } = useContext(ProjectsContext);
+  // const { userToken } = useContext(AuthenticationContext);
+  const userToken =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTk4iOiJuYW1lIiwidXNlckVtYWlsIjoiZW1haWxAbmF2ZXIuY29tIiwidXNlclBrIjoxfQ.ZkhEHRYm1tnyznIhrNf-8tbeIMOGIVhlgwKB2QbJGs8";
   const navigate = useNavigate();
 
   const addProject = () => {
@@ -18,7 +22,7 @@ const MyProjects = () => {
   };
 
   useEffect(() => {
-    GetProjects("", "DESC", 0, 10)
+    GetProjects("", "DESC", 0, 10, userToken)
       .then((res) => {
         if (res.status === 200) {
           setProjects(res.data.data.content);

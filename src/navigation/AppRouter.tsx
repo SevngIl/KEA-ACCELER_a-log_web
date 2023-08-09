@@ -17,6 +17,7 @@ import TeamSetting from "../pages/TeamSetting/TeamSetting";
 import { ProjectAccess } from "../pages/ProjectSetting/ProjectAccess";
 import { ProjectSetting } from "../pages/ProjectSetting/projectSetting";
 import { ProjectsContextProvider } from "../service/projects/projects.context";
+import React from "react";
 
 const AppRouter = (): JSX.Element => {
   return (

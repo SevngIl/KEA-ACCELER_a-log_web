@@ -13,10 +13,13 @@ const CreateProject = () => {
   const navigate = useNavigate();
   const { PostCreateProjects } = useContext(ProjectsContext);
 
+  const userToken =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTk4iOiJuYW1lIiwidXNlckVtYWlsIjoiZW1haWxAbmF2ZXIuY29tIiwidXNlclBrIjoxfQ.ZkhEHRYm1tnyznIhrNf-8tbeIMOGIVhlgwKB2QbJGs8";
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    PostCreateProjects(name, description, parseInt(teamPk), parseInt(pmPk))
+    PostCreateProjects(name, description, parseInt(teamPk), parseInt(pmPk), userToken)
       .then((res) => {
         if (res.code === 201 || 200) {
           alert("프로젝트가 추가되었습니다");

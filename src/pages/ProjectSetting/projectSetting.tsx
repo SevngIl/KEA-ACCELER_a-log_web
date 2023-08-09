@@ -5,12 +5,15 @@ import { FloatingWrapper } from "../../components/FloatingWrapper";
 import "./ProjectSetting.css";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { GetProjectDetail, PatchUpdateProject, DeleteProject } from "../../service/projects/projects.service";
+import React from "react";
 
 export const ProjectSetting = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [teamPk, setTeamPk] = useState(0); // number로 변경
   const [pmPk, setPmPk] = useState(0); // number로 변경
+  const userToken =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTk4iOiJuYW1lIiwidXNlckVtYWlsIjoiZW1haWxAbmF2ZXIuY29tIiwidXNlclBrIjoxfQ.ZkhEHRYm1tnyznIhrNf-8tbeIMOGIVhlgwKB2QbJGs8";
 
   const navigate = useNavigate();
   const { projectPk, projectName } = useParams();
@@ -18,7 +21,7 @@ export const ProjectSetting = () => {
   const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await PatchUpdateProject(projectPk, name, description, teamPk, pmPk);
+      await PatchUpdateProject(projectPk, name, description, teamPk, pmPk, userToken);
       alert("프로젝트 수정이 완료되었습니다.");
     } catch (err) {
       alert("프로젝트 수정 중 오류가 발생했습니다.");
@@ -29,7 +32,7 @@ export const ProjectSetting = () => {
     const confirmDelete = window.confirm("이 프로젝트를 삭제하시겠습니까?");
     if (confirmDelete) {
       try {
-        await DeleteProject(projectPk);
+        await DeleteProject(projectPk, userToken);
         alert("프로젝트 삭제가 완료되었습니다.");
         navigate("/myProjects"); // 삭제 후 리디렉션할 페이지
       } catch (err) {
@@ -40,7 +43,7 @@ export const ProjectSetting = () => {
 
   useEffect(() => {
     if (projectPk !== null) {
-      GetProjectDetail(projectPk)
+      GetProjectDetail(projectPk, userToken)
         .then((res) => {
           setName(res.data.data.name);
           setDescription(res.data.data.description);

@@ -1,6 +1,5 @@
 .ProjectAccess {
   width: 100%;
-  height: 100vh;
   display: flex;
   padding: 4%;
   background-color: #e9e3f5;
@@ -49,6 +48,13 @@
 .ProjectAccess .ProjectAccess-header-title {
   margin-bottom: 2rem;
   text-align: center;
+}
+
+.ProjectAccess .button-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .ProjectAccess .add-button {
