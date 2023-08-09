@@ -1,129 +1,129 @@
 .MyProjects {
-  width: 100%;
-  background-color: #e9e3f5;
-  margin-right: 4%;
-  padding-bottom: 4%;
+    width: 100%;
+    background-color: #e9e3f5;
+    margin-right: 4%;
+    padding-bottom: 4%;
 }
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 
 .MyProjects .top-buttons {
-  display: flex;
-  flex-direction: row;
-  margin-top: 5%;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    flex-direction: row;
+    margin-top: 5%;
+    align-items: center;
+    justify-content: center;
 }
 
 .MyProjects .top-button-link1,
 .MyProjects .top-button-link2 {
-  text-decoration: none;
+    text-decoration: none;
 
-  font-size: 2rem;
-  font-family: "Spoqa Han Sans Neo", "sans-serif";
-  font-weight: 500;
-  transition: transform 0.3s ease;
+    font-size: 2rem;
+    font-family: "Spoqa Han Sans Neo", "sans-serif";
+    font-weight: 500;
+    transition: transform 0.3s ease;
 }
 
 .MyProjects .top-button-link1 {
-  margin-left: 20%;
-  margin-right: 5%;
-  color: black;
+    margin-left: 20%;
+    margin-right: 5%;
+    color: black;
 }
 
 .MyProjects .top-button-link2 {
-  margin-right: 20%;
-  margin-left: 5%;
-  color: gray;
+    margin-right: 20%;
+    margin-left: 5%;
+    color: gray;
 }
 
 .MyProjects .top-button-link1:hover,
 .MyProjects .top-button-link2:hover {
-  transform: translateY(-5px);
+    transform: translateY(-5px);
 }
 
 .MyProjects .projects-container {
-  display: flex;
-  flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .MyProjects .project-card {
-  border: none;
-  margin: 10px;
-  padding: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
-  width: calc((100% / 3) - 20px);
-  border-radius: 15px;
-  transition: transform 0.3s ease-in-out;
-  overflow: hidden;
+    border: none;
+    margin: 10px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    width: calc((100% / 3) - 20px);
+    border-radius: 15px;
+    transition: transform 0.3s ease-in-out;
+    overflow: hidden;
 }
 
 .MyProjects .project-card:hover {
-  transform: scale(1.05);
+    transform: scale(1.05);
 }
 
 .MyProjects .projectSettingBtn {
-  cursor: pointer;
-  width: 100%;
-  display: flex;
-  justify-content: end;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    justify-content: end;
 }
 .MyProjects .projectImg {
-  border-radius: 10px;
-  margin-bottom: 12px;
-  width: 280px;
-  height: 180px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    width: 280px;
+    height: 180px;
 }
 .MyProjects .project-title {
-  font-family: "Spoqa Han Sans Neo", "sans-serif";
-  font-size: 1.5em;
-  font-weight: 500;
+    font-family: "Spoqa Han Sans Neo", "sans-serif";
+    font-size: 1.5em;
+    font-weight: 500;
 }
 .MyProjects .project-info {
-  font-family: "Spoqa Han Sans Neo", "sans-serif";
-  font-size: 12px;
+    font-family: "Spoqa Han Sans Neo", "sans-serif";
+    font-size: 12px;
 }
 .MyProjects .project-title {
-  font-family: "Spoqa Han Sans Neo", "sans-serif";
-  font-size: 1.5em;
+    font-family: "Spoqa Han Sans Neo", "sans-serif";
+    font-size: 1.5em;
 }
 .MyProjects .projectDescription {
-  display: flex;
-  width: 100%;
-  align-items: end;
-  justify-content: space-between;
+    display: flex;
+    width: 100%;
+    align-items: end;
+    justify-content: space-between;
 }
 
 .MyProjects .project-card .project-link {
-  text-decoration: none;
-  color: black;
+    text-decoration: none;
+    color: black;
 }
 
 .MyProjects .project-add {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  margin: 10px;
-  padding: 10px;
-  width: calc((100% / 3) - 20px);
-  border-radius: 15px;
-  transition: transform 0.3s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    margin: 10px;
+    padding: 10px;
+    width: calc((100% / 3) - 20px);
+    border-radius: 15px;
+    transition: transform 0.3s ease-in-out;
 }
 
 .MyProjects .project-add:hover {
-  transform: scale(1.05);
+    transform: scale(1.05);
 }
 
 .MyProjects .project-add button {
-  border: none;
-  background-color: transparent;
+    border: none;
+    background-color: transparent;
 }
 
 .MyProjects .project-add .add-btn {
-  width: 40px;
+    width: 40px;
 }
 
 .MyProjects .Projects {
-  margin-top: 5%;
+    margin-top: 5%;
 }
