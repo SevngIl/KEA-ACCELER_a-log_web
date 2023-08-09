@@ -41,6 +41,10 @@ export const ProjectAccess = () => {
     setMembersUpdated(!membersUpdated);
   };
 
+  const handleMemberRemoved = () => {
+    setMembersUpdated(!membersUpdated);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -150,7 +154,7 @@ export const ProjectAccess = () => {
           onHide={() => setShowRemoveModal(false)}
           projectPk={projectPk}
           projectName={projectName}
-          onMemberAdded={handleMemberAdded}
+          onMemberRemoved={handleMemberRemoved}
           userToken={userToken}
         />
       </div>

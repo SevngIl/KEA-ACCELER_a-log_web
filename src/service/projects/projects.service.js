@@ -164,16 +164,14 @@ export const RemoveProjectMembers = async (projectPk, userPks, userToken) => {
     headers: {
       Authorization: `Bearer ${userToken}`,
     },
+    data: {
+      userPks: userPks,
+    },
   };
+
   try {
     console.log(projectPk, userPks, userToken);
-    const res = await axios.delete(
-      `${PROJECT_API_URL}/api/projects/${projectPk}/members`,
-      {
-        userPks: userPks,
-      },
-      options
-    );
+    const res = await axios.delete(`${PROJECT_API_URL}/api/projects/${projectPk}/members`, options);
     console.log("Response:", res);
     return res;
   } catch (err) {

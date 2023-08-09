@@ -14,7 +14,7 @@ const RemoveProMemModal = ({ show, onHide, projectPk, projectName, onMemberRemov
     try {
       const userPks = userInput.split(",").map((value) => parseInt(value.trim()));
       console.log(userPks);
-      await RemoveProjectMembers(projectPk, userPks);
+      await RemoveProjectMembers(projectPk, userPks, userToken);
       alert("멤버가 성공적으로 삭제되었습니다.");
       onHide();
       if (onMemberRemoved) onMemberRemoved();
