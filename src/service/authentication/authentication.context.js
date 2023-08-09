@@ -7,6 +7,7 @@ import {
   UsersCheckDuplicate,
   UsersLogin,
   UsersSignup,
+  UsersVerifiedSignup,
   loginHandler,
   permitAllEmailLogin,
 } from "./authentication.service";
@@ -46,7 +47,17 @@ export const AuthenticationContextProvider = ({ children }) => {
 
   const OnRegister = async (email, userPW, userNN) => {
     const res = await UsersSignup(email, userPW, userNN)
-      .then(alert(`회원가입이 완료되었습니다`))
+      .then((res) => {
+        alert(`회원가입이 완료되었습니다`);
+      })
+      .catch((e) => alert(e));
+    console.log(res);
+  };
+  const OnVerifiedRegister = async (email, userPW, userNN) => {
+    const res = await UsersVerifiedSignup(email, userPW, userNN)
+      .then((res) => {
+        alert(`회원가입이 완료되었습니다`);
+      })
       .catch((e) => alert(e));
     console.log(res);
   };
@@ -121,6 +132,7 @@ export const AuthenticationContextProvider = ({ children }) => {
         OnLogin, // 로그인 처리를 담당하는 함수
         OnLogout, // 로그아웃 처리를 담당하는 함수
         OnRegister, // 회원가입을 담당하는 함수
+        OnVerifiedRegister, // 깃허브 로그인을 통한 회원가입을 하는 함수(이매일 인증 x)
         OnDupNNCheck, // 회원가입시 닉네임 중복체크 담당 함수
         OnEmailVerifySend, // 이메일 인증 번호를 보내는 함수
         OnEmailVerify, // 이메일 인증 결과 요청 함수

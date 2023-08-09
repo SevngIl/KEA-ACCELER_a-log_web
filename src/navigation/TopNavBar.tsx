@@ -8,9 +8,10 @@ import { Button } from "react-bootstrap";
 import Logo from "../assets/logo/alog-logo.png";
 import { useNavigate } from "react-router-dom";
 import { TextButton } from "../components/Buttons";
+import { AuthenticationContext } from "../service/authentication/authentication.context";
+
 import Notification from "../components/Notification/Notification";
 import MyWork from "../components/MyWork/MyWork";
-import { AuthenticationContext } from "../service/authentication/authentication.context";
 
 interface LoggedInNavProps {
   onNotificationClick: () => void;
@@ -81,7 +82,7 @@ const LoggedOutNav = () => {
         </Nav>
       </Navbar.Collapse>
       <Navbar.Collapse className="justify-content-end">
-        <TextButton onClick={() => navigate("/login")}>Sign In</TextButton>
+        <TextButton onClick={() => navigate("/signin")}>Sign In</TextButton>
         <TextButton onClick={() => navigate("/registerform")}>Join</TextButton>
       </Navbar.Collapse>
     </>

@@ -2,13 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import "./Login.css";
 import logo from "../../assets/logo/alog-logo.png";
-
 import { useLocation, useNavigate } from "react-router-dom";
 import { FloatingWrapper } from "../../components/FloatingWrapper";
 import FadeIn from "../../animation/FadeIn";
 import { TextButton } from "../../components/Buttons";
-import { GitHubLoginRequestHandler, GithubAuth } from "../../service/authentication/github.service";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
+import { GitHubLoginRequestHandler, GithubAuth } from "../../service/authentication/github.service";
 
 const Login = () => {
   const location = useLocation();

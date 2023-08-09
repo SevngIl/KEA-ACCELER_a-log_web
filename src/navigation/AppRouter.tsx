@@ -25,7 +25,7 @@ const AppRouter = (): JSX.Element => {
       <Routes>
         <Route element={<TopNavBar />}>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/signin" element={<Login />} />
           <Route path="/ghLogin" element={<GithubLogin />} />
           <Route path="/registerform" element={<RegisterForm />} />
           <Route path="/teamInfo" element={<TeamInfo />} />

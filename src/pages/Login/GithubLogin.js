@@ -1,12 +1,11 @@
 import { useContext, useEffect } from "react";
 import { GithubAuth } from "../../service/authentication/github.service";
 import { useLocation, useNavigate } from "react-router-dom";
+import { AuthenticationContext } from "../../service/authentication/authentication.context";
 import { FloatingWrapper } from "../../components/FloatingWrapper";
 import { Spinner } from "react-bootstrap";
 import GithubLogo from "../../assets/images/ghLogo.png";
 import "./GithubLogin.css";
-import { AuthenticationContext } from "../../service/authentication/authentication.context";
-
 export const GithubLogin = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -14,14 +13,10 @@ export const GithubLogin = () => {
 
   useEffect(() => {
     if (isLogin === true) {
-      navigate("/");
+      navigate("/", { replace: true });
     }
   }, [isLogin]);
-  useEffect(() => {
-    if (isLogin === true) {
-      navigate("/");
-    }
-  }, []);
+
   useEffect(() => {
     if (location.search) {
       fetchGithubAuth();
@@ -34,7 +29,7 @@ export const GithubLogin = () => {
     const loginres = await OnGHLogin(accessToken);
     console.log(loginres);
     if (loginres.type === "email") {
-      navigate("/registerform", { state: { email: loginres.result } });
+      navigate("/registerform", { state: { email: loginres.result }, replace: true });
     } else {
     }
   };
