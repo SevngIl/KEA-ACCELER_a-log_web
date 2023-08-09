@@ -5,6 +5,7 @@ import { FloatingWrapper } from "../../components/FloatingWrapper";
 import "./ProjectSetting.css";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { GetProjectDetail, PatchUpdateProject, DeleteProject } from "../../service/projects/projects.service";
+import { AuthenticationContext } from "../../service/authentication/authentication.context";
 import React from "react";
 
 export const ProjectSetting = () => {
@@ -12,8 +13,10 @@ export const ProjectSetting = () => {
   const [description, setDescription] = useState("");
   const [teamPk, setTeamPk] = useState(0); // number로 변경
   const [pmPk, setPmPk] = useState(0); // number로 변경
-  const userToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTk4iOiJuYW1lIiwidXNlckVtYWlsIjoiZW1haWxAbmF2ZXIuY29tIiwidXNlclBrIjoxfQ.ZkhEHRYm1tnyznIhrNf-8tbeIMOGIVhlgwKB2QbJGs8";
+  // const userToken =
+  //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTk4iOiJuYW1lIiwidXNlckVtYWlsIjoiZW1haWxAbmF2ZXIuY29tIiwidXNlclBrIjoxfQ.ZkhEHRYm1tnyznIhrNf-8tbeIMOGIVhlgwKB2QbJGs8";
+
+  const { userToken } = useContext(AuthenticationContext);
 
   const navigate = useNavigate();
   const { projectPk, projectName } = useParams();

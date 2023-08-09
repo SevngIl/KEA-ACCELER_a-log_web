@@ -1,4 +1,4 @@
-import { KeyboardEvent, ChangeEvent, useState, useEffect } from "react";
+import { KeyboardEvent, ChangeEvent, useState, useEffect, useContext } from "react";
 import { Button, Form, Table } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { FloatingWrapper } from "../../components/FloatingWrapper";
@@ -7,6 +7,7 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 import InviteProMemModal from "../../components/Modal/InviteProMemModal";
 import { GetProjectMembers } from "../../service/projects/projects.service";
 import RemoveProMemModal from "../../components/Modal/RemoveProMemModal";
+import { AuthenticationContext } from "../../service/authentication/authentication.context";
 
 export const ProjectAccess = () => {
   const navigate = useNavigate();
@@ -17,8 +18,9 @@ export const ProjectAccess = () => {
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [projectMembers, setProjectMembers] = useState([]);
   const [membersUpdated, setMembersUpdated] = useState(false);
-  const userToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTk4iOiJuYW1lIiwidXNlckVtYWlsIjoiZW1haWxAbmF2ZXIuY29tIiwidXNlclBrIjoxfQ.ZkhEHRYm1tnyznIhrNf-8tbeIMOGIVhlgwKB2QbJGs8";
+  // const userToken =
+  //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTk4iOiJuYW1lIiwidXNlckVtYWlsIjoiZW1haWxAbmF2ZXIuY29tIiwidXNlclBrIjoxfQ.ZkhEHRYm1tnyznIhrNf-8tbeIMOGIVhlgwKB2QbJGs8";
+  const { userToken } = useContext(AuthenticationContext);
 
   const handleSearchChange = (e) => {
     // 타입 지정
