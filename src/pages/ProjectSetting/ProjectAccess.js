@@ -1,22 +1,28 @@
-import { KeyboardEvent, ChangeEvent, useState, useEffect } from "react";
+import { KeyboardEvent, ChangeEvent, useState, useEffect, useContext } from "react";
 import { Button, Form, Table } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FloatingWrapper } from "../../components/FloatingWrapper";
 import "./ProjectAccess.css";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import InviteProMemModal from "../../components/Modal/InviteProMemModal";
 import { GetProjectMembers } from "../../service/projects/projects.service";
+import RemoveProMemModal from "../../components/Modal/RemoveProMemModal";
+import { AuthenticationContext } from "../../service/authentication/authentication.context";
 
 export const ProjectAccess = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { projectPk, projectName } = useParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState("");
-  const [showModal, setShowModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [projectMembers, setProjectMembers] = useState([]);
   const [membersUpdated, setMembersUpdated] = useState(false);
-  const userToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTk4iOiJuYW1lIiwidXNlckVtYWlsIjoiZW1haWxAbmF2ZXIuY29tIiwidXNlclBrIjoxfQ.ZkhEHRYm1tnyznIhrNf-8tbeIMOGIVhlgwKB2QbJGs8";
+  // const userToken =
+  //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTk4iOiJuYW1lIiwidXNlckVtYWlsIjoiZW1haWxAbmF2ZXIuY29tIiwidXNlclBrIjoxfQ.ZkhEHRYm1tnyznIhrNf-8tbeIMOGIVhlgwKB2QbJGs8";
+  const { userToken } = useContext(AuthenticationContext);
 
   const handleSearchChange = (e) => {
     // 타입 지정
@@ -36,6 +42,10 @@ export const ProjectAccess = () => {
   };
 
   const handleMemberAdded = () => {
+    setMembersUpdated(!membersUpdated);
+  };
+
+  const handleMemberRemoved = () => {
     setMembersUpdated(!membersUpdated);
   };
 
@@ -60,17 +70,17 @@ export const ProjectAccess = () => {
 
         <div className="projectNameWrapper">
           <div className="icon"></div>
-          <h2>A-Log</h2>
+          <h2>{location.state.name}</h2>
         </div>
         <div className="prevPageWrapper">
           <AiOutlineArrowLeft className="arrow" size={24} />
           <div>전체 프로젝트</div>
         </div>
 
-        <h5 className="leftMenuItem" onClick={() => navigate(`/projectSetting/${projectPk}/${projectName}`)}>
+        <h5 className="leftMenuItem" onClick={() => navigate(`/projectSetting/${projectPk}`, { state: location.state })}>
           세부 사항
         </h5>
-        <h5 className="leftMenuItem" onClick={() => navigate(`/projectAccess/${projectPk}/${projectName}`)}>
+        <h5 className="leftMenuItem" onClick={() => navigate(`/projectAccess/${projectPk}`, { state: location.state })}>
           액세스
         </h5>
       </FloatingWrapper>
@@ -79,10 +89,10 @@ export const ProjectAccess = () => {
           <div className="ProjectAccess-header">
             <h2 className="ProjectAccess-header-title">액세스</h2>
             <div className="button-group">
-              <Button className="delete-button" variant="outline-danger" type="submit">
+              <Button className="delete-button" variant="outline-danger" type="submit" onClick={() => setShowRemoveModal(true)}>
                 사용자 삭제
               </Button>
-              <Button className="add-button" variant="outline-success" type="submit" onClick={() => setShowModal(true)}>
+              <Button className="add-button" variant="outline-success" type="submit" onClick={() => setShowAddModal(true)}>
                 사용자 추가
               </Button>
             </div>
@@ -136,11 +146,19 @@ export const ProjectAccess = () => {
           </div>
         </FloatingWrapper>
         <InviteProMemModal
-          show={showModal}
-          onHide={() => setShowModal(false)}
+          show={showAddModal}
+          onHide={() => setShowAddModal(false)}
           projectPk={projectPk}
           projectName={projectName}
           onMemberAdded={handleMemberAdded}
+          userToken={userToken}
+        />
+        <RemoveProMemModal
+          show={showRemoveModal}
+          onHide={() => setShowRemoveModal(false)}
+          projectPk={projectPk}
+          projectName={projectName}
+          onMemberRemoved={handleMemberRemoved}
           userToken={userToken}
         />
       </div>
