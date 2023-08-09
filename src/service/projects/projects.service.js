@@ -135,19 +135,6 @@ export const GetProjectMembers = async (projectPk, keyword, page, size, userToke
   }
 };
 
-// export const AddProjectMembers = async (projectPk, userPks, userToken) => {
-//   try {
-//     const res = await axios.post(`${PROJECT_API_URL}/api/projects/${projectPk}/members`, {
-//       userPks,
-//     });
-//     console.log("Response:", res);
-//     return res;
-//   } catch (err) {
-//     console.error("프로젝트 멤버 추가 중 오류 발생:", err.response ? err.response.data : err.message);
-//     throw new Error("프로젝트 멤버 추가 중 오류가 발생했습니다.");
-//   }
-// };
-
 export const AddProjectMembers = async (projectPk, userPks, userToken) => {
   const options = {
     headers: {
@@ -179,10 +166,11 @@ export const RemoveProjectMembers = async (projectPk, userPks, userToken) => {
     },
   };
   try {
+    console.log(projectPk, userPks, userToken);
     const res = await axios.delete(
       `${PROJECT_API_URL}/api/projects/${projectPk}/members`,
       {
-        userPks,
+        userPks: userPks,
       },
       options
     );

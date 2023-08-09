@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { RemoveProjectMembers } from "../../service/projects/projects.service";
 
-const RemoveProMemModal = ({ show, onHide, projectPk, projectName, onMemberRemoved }) => {
+const RemoveProMemModal = ({ show, onHide, projectPk, projectName, onMemberRemoved, userToken }) => {
   const [userInput, setUserInput] = useState("");
 
   const handleInputChange = (e) => {

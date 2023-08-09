@@ -6,13 +6,15 @@ import "./ProjectAccess.css";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import InviteProMemModal from "../../components/Modal/InviteProMemModal";
 import { GetProjectMembers } from "../../service/projects/projects.service";
+import RemoveProMemModal from "../../components/Modal/RemoveProMemModal";
 
 export const ProjectAccess = () => {
   const navigate = useNavigate();
   const { projectPk, projectName } = useParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState("");
-  const [showModal, setShowModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [projectMembers, setProjectMembers] = useState([]);
   const [membersUpdated, setMembersUpdated] = useState(false);
   const userToken =
@@ -79,10 +81,10 @@ export const ProjectAccess = () => {
           <div className="ProjectAccess-header">
             <h2 className="ProjectAccess-header-title">액세스</h2>
             <div className="button-group">
-              <Button className="delete-button" variant="outline-danger" type="submit">
+              <Button className="delete-button" variant="outline-danger" type="submit" onClick={() => setShowRemoveModal(true)}>
                 사용자 삭제
               </Button>
-              <Button className="add-button" variant="outline-success" type="submit" onClick={() => setShowModal(true)}>
+              <Button className="add-button" variant="outline-success" type="submit" onClick={() => setShowAddModal(true)}>
                 사용자 추가
               </Button>
             </div>
@@ -136,8 +138,16 @@ export const ProjectAccess = () => {
           </div>
         </FloatingWrapper>
         <InviteProMemModal
-          show={showModal}
-          onHide={() => setShowModal(false)}
+          show={showAddModal}
+          onHide={() => setShowAddModal(false)}
+          projectPk={projectPk}
+          projectName={projectName}
+          onMemberAdded={handleMemberAdded}
+          userToken={userToken}
+        />
+        <RemoveProMemModal
+          show={showRemoveModal}
+          onHide={() => setShowRemoveModal(false)}
           projectPk={projectPk}
           projectName={projectName}
           onMemberAdded={handleMemberAdded}
