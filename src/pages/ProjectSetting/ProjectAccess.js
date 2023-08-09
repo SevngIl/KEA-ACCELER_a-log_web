@@ -1,24 +1,29 @@
-import { KeyboardEvent, ChangeEvent, useState } from "react";
+import { KeyboardEvent, ChangeEvent, useState, useEffect } from "react";
 import { Button, Form, Table } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { FloatingWrapper } from "../../components/FloatingWrapper";
 import "./ProjectAccess.css";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import InviteProMemModal from "../../components/Modal/InviteProMemModal";
+import { GetProjectMembers } from "../../service/projects/projects.service";
 
 export const ProjectAccess = () => {
   const navigate = useNavigate();
   const { projectPk, projectName } = useParams();
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState<{ name: string; email: string }[]>([]); // 검색 결과의 타입 선언
+  const [searchResults, setSearchResults] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [projectMembers, setProjectMembers] = useState([]);
+  const [membersUpdated, setMembersUpdated] = useState(false);
+  const userToken =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTk4iOiJuYW1lIiwidXNlckVtYWlsIjoiZW1haWxAbmF2ZXIuY29tIiwidXNlclBrIjoxfQ.ZkhEHRYm1tnyznIhrNf-8tbeIMOGIVhlgwKB2QbJGs8";
 
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (e) => {
     // 타입 지정
     setSearchTerm(e.target.value);
   };
 
-  const handleSearchSubmit = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleSearchSubmit = (e) => {
     // 타입 지정
     if (e.key === "Enter") {
       // 검색 로직
@@ -29,6 +34,24 @@ export const ProjectAccess = () => {
       setSearchResults(results);
     }
   };
+
+  const handleMemberAdded = () => {
+    setMembersUpdated(!membersUpdated);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await GetProjectMembers(projectPk, "", 0, 10, userToken);
+        const userPks = response.data.data.content.map((member) => member);
+        setProjectMembers(userPks);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, [projectPk, membersUpdated]); // projectPk, 멤버가 변경될 때마다
 
   return (
     <div className="ProjectAccess">
@@ -55,9 +78,14 @@ export const ProjectAccess = () => {
         <FloatingWrapper style={{ width: "600px", display: "flex", alignItems: "center", justifyContent: "center" }} padding="6%">
           <div className="ProjectAccess-header">
             <h2 className="ProjectAccess-header-title">액세스</h2>
-            <Button className="add-button" variant="outline-success" type="submit" onClick={() => setShowModal(true)}>
-              사용자 추가
-            </Button>
+            <div className="button-group">
+              <Button className="delete-button" variant="outline-danger" type="submit">
+                사용자 삭제
+              </Button>
+              <Button className="add-button" variant="outline-success" type="submit" onClick={() => setShowModal(true)}>
+                사용자 추가
+              </Button>
+            </div>
           </div>
 
           <div className="ProjectAccess-body">
@@ -75,7 +103,7 @@ export const ProjectAccess = () => {
 
             <div className="ProjectMember-list">
               <Table striped bordered hover>
-                <thead>
+                {/* <thead>
                   <tr>
                     <th>이름</th>
                     <th>이메일</th>
@@ -88,12 +116,33 @@ export const ProjectAccess = () => {
                       <td>{result.email}</td>
                     </tr>
                   ))}
+                </tbody> */}
+                <thead>
+                  <tr>
+                    <th>이름 (유저 pk)</th>
+                    <th>이메일</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {projectMembers.map((memberPk, index) => (
+                    <tr key={index}>
+                      <td>{memberPk}</td>
+                      <td></td> {/* 이메일 칸은 비워둠 */}
+                    </tr>
+                  ))}
                 </tbody>
               </Table>
             </div>
           </div>
         </FloatingWrapper>
-        <InviteProMemModal show={showModal} onHide={() => setShowModal(false)} projectPk={projectPk} projectName={projectName} />
+        <InviteProMemModal
+          show={showModal}
+          onHide={() => setShowModal(false)}
+          projectPk={projectPk}
+          projectName={projectName}
+          onMemberAdded={handleMemberAdded}
+          userToken={userToken}
+        />
       </div>
     </div>
   );
