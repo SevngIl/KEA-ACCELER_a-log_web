@@ -2,6 +2,7 @@
     width: 100%;
     background-color: #e9e3f5;
     margin-right: 4%;
+    padding-bottom: 4%;
 }
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 
@@ -49,17 +50,48 @@
     border: none;
     margin: 10px;
     padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
     width: calc((100% / 3) - 20px);
     border-radius: 15px;
     transition: transform 0.3s ease-in-out;
+    overflow: hidden;
 }
 
 .MyProjects .project-card:hover {
     transform: scale(1.05);
 }
 
+.MyProjects .projectSettingBtn {
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+.MyProjects .projectImg {
+    border-radius: 10px;
+    margin-bottom: 12px;
+    width: 280px;
+    height: 180px;
+}
+.MyProjects .project-title {
+    font-family: "Spoqa Han Sans Neo", "sans-serif";
+    font-size: 1.5em;
+    font-weight: 500;
+}
 .MyProjects .project-info {
     font-family: "Spoqa Han Sans Neo", "sans-serif";
+    font-size: 12px;
+}
+.MyProjects .project-title {
+    font-family: "Spoqa Han Sans Neo", "sans-serif";
+    font-size: 1.5em;
+}
+.MyProjects .projectDescription {
+    display: flex;
+    width: 100%;
+    align-items: end;
+    justify-content: space-between;
 }
 
 .MyProjects .project-card .project-link {

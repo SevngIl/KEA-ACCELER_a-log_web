@@ -1,0 +1,94 @@
+.ProjectSetting {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  padding: 4%;
+  background-color: #e9e3f5;
+}
+
+.ProjectSetting .Project-Detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ProjectSetting .Project-Detail-header {
+  margin-bottom: 10%;
+}
+
+.ProjectSetting .projectName {
+  margin-bottom: 10%;
+}
+
+.ProjectSetting .projectDesc {
+  margin-bottom: 10%;
+}
+
+.ProjectSetting .teamPk {
+  margin-bottom: 10%;
+}
+
+.ProjectSetting .projectName .projectName_input {
+  width: 300px;
+}
+
+.ProjectSetting .teamPk .teamPk_input {
+  width: 200px;
+}
+
+.ProjectSetting .pmPk .pmPk_input {
+  width: 200px;
+}
+
+.ProjectSetting .button-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.ProjectSetting .delete-button {
+  margin-top: 10%;
+}
+
+.ProjectSetting .save-button {
+  margin-top: 10%;
+}
+
+.ProjectSetting .projectNameWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.ProjectSetting .prevPageWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+  width: 100%;
+  font-weight: 600;
+  padding-bottom: 40px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid rgb(128, 128, 128);
+}
+.ProjectSetting .leftMenuItem {
+  margin-top: 20px;
+  cursor: pointer;
+}
+.ProjectSetting .icon {
+  width: 30px;
+  height: 30px;
+  background-color: beige;
+  border-radius: 15px;
+  margin-right: 10px;
+}
+.ProjectSetting .arrow {
+  margin-right: 10px;
+}
+
+.ProjectSetting {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  padding: 4%;
+}

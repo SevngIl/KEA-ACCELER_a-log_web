@@ -10,12 +10,24 @@ const TopicModal = ({ show, handleClose, handleAddTopic }) => {
   const [topicName, setTopicName] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [topicAssignee, setTopicAssignee] = useState("");
+
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 1을 더함.
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
 
   const handleSubmit = () => {
-    handleAddTopic(topicName, startDate, endDate);
+    const formattedStartDate = formatDate(startDate);
+    const formattedEndDate = formatDate(endDate);
+
+    handleAddTopic(topicName, formattedStartDate, formattedEndDate, topicAssignee);
     setTopicName("");
     setStartDate(new Date());
     setEndDate(new Date());
+    setTopicAssignee("");
     handleClose();
   };
 
@@ -41,6 +53,10 @@ const TopicModal = ({ show, handleClose, handleAddTopic }) => {
               <Form.Label>마감 날짜</Form.Label>
               <DateTimePicker value={endDate} onChange={setEndDate} />
             </div>
+          </Form.Group>
+          <Form.Group className="topicAssignee mb-3" controlId="topicAssignee">
+            <Form.Label>담당자</Form.Label>
+            <Form.Control type="text" value={topicAssignee} onChange={(e) => setTopicAssignee(e.target.value)} />
           </Form.Group>
         </Form>
       </Modal.Body>

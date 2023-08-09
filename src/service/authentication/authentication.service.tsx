@@ -1,28 +1,77 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 
-const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
-const USER_API_URL = process.env.REACT_APP_USER_API_URL;
+const API_URL = process.env.REACT_APP_ALOG_API_URL;
 
-// 깃허브 로그인창으로 다이렉트 해주는 함수
-export const GitHubLoginRequestHandler = () => {
-    // TODO: GitHub로부터 사용자 인증을 위해 GitHub로 이동해야 합니다. 적절한 URL을 입력하세요.
-    // OAuth 인증이 완료되면 authorization code와 함께 callback url로 리디렉션 합니다.
-    return window.location.assign(`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}`);
-    //로그인 요청을 보내면 github auth server에서 redirect 로 callback, 그리고 auth code를 전달
-};
+// EMAIL
 
-export const UsersSignup = (email: string, userPw: string, userNN: string) => {
-    const SignUpData = {
-        userPw: "string",
-        userNN: "string",
-        email: "string",
+export const PostVerifyEmail = (email: string, code: string) => {
+    const verifyData = {
+        email: email,
+        code: code,
     };
+    console.log(verifyData);
     const signUpResult: Promise<AxiosResponse> = axios
-        .post(`${USER_API_URL}/api/users/signup`, SignUpData)
+        .post(`${API_URL}/api/users/permit-all/emails/verify`, verifyData)
         .then((res: AxiosResponse) => {
             return res;
         })
         .catch((err: AxiosError) => {
+            throw err;
+        });
+    return signUpResult;
+};
+
+export const PostSendVerifyEmail = (email: string) => {
+    const emailString = email.replace("@", "%40");
+    const sendResult: Promise<AxiosResponse> = axios
+        .post(`${API_URL}/api/users/permit-all/emails/send?EmailTo=${emailString}`)
+        .then((res: AxiosResponse) => {
+            return res;
+        })
+        .catch((err: AxiosError) => {
+            throw err;
+        });
+    return sendResult;
+};
+
+// USER AUTH
+
+export const UsersSignup = async (email: string, userPw: string, userNN: string) => {
+    const SignUpData = {
+        userPw: userPw,
+        userNN: userNN,
+        email: email,
+    };
+    console.log(SignUpData);
+    const signUpResult = await axios
+        .post(`${API_URL}/api/users/permit-all/signup`, SignUpData)
+        .then((res: AxiosResponse) => {
+            console.log(res);
+            return res;
+        })
+        .catch((err: AxiosError) => {
+            console.log(err);
+            throw err;
+        });
+    return signUpResult;
+};
+
+//간편 로그인 후 리다이렉트 된 회원가입
+export const UsersVerifiedSignup = async (email: string, userPw: string, userNN: string) => {
+    const SignUpData = {
+        userPw: userPw,
+        userNN: userNN,
+        email: email,
+    };
+    console.log(SignUpData);
+    const signUpResult = await axios
+        .post(`${API_URL}/api/users/permit-all/signup/verified`, SignUpData)
+        .then((res: AxiosResponse) => {
+            console.log(res);
+            return res;
+        })
+        .catch((err: AxiosError) => {
+            console.log(err);
             throw err;
         });
     return signUpResult;
@@ -35,7 +84,7 @@ export const UsersLogin = (userEmail: string, userPassword: string): Promise<Axi
     };
 
     const loginResult: Promise<AxiosResponse> = axios
-        .post(`${USER_API_URL}/api/users/login`, loginData)
+        .post(`${API_URL}/auth/permit-all/login`, loginData)
         .then((res: AxiosResponse) => {
             return res;
         })
@@ -51,7 +100,7 @@ export const UsersInfo = () => {
 
 export const UsersCheckDuplicate = (userNN: string) => {
     const checkDupResult: Promise<AxiosResponse> = axios
-        .get(`${USER_API_URL}/api/users/duplicated/${userNN}`)
+        .get(`${API_URL}/api/users/permit-all/duplicated/${userNN}`)
         .then((res: AxiosResponse) => {
             return res;
         })
@@ -63,4 +112,31 @@ export const UsersCheckDuplicate = (userNN: string) => {
 
 export const UsersDelete = () => {
     return null;
+};
+
+export const GetEmailWithGHToken = (accessToken: string) => {
+    const res: Promise<AxiosResponse> = axios
+        .get(`${API_URL}/auth/permit-all/github/access-token?accessToken=${accessToken}`)
+        .then((res: AxiosResponse) => {
+            return res.data;
+        })
+        .catch((err: AxiosError) => {
+            throw err;
+        });
+    return res;
+};
+export const PermitAllEmailLogin = (email: string) => {
+    const params = {
+        email: email,
+    };
+    const res = axios
+        .get(`${API_URL}/auth/permit-all/email-login`, { params })
+        .then((response) => {
+            console.log(response);
+            return response;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    return res;
 };

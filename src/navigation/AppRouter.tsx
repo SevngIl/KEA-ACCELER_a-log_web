@@ -12,6 +12,12 @@ import MyProjects from "../pages/MyProjects/MyProjects";
 import LeftTeamSection from "./LeftTeamSection";
 import CreateProject from "../pages/CreateProject/CreateProject";
 import MyIssues from "../pages/MyIssues/MyIssues";
+import TeamInfo from "../pages/TeamInfo/TeamInfo";
+import TeamSetting from "../pages/TeamSetting/TeamSetting";
+import { ProjectAccess } from "../pages/ProjectSetting/ProjectAccess";
+import { ProjectSetting } from "../pages/ProjectSetting/ProjectSetting";
+import { Profile } from "../pages/Profile/Profile";
+import { GithubLogin } from "../pages/Login/GithubLogin";
 
 const AppRouter = (): JSX.Element => {
     return (
@@ -19,8 +25,14 @@ const AppRouter = (): JSX.Element => {
             <Routes>
                 <Route element={<TopNavBar />}>
                     <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
+                    <Route path="/signin" element={<Login />} />
+                    <Route path="/ghLogin" element={<GithubLogin />} />
                     <Route path="/registerform" element={<RegisterForm />} />
+                    <Route path="/teamInfo" element={<TeamInfo />} />
+                    <Route path="/teamSetting" element={<TeamSetting />} />
+                    <Route path="/projectSetting/:projectPk/:projectName" element={<ProjectSetting />} />
+                    <Route path="/projectAccess/:projectPk/:projectName" element={<ProjectAccess />} />
+                    <Route path="/profile" element={<Profile />} />
                     <Route element={<LeftTeamSection />}>
                         <Route path="/myProjects" element={<MyProjects />} />
                         <Route path="/myIssues" element={<MyIssues />} />

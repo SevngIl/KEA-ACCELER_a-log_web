@@ -3,7 +3,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 2%;
+    margin-top: 6%;
 }
 
 .RegisterForm .center {
@@ -55,10 +55,35 @@
     flex-direction: row;
 }
 
+.RegisterForm .password-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.RegisterForm .pwCheckIcontrue {
+    color: rgb(0, 186, 0);
+    margin-left: 14px;
+    transition-duration: 0.4s;
+}
+.RegisterForm .pwCheckIconfalse {
+    color: rgb(75, 75, 75);
+    margin-left: 14px;
+    transition-duration: 0.4s;
+}
+
 .RegisterForm .check-button {
     width: 70px;
     height: 40px;
     margin-left: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.RegisterForm .spinner {
+    max-width: 24px;
+    max-height: 24px;
 }
 
 .RegisterForm .checknum-container {
@@ -73,6 +98,9 @@
 .RegisterForm .register-button {
     margin-top: 10%;
     width: 100px;
+}
+.RegisterForm .nickname-container {
+    display: flex;
 }
 
 .RegisterForm .check-button,
