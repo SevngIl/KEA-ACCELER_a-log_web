@@ -70,7 +70,19 @@ export const Timeline = () => {
   const Year = useRef(null);
 
   const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
+  // const handleCloseModal = () => setShowModal(false);
+
+  const [selectedTopic, setSelectedTopic] = useState(null);
+
+  const handleDoubleClick = (task) => {
+    setSelectedTopic(task);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedTopic(null);
+  };
 
   const handleAddTopic = (topicName, topicDescription, startDate, endDate, projectPk) => {
     // 실제 토픽을 세는 변수
@@ -139,6 +151,7 @@ export const Timeline = () => {
             </div>
             `;
         },
+        on_click: (task) => handleDoubleClick(task),
       });
       newGantt.change_view_mode("Week");
       setGantt(newGantt);
@@ -225,7 +238,7 @@ export const Timeline = () => {
       <Button className="create-topic-btn" onClick={handleShowModal}>
         Create Topic
       </Button>
-      <TopicModal show={showModal} handleClose={handleCloseModal} handleAddTopic={handleAddTopic} projectPk={projectPk} />
+      <TopicModal show={showModal} handleClose={handleCloseModal} handleAddTopic={handleAddTopic} projectPk={projectPk} selectedTopic={selectedTopic} />
     </FadeIn>
   );
 };

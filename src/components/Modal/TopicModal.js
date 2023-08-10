@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import DateTimePicker from "react-datetime-picker";
 import "react-datetime-picker/dist/DateTimePicker.css";
@@ -10,11 +10,16 @@ import { CreateTopic } from "../../service/projects/projects.service";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
 import { useContext } from "react";
 
-const TopicModal = ({ show, handleClose, handleAddTopic, projectPk }) => {
-  const [topicName, setTopicName] = useState("");
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [topicDescription, setTopicDescription] = useState("");
+const TopicModal = ({ show, handleClose, handleAddTopic, projectPk, selectedTopic }) => {
+  // const [topicName, setTopicName] = useState("");
+  // const [startDate, setStartDate] = useState(new Date());
+  // const [endDate, setEndDate] = useState(new Date());
+  // const [topicDescription, setTopicDescription] = useState("");
+  const [topicName, setTopicName] = useState(selectedTopic ? selectedTopic.name : "");
+  const [startDate, setStartDate] = useState(selectedTopic ? new Date(selectedTopic.start) : new Date());
+  const [endDate, setEndDate] = useState(selectedTopic ? new Date(selectedTopic.end) : new Date());
+  const [topicDescription, setTopicDescription] = useState(selectedTopic ? selectedTopic.description : "");
+
   const { userToken } = useContext(AuthenticationContext);
 
   const formatDate = (date) => {
@@ -56,6 +61,15 @@ const TopicModal = ({ show, handleClose, handleAddTopic, projectPk }) => {
     setTopicDescription("");
     handleClose();
   };
+
+  useEffect(() => {
+    if (selectedTopic) {
+      setTopicName(selectedTopic.name);
+      setTopicDescription(selectedTopic.description);
+      setStartDate(selectedTopic.start);
+      setEndDate(selectedTopic.end);
+    }
+  }, [selectedTopic]);
 
   return (
     <Modal show={show} onHide={handleClose}>
