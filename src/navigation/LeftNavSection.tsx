@@ -18,18 +18,18 @@ export const LeftNavSection = () => {
           <div className="logo">
             <img src={logo} alt="logo" />
           </div>
-          <div className="A-Log">A-Log</div>
+          <div className="project-name">{location.state.name}</div>
         </div>
 
         <div className="planning_container">
           <div className="planning">Planning</div>
           <div className="Timeline">
-            <Button variant="outline-primary" onClick={() => navigate(`/Timeline/${projectPk}`)}>
+            <Button variant="outline-primary" onClick={() => navigate(`/Timeline/${projectPk}`, { state: location.state })}>
               TimeLine
             </Button>
           </div>
           <div className="Board">
-            <Button variant="outline-primary" onClick={() => navigate(`/Board/${projectPk}`)}>
+            <Button variant="outline-primary" onClick={() => navigate(`/Board/${projectPk}`, { state: location.state })}>
               Board
             </Button>
           </div>
@@ -38,7 +38,7 @@ export const LeftNavSection = () => {
         <div className="release_container">
           <div className="release">Release</div>
           <div className="Notes">
-            <Button variant="outline-primary" onClick={() => navigate(`/ReleaseNote/${projectPk}`)}>
+            <Button variant="outline-primary" onClick={() => navigate(`/ReleaseNote/${projectPk}`, { state: location.state })}>
               Notes
             </Button>
           </div>

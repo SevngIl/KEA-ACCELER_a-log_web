@@ -5,12 +5,17 @@ import "react-datetime-picker/dist/DateTimePicker.css";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import "./TopicModal.css";
+import { toast } from "react-toastify";
+import { CreateTopic } from "../../service/projects/projects.service";
+import { AuthenticationContext } from "../../service/authentication/authentication.context";
+import { useContext } from "react";
 
-const TopicModal = ({ show, handleClose, handleAddTopic }) => {
+const TopicModal = ({ show, handleClose, handleAddTopic, projectPk }) => {
   const [topicName, setTopicName] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [topicAssignee, setTopicAssignee] = useState("");
+  const [topicDescription, setTopicDescription] = useState("");
+  const { userToken } = useContext(AuthenticationContext);
 
   const formatDate = (date) => {
     const year = date.getFullYear();
@@ -19,15 +24,36 @@ const TopicModal = ({ show, handleClose, handleAddTopic }) => {
     return `${year}-${month}-${day}`;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const formattedStartDate = formatDate(startDate);
     const formattedEndDate = formatDate(endDate);
 
-    handleAddTopic(topicName, formattedStartDate, formattedEndDate, topicAssignee);
+    try {
+      // API 호출
+      const response = await CreateTopic({
+        projectPk: projectPk,
+        name: topicName,
+        description: topicDescription,
+        startDate: `${formattedStartDate}T00:00:00.000Z`,
+        dueDate: `${formattedEndDate}T00:00:00.000Z`,
+        userToken, // 사용자 토큰을 CreateTopic 함수에 전달
+      });
+
+      // 성공 시 로직
+      if (response.data.code === 201) {
+        toast.success("새로운 토픽이 생성되었습니다."); // 성공 알림
+        handleAddTopic(topicName, formattedStartDate, formattedEndDate, topicDescription);
+      }
+    } catch (error) {
+      console.error("토픽 생성 중 오류 발생:", error.response ? error.response.data : error.message);
+      toast.error("토픽 생성 중 오류가 발생했습니다."); // 실패 알림
+    }
+
+    // handleAddTopic(topicName, formattedStartDate, formattedEndDate, topicDescription);
     setTopicName("");
     setStartDate(new Date());
     setEndDate(new Date());
-    setTopicAssignee("");
+    setTopicDescription("");
     handleClose();
   };
 
@@ -42,6 +68,10 @@ const TopicModal = ({ show, handleClose, handleAddTopic }) => {
             <Form.Label>Topic 이름</Form.Label>
             <Form.Control type="text" value={topicName} onChange={(e) => setTopicName(e.target.value)} />
           </Form.Group>
+          <Form.Group className="topicDescription mb-3" controlId="topicDescription">
+            <Form.Label>설명</Form.Label>
+            <Form.Control type="text" value={topicDescription} onChange={(e) => setTopicDescription(e.target.value)} />
+          </Form.Group>
           <Form.Group className="topicDate mb-3" controlId="topicStartDate">
             <div className="topic_date-picker-group">
               <Form.Label>시작 날짜 </Form.Label>
@@ -53,10 +83,6 @@ const TopicModal = ({ show, handleClose, handleAddTopic }) => {
               <Form.Label>마감 날짜</Form.Label>
               <DateTimePicker value={endDate} onChange={setEndDate} />
             </div>
-          </Form.Group>
-          <Form.Group className="topicAssignee mb-3" controlId="topicAssignee">
-            <Form.Label>담당자</Form.Label>
-            <Form.Control type="text" value={topicAssignee} onChange={(e) => setTopicAssignee(e.target.value)} />
           </Form.Group>
         </Form>
       </Modal.Body>

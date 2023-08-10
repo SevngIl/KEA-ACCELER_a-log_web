@@ -11,7 +11,7 @@ import { AuthenticationContext } from "../../service/authentication/authenticati
 
 const MyProjects = () => {
   const [projects, setProjects] = useState([]);
-  const { GetProjects } = useContext(ProjectsContext);
+  const { GetMyProjects } = useContext(ProjectsContext);
   // const userToken =
   //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTk4iOiJuYW1lIiwidXNlckVtYWlsIjoiZW1haWxAbmF2ZXIuY29tIiwidXNlclBrIjoxfQ.ZkhEHRYm1tnyznIhrNf-8tbeIMOGIVhlgwKB2QbJGs8";
 
@@ -24,7 +24,7 @@ const MyProjects = () => {
   };
 
   useEffect(() => {
-    GetProjects("", "DESC", 0, 10, userToken)
+    GetMyProjects("", "DESC", 0, 10, userToken)
       .then((res) => {
         if (res.status === 200) {
           setProjects(res.data.data.content);
@@ -57,8 +57,12 @@ const MyProjects = () => {
                   <CiSettings size={"24px"} />
                 </div>
 
-                <img src={projectImg} className="projectImg" onClick={() => navigate(`/Board/${project.pk}`)} />
-                <div className="projectDescription" onClick={() => navigate(`/Board/${project.pk}`)}>
+                <img
+                  src={projectImg}
+                  className="projectImg"
+                  onClick={() => navigate(`/Board/${project.pk}`, { state: { pk: project.pk, name: project.name } })}
+                />
+                <div className="projectDescription" onClick={() => navigate(`/Board/${project.pk}`, { state: { pk: project.pk, name: project.name } })}>
                   <div className="project-title">{project.name}</div>
                   <div>
                     <div className="project-info">TEAM PK: {project.teamPk}</div>

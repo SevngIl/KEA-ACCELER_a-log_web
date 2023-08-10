@@ -1,11 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import Gantt from "frappe-gantt";
 import "./Timeline.css";
 import TopicModal from "../../components/Modal/TopicModal";
 import Button from "react-bootstrap/Button";
 import FadeIn from "../../animation/FadeIn";
+import { useLocation } from "react-router-dom";
+import { AuthenticationContext } from "../../service/authentication/authentication.context";
+import { GetAllTopics } from "../../service/projects/projects.service";
 
 export const Timeline = () => {
+  const location = useLocation();
+  const [projectPk, setProjectPk] = useState(location.pathname.split("/")[2]);
+  const { userToken } = useContext(AuthenticationContext);
+
   const [tasks, setTasks] = useState([
     {
       start: new Date(),
@@ -65,7 +72,7 @@ export const Timeline = () => {
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
-  const handleAddTopic = (topicName, startDate, endDate, topicAssignee) => {
+  const handleAddTopic = (topicName, topicDescription, startDate, endDate, projectPk) => {
     // 실제 토픽을 세는 변수
     const realTaskCount = tasks.findIndex((task) => task.name === "" || task.name === "Welcome! Please add your Topic");
 
@@ -74,7 +81,7 @@ export const Timeline = () => {
       start: startDate,
       end: endDate,
       name: topicName,
-      assignee: topicAssignee,
+      description: topicDescription,
       id: "Task " + realTaskCount,
       progress: 0,
     };
@@ -128,7 +135,7 @@ export const Timeline = () => {
               <p>Started on ${start_date}</p>
               <p>Expected to finish by ${end_date}</p>
               <p>${task.progress}% completed!</p>
-              <p>Assigned to ${task.assignee}.</p>
+              <p>${task.description}.</p>
             </div>
             `;
         },
@@ -167,6 +174,30 @@ export const Timeline = () => {
     };
   }, [gantt]);
 
+  useEffect(() => {
+    // 초기 토픽 불러오기
+    const fetchData = async () => {
+      try {
+        const params = { projectPk, keyword: "", sortType: "ASC", page: 0, size: 10, userToken: userToken }; // 필요한 매개변수 설정
+        const res = await GetAllTopics(params);
+        console.log("API Response:", res.data); // 응답 내용을 확인
+        const topics = res.data.data.content.map((topic) => ({
+          start: new Date(topic.startDate),
+          end: new Date(topic.dueDate),
+          name: topic.name,
+          id: "Task " + topic.pk,
+          progress: 0, // 필요하다면 progress 값을 서버에서 받아올 수 있음
+          description: topic.description,
+        }));
+        setTasks(topics);
+      } catch (error) {
+        console.error("토픽 불러오기 실패", error);
+      }
+    };
+
+    fetchData();
+  }, [projectPk]);
+
   return (
     <FadeIn className="Timeline">
       <h1 className="ProjectTimelineName">Project Timeline</h1>
@@ -194,7 +225,7 @@ export const Timeline = () => {
       <Button className="create-topic-btn" onClick={handleShowModal}>
         Create Topic
       </Button>
-      <TopicModal show={showModal} handleClose={handleCloseModal} handleAddTopic={handleAddTopic} />
+      <TopicModal show={showModal} handleClose={handleCloseModal} handleAddTopic={handleAddTopic} projectPk={projectPk} />
     </FadeIn>
   );
 };

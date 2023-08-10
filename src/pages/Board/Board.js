@@ -6,6 +6,7 @@ import { LeftNavSection } from "../../navigation/LeftNavSection";
 import { FloatingWrapper } from "../../components/FloatingWrapper";
 import { Button } from "react-bootstrap";
 import FadeIn from "../../animation/FadeIn";
+import { useLocation } from "react-router-dom";
 
 const BoardColumn = ({ column, issues, handleShowIssueModal }) => {
   return (
@@ -52,6 +53,7 @@ const Board = () => {
   const [showModal, setShowModal] = useState(false); // 모달을 표시할지 여부
   const [selectedColumn, setSelectedColumn] = useState(null); // 선택된 컬럼
   const [selectedIndex, setSelectedIndex] = useState(null); // 선택된 인덱스
+  const location = useLocation();
 
   // 이슈 클릭을 처리하는 함수
   const handleShowIssueModal = (column, index) => {

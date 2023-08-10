@@ -28,18 +28,7 @@ export const PostCreateProjects = async (projectName, description, teamPk, pmPk,
   }
 };
 
-// export const GetProjects = async (keyword, sortType, page, size) => {
-//   try {
-//     const res = await axios.get(`${PROJECT_API_URL}/api/projects?sortType=${sortType}&page=${page}&size=${size}`);
-//     console.log("Response:", res);
-//     return res;
-//   } catch (err) {
-//     console.error("프로젝트 조회 중 오류 발생:", err.response ? err.response.data : err.message);
-//     throw new Error("프로젝트 조회 중 오류가 발생했습니다.");
-//   }
-// };
-
-export const GetProjects = async (keyword, sortType, page, size, userToken) => {
+export const GetAllProjects = async (keyword, sortType, page, size, userToken) => {
   const options = {
     headers: {
       Authorization: `Bearer ${userToken}`,
@@ -54,6 +43,24 @@ export const GetProjects = async (keyword, sortType, page, size, userToken) => {
   } catch (err) {
     console.error("프로젝트 조회 중 오류 발생:", err.response ? err.response.data : err.message);
     throw new Error("프로젝트 조회 중 오류가 발생했습니다.");
+  }
+};
+
+export const GetMyProjects = async (keyword, sortType, page, size, userToken) => {
+  const options = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  };
+  console.log(userToken);
+
+  try {
+    const res = await axios.get(`${PROJECT_API_URL}/api/projects/mine?sortType=${sortType}&page=${page}&size=${size}`, options);
+    console.log("Response:", res);
+    return res;
+  } catch (err) {
+    console.error("내 프로젝트 조회 중 오류 발생:", err.response ? err.response.data : err.message);
+    throw new Error("내 프로젝트 조회 중 오류가 발생했습니다.");
   }
 };
 
@@ -113,6 +120,8 @@ export const DeleteProject = async (projectPk, userToken) => {
     throw new Error("프로젝트 삭제 중 오류가 발생했습니다.");
   }
 };
+
+/* ----------------- 프로젝트 멤버 --------------- */
 
 export const GetProjectMembers = async (projectPk, keyword, page, size, userToken) => {
   try {
@@ -177,5 +186,56 @@ export const RemoveProjectMembers = async (projectPk, userPks, userToken) => {
   } catch (err) {
     console.error("프로젝트 멤버 삭제 중 오류 발생:", err.response ? err.response.data : err.message);
     throw new Error("프로젝트 멤버 삭제 중 오류가 발생했습니다.");
+  }
+};
+
+/* ----------- 토픽 ------------- */
+export const CreateTopic = async ({ projectPk, name, description, startDate, dueDate, userToken }) => {
+  const requestBody = {
+    name,
+    description,
+    startDate,
+    dueDate,
+  };
+
+  const options = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  };
+
+  try {
+    console.log(projectPk, name, description, startDate, dueDate, userToken);
+    const res = await axios.post(`${PROJECT_API_URL}/api/projects/${projectPk}/topics`, requestBody, options);
+    console.log("Response:", res);
+    return res;
+  } catch (err) {
+    console.error("토픽 생성 중 오류 발생:", err.response ? err.response.data : err.message);
+    throw new Error("토픽 생성 중 오류가 발생했습니다.");
+  }
+};
+
+export const GetAllTopics = async ({ projectPk, keyword, sortType, page, size, userToken }) => {
+  const params = {
+    keyword,
+    sortType,
+    page,
+    size,
+  };
+
+  const options = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+    params,
+  };
+
+  try {
+    const res = await axios.get(`${PROJECT_API_URL}/api/projects/${projectPk}/topics`, options);
+    console.log("Response:", res);
+    return res;
+  } catch (err) {
+    console.error("토픽 전체 조회 중 오류 발생:", err.response ? err.response.data : err.message);
+    throw new Error("토픽 전체 조회 중 오류가 발생했습니다.");
   }
 };

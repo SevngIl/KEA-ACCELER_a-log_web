@@ -1,12 +1,13 @@
 import React, { useState, createContext, useEffect } from "react";
 import {
   PostCreateProjects,
-  GetProjects,
+  GetAllProjects,
   GetProjectDetail,
   DeleteProject,
   AddProjectMembers,
   GetProjectMembers,
   RemoveProjectMembers,
+  GetMyProjects,
 } from "./projects.service";
 
 export const ProjectsContext = createContext();
@@ -14,7 +15,7 @@ export const ProjectsContext = createContext();
 export const ProjectsContextProvider = ({ children }) => {
   return (
     <ProjectsContext.Provider
-      value={{ PostCreateProjects, GetProjects, GetProjectDetail, DeleteProject, AddProjectMembers, GetProjectMembers, RemoveProjectMembers }}
+      value={{ PostCreateProjects, GetAllProjects, GetProjectDetail, DeleteProject, AddProjectMembers, GetProjectMembers, RemoveProjectMembers, GetMyProjects }}
     >
       {children}
     </ProjectsContext.Provider>
