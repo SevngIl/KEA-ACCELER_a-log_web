@@ -1,25 +1,28 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./LeftTeamSection.css";
 import { Button } from "react-bootstrap";
 import CreateTeamModal from "../components/Modal/CreateTeamModal";
 import FadeIn from "../animation/FadeIn";
-
+import { TeamsContext } from "../service/teams/teams.context";
+import { AuthenticationContext } from "../service/authentication/authentication.context";
+import { AiOutlineSetting } from "react-icons/ai";
 const LeftTeamSection = () => {
   const navigate = useNavigate();
   const [teams, setTeams] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
-  const addTeam = (newTeam) => {
-    setTeams([...teams, newTeam]);
-  };
+  const { userData, userToken } = useContext(AuthenticationContext);
+  const { OnGetTeamList } = useContext(TeamsContext);
 
+  const fetchTeamList = async () => {
+    const teamList = await OnGetTeamList(userData.userPk, userToken);
+    console.log("list : ", teamList);
+    setTeams(teamList);
+  };
   useEffect(() => {
     // 로컬 스토리지에서 팀 정보 가져오기
-    const storedTeams = JSON.parse(localStorage.getItem("teams")) || [];
-
-    // 가져온 팀 정보를 상태에 설정
-    setTeams(storedTeams.map((team) => team.name));
+    fetchTeamList();
   }, []);
 
   return (
@@ -33,15 +36,20 @@ const LeftTeamSection = () => {
         </Button>
         <div className="teams">
           <h4 className="teams-title">Teams</h4>
-          {teams.map((team, index) => (
-            <Button variant="outline-success" key={index} onClick={() => navigate(`/${team}`)}>
-              {team}
-            </Button>
+          {teams.map((it) => (
+            <div className="teamWrapper">
+              <Button variant="outline-success" key={it.teamPk} onClick={() => navigate(`/${it.teamName}`)}>
+                {it.teamName}
+              </Button>
+              <div className="teamSettingBtn" onClick={() => navigate(`${it.teamPk}/teamSetting`)}>
+                <AiOutlineSetting size={"20px"} color="gray" />
+              </div>
+            </div>
           ))}
           <Button variant="outline-success" onClick={() => setShowModal(true)}>
             +
           </Button>
-          <CreateTeamModal addTeam={addTeam} show={showModal} handleClose={() => setShowModal(false)} />
+          <CreateTeamModal fetchTeamList={fetchTeamList} show={showModal} handleClose={() => setShowModal(false)} />
         </div>
       </FadeIn>
       <Outlet />

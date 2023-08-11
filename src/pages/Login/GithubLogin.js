@@ -27,7 +27,6 @@ export const GithubLogin = () => {
     const code = urlArgs().code;
     const accessToken = await GithubAuth(code); // await를 사용
     const loginres = await OnGHLogin(accessToken);
-    console.log(loginres);
     if (loginres.type === "email") {
       navigate("/registerform", { state: { email: loginres.result }, replace: true });
     } else {

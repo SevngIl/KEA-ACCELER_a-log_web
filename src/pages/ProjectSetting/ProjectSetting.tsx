@@ -16,8 +16,6 @@ export const ProjectSetting = () => {
   const [description, setDescription] = useState("");
   const [teamPk, setTeamPk] = useState(0); // number로 변경
   const [pmPk, setPmPk] = useState(0); // number로 변경
-  // const userToken =
-  //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTk4iOiJuYW1lIiwidXNlckVtYWlsIjoiZW1haWxAbmF2ZXIuY29tIiwidXNlclBrIjoxfQ.ZkhEHRYm1tnyznIhrNf-8tbeIMOGIVhlgwKB2QbJGs8";
 
   const { userToken } = useContext(AuthenticationContext);
 
@@ -76,10 +74,10 @@ export const ProjectSetting = () => {
           <div>전체 프로젝트</div>
         </div>
 
-        <h5 className="leftMenuItem" onClick={() => navigate(`/projectSetting/${projectPk}`, { state: location.state })}>
+        <h5 className="leftMenuItem" onClick={() => navigate(`/${projectPk}/projectSetting/`, { state: location.state })}>
           세부 사항
         </h5>
-        <h5 className="leftMenuItem" onClick={() => navigate(`/projectAccess/${projectPk}`, { state: location.state })}>
+        <h5 className="leftMenuItem" onClick={() => navigate(`/${projectPk}/projectAccess/`, { state: location.state })}>
           액세스
         </h5>
       </FloatingWrapper>

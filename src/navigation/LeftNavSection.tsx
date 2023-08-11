@@ -8,7 +8,7 @@ import React, { useState } from "react";
 export const LeftNavSection = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [projectPk, setProjectPk] = useState(location.pathname.split("/")[2]);
+  const [projectPk, setProjectPk] = useState(location.pathname.split("/")[1]);
 
   console.log(location);
   return (

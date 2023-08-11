@@ -6,15 +6,15 @@ import { TeamsContextProvider } from "./service/teams/teams.context";
 import { ProjectsContextProvider } from "./service/projects/projects.context";
 
 const App: React.FC = () => {
-    return (
-        <AuthenticationContextProvider>
-            <TeamsContextProvider>
-                <ProjectsContextProvider>
-                    <AppRouter />
-                </ProjectsContextProvider>
-            </TeamsContextProvider>
-        </AuthenticationContextProvider>
-    );
+  return (
+    <AuthenticationContextProvider>
+      <TeamsContextProvider>
+        <ProjectsContextProvider>
+          <AppRouter />
+        </ProjectsContextProvider>
+      </TeamsContextProvider>
+    </AuthenticationContextProvider>
+  );
 };
 
 export default App;
