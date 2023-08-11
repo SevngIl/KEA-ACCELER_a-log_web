@@ -17,14 +17,18 @@ export const AuthenticationContext = createContext();
 export const AuthenticationContextProvider = ({ children }) => {
   const [userToken, setUserToken] = useState(JSON.parse(sessionStorage.getItem("userToken")));
   const [isLogin, setIsLogin] = useState(JSON.parse(sessionStorage.getItem("isLogin")));
-  const [userData, setUserData] = useState(JSON.parse(sessionStorage.getItem("userData")));
+  const [userData, setUserData] = useState(JSON.parse(JSON.parse(sessionStorage.getItem("userData"))));
 
+  useEffect(() => {
+    console.log("userData : ", userData);
+  }, []);
   const OnLogin = async (userEmail, userPw) => {
     const res = await UsersLogin(userEmail, userPw);
     console.log(res);
     if (res.data === "login failed") {
       alert("이메일과 비밀번호를 다시 확인해주세요.");
     } else {
+      console.log(res);
       setUserToken(res.data);
       setUserData(JSON.parse(atob(res.data.split(".")[1])));
       sessionStorage.setItem("userData", JSON.stringify(atob(res.data.split(".")[1])));
@@ -56,6 +60,7 @@ export const AuthenticationContextProvider = ({ children }) => {
   const OnVerifiedRegister = async (email, userPW, userNN) => {
     const res = await UsersVerifiedSignup(email, userPW, userNN)
       .then((res) => {
+        console.log(res);
         alert(`회원가입이 완료되었습니다`);
       })
       .catch((e) => alert(e));
@@ -111,9 +116,10 @@ export const AuthenticationContextProvider = ({ children }) => {
         console.log("email");
         return { type: "email", result: res[1] };
       } else {
-        console.log("jwt : ", res[1]);
+        console.log(res);
         setUserToken(res[1]);
         setUserData(JSON.parse(atob(res[1].split(".")[1])));
+
         sessionStorage.setItem("userData", JSON.stringify(atob(res[1].split(".")[1])));
         sessionStorage.setItem("userToken", JSON.stringify(res[1]));
         sessionStorage.setItem("isLogin", true);

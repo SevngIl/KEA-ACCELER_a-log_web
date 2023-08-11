@@ -2,11 +2,13 @@ import React, { useContext, useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import "./CreateTeamModal.css";
 import { TeamsContext } from "../../service/teams/teams.context";
+import { AuthenticationContext } from "../../service/authentication/authentication.context";
 
-const CreateTeamModal = ({ addTeam, show, handleClose }) => {
+const CreateTeamModal = ({ fetchTeamList, show, handleClose }) => {
   const [teamName, setTeamName] = useState("");
   const [inviteUser, setInviteUser] = useState("");
 
+  const { userToken, userData } = useContext(AuthenticationContext);
   const { OnCreateTeam } = useContext(TeamsContext);
 
   const handleCreateTeam = async (event) => {
@@ -16,19 +18,11 @@ const CreateTeamModal = ({ addTeam, show, handleClose }) => {
       name: teamName,
       user: inviteUser,
     };
-    // 로컬 스토리지에서 팀 정보 가져오기
-    const currentTeams = JSON.parse(localStorage.getItem("teams")) || [];
 
-    // 새 팀 추가하기
-    currentTeams.push(newTeam);
-
-    // 업데이트된 팀 정보를 로컬 스토리지에 저장
-    localStorage.setItem("teams", JSON.stringify(currentTeams));
-
-    addTeam(teamName);
     setTeamName("");
     // await OnCreateTeam(teamName, userNNList, userPk);
-    await OnCreateTeam(teamName, ["string"], 1);
+    await OnCreateTeam(teamName, [inviteUser], userData.userPk, userToken);
+    await fetchTeamList();
     handleClose();
   };
 

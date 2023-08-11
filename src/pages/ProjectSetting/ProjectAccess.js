@@ -77,10 +77,10 @@ export const ProjectAccess = () => {
           <div>전체 프로젝트</div>
         </div>
 
-        <h5 className="leftMenuItem" onClick={() => navigate(`/projectSetting/${projectPk}`, { state: location.state })}>
+        <h5 className="leftMenuItem" onClick={() => navigate(`/${projectPk}/projectSetting/`, { state: location.state })}>
           세부 사항
         </h5>
-        <h5 className="leftMenuItem" onClick={() => navigate(`/projectAccess/${projectPk}`, { state: location.state })}>
+        <h5 className="leftMenuItem" onClick={() => navigate(`/${projectPk}/projectAccess/`, { state: location.state })}>
           액세스
         </h5>
       </FloatingWrapper>
@@ -101,14 +101,7 @@ export const ProjectAccess = () => {
           <div className="ProjectAccess-body">
             <div className="ProjectAccess-body-title">프로젝트 멤버</div>
             <div className="ProjectMember-search">
-              <input
-                className="searchbar"
-                type="text"
-                placeholder="이름, 이메일 주소를 검색"
-                value={searchTerm}
-                onChange={handleSearchChange}
-                onKeyPress={handleSearchSubmit}
-              />
+              <input className="searchbar" type="text" placeholder="이름, 이메일 주소를 검색" value={searchTerm} onChange={handleSearchChange} onKeyPress={handleSearchSubmit} />
             </div>
 
             <div className="ProjectMember-list">
@@ -145,14 +138,7 @@ export const ProjectAccess = () => {
             </div>
           </div>
         </FloatingWrapper>
-        <InviteProMemModal
-          show={showAddModal}
-          onHide={() => setShowAddModal(false)}
-          projectPk={projectPk}
-          projectName={projectName}
-          onMemberAdded={handleMemberAdded}
-          userToken={userToken}
-        />
+        <InviteProMemModal show={showAddModal} onHide={() => setShowAddModal(false)} projectPk={projectPk} projectName={projectName} onMemberAdded={handleMemberAdded} userToken={userToken} />
         <RemoveProMemModal
           show={showRemoveModal}
           onHide={() => setShowRemoveModal(false)}

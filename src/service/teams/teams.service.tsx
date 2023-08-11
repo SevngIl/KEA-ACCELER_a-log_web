@@ -1,102 +1,157 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 
-const USER_API_URL = process.env.REACT_APP_USER_API_URL;
+const API_URL = process.env.REACT_APP_ALOG_API_URL;
 
 // Teams
 
-export const PostCreateTeams = (teamName: string, userNNList: string[], userPk: number): Promise<AxiosResponse> => {
-    const loginData = {
-        teamName: teamName,
-        userNNList: userNNList,
-    };
+export const PostCreateTeams = (teamName: string, userNNList: string[], userPk: number, userToken: string): Promise<AxiosResponse> => {
+  const body = {
+    teamName: teamName,
+    userNNList: userNNList,
+  };
+  const options = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  };
+  console.log(teamName, userNNList, userPk, userToken);
 
-    const createTeamRes: Promise<AxiosResponse> = axios
-        .post(`${USER_API_URL}/api/teams?userPk=${userPk}`, loginData)
-        .then((res: AxiosResponse) => {
-            return res;
-        })
-        .catch((err: AxiosError) => {
-            alert(err);
-            throw err;
-        });
+  const createTeamRes: Promise<AxiosResponse> = axios
+    .post(`${API_URL}/api/users/teams?userPk=${userPk}`, body, options)
+    .then((res: AxiosResponse) => {
+      console.log(res);
+      return res;
+    })
+    .catch((err: AxiosError) => {
+      alert(err.response?.data || err.message);
+      throw err;
+    });
 
-    return createTeamRes;
+  return createTeamRes;
 };
-export const DeleteTeams = (teamName: string, userPk: number): Promise<AxiosResponse> => {
-    const deleteTeamRes: Promise<AxiosResponse> = axios
-        .delete(`${USER_API_URL}/api/teams?teamName=${teamName}&userPk=${userPk}`)
-        .then((res: AxiosResponse) => {
-            return res;
-        })
-        .catch((err: AxiosError) => {
-            alert(err);
-            throw err;
-        });
+export const GetTeamInfo = (teamPk: number, userPk: number, userToken: string): Promise<AxiosResponse> => {
+  const options = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  };
 
-    return deleteTeamRes;
+  const res: Promise<AxiosResponse> = axios
+    .get(`${API_URL}/api/users/teams?teamPk=${teamPk}&userPk=${userPk}`, options)
+    .then((res: AxiosResponse) => {
+      console.log(res);
+      return res;
+    })
+    .catch((err: AxiosError) => {
+      alert(err.response?.data || err.message);
+      throw err;
+    });
+
+  return res;
 };
-export const GetInfoTeams = (teamName: string, userPk: number): Promise<AxiosResponse> => {
-    const getTeamInfoRes: Promise<AxiosResponse> = axios
-        .get(`${USER_API_URL}/api/teams?teamName=${teamName}&userPk=${userPk}`)
-        .then((res: AxiosResponse) => {
-            return res;
-        })
-        .catch((err: AxiosError) => {
-            alert(err);
-            throw err;
-        });
+export const DeleteTeams = (teamPk: number, userPk: number, userToken: string): Promise<AxiosResponse> => {
+  const options = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  };
+  const deleteTeamRes: Promise<AxiosResponse> = axios
+    .delete(`${API_URL}/api/users/teams?teamPk=${teamPk}&userPk=${userPk}`, options)
+    .then((res: AxiosResponse) => {
+      return res;
+    })
+    .catch((err: AxiosError) => {
+      alert(err);
+      throw err;
+    });
 
-    return getTeamInfoRes;
+  return deleteTeamRes;
+};
+export const GetTeamList = (userPk: number, userToken: string): Promise<AxiosResponse> => {
+  console.log(userPk, userToken);
+  const options = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  };
+  const getTeamInfoRes: Promise<AxiosResponse> = axios
+    .get(`${API_URL}/api/users/teams/list?userPk=${userPk}`, options)
+    .then((res: AxiosResponse) => {
+      return res;
+    })
+    .catch((err: AxiosError) => {
+      alert(err);
+      throw err;
+    });
+
+  return getTeamInfoRes;
 };
 
 // Team Members
 
-export const GetTeamMembers = (teamName: string, userPk: number): Promise<AxiosResponse> => {
-    const getResult: Promise<AxiosResponse> = axios
-        .get(`${USER_API_URL}/api/team-members?teamName=${teamName}&userPk=${userPk}`)
-        .then((res: AxiosResponse) => {
-            return res;
-        })
-        .catch((err: AxiosError) => {
-            alert(err);
-            throw err;
-        });
+export const GetTeamMembers = (teamPk: number, userPk: number, userToken: string): Promise<AxiosResponse> => {
+  const options = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  };
+  const getResult: Promise<AxiosResponse> = axios
+    .get(`${API_URL}/api/users/team-members?teamPk=${teamPk}&userPk=${userPk}`, options)
+    .then((res: AxiosResponse) => {
+      return res;
+    })
+    .catch((err: AxiosError) => {
+      alert(err);
+      throw err;
+    });
 
-    return getResult;
+  return getResult;
 };
 
-export const PostTeamMembers = (teamName: string, userNNList: string[], userPk: number): Promise<AxiosResponse> => {
-    const body = {
-        teamName: teamName,
-        userNNList: userNNList,
-    };
-    const postResult: Promise<AxiosResponse> = axios
-        .post(`${USER_API_URL}/api/team-members?userPk=${userPk}`, body)
-        .then((res: AxiosResponse) => {
-            return res;
-        })
-        .catch((err: AxiosError) => {
-            alert(err);
-            throw err;
-        });
+export const PostAddTeamMembers = (teamPk: number, userNNList: string[], userPk: number, userToken: string): Promise<AxiosResponse> => {
+  const options = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  };
+  const body = {
+    teamPk: teamPk,
+    userNNList: userNNList,
+  };
+  const postResult: Promise<AxiosResponse> = axios
+    .post(`${API_URL}/api/users/team-members?userPk=${userPk}`, body, options)
+    .then((res: AxiosResponse) => {
+      return res;
+    })
+    .catch((err: AxiosError) => {
+      alert(err);
+      throw err;
+    });
 
-    return postResult;
+  return postResult;
 };
 
-export const DeleteTeamMembers = (teamName: string, userNNList: string[], userPk: number): Promise<AxiosResponse> => {
-    const body = {
-        teamName: teamName,
-        userNNList: userNNList,
-    };
-    const deleteResult: Promise<AxiosResponse> = axios
-        .delete(`${USER_API_URL}/api/team-members?userPk=${userPk}`, { data: body })
-        .then((res: AxiosResponse) => {
-            return res;
-        })
-        .catch((err: AxiosError) => {
-            alert(err);
-            throw err;
-        });
+export const DeleteTeamMembers = (teamPk: number, userNNList: string[], userPk: number, userToken: string): Promise<AxiosResponse> => {
+  const body = {
+    teamPk: teamPk,
+    userNNList: userNNList,
+  };
+  const config = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+    data: body,
+  };
 
-    return deleteResult;
+  const deleteResult: Promise<AxiosResponse> = axios
+    .delete(`${API_URL}/api/users/team-members?userPk=${userPk}`, config)
+    .then((res: AxiosResponse) => {
+      return res;
+    })
+    .catch((err: AxiosError) => {
+      alert(err);
+      throw err;
+    });
+
+  return deleteResult;
 };
