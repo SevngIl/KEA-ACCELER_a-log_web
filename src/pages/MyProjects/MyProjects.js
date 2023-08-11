@@ -29,6 +29,7 @@ const MyProjects = () => {
         if (res.status === 200) {
           setProjects(res.data.data.content);
           console.log(res.data.data.content);
+          console.log("res: ", res);
         }
       })
       .catch((err) => {
@@ -66,7 +67,7 @@ const MyProjects = () => {
                   <div className="project-title">{project.name}</div>
                   <div>
                     <div className="project-info">TEAM PK: {project.teamPk}</div>
-                    <div className="project-info">PM PK: {project.pmPk}</div>
+                    {/* <div className="project-info">PM PK: {project.pmPk}</div> */}
                     <div className="project-info">DESCRIPTION: {project.description}</div>
                   </div>
                 </div>

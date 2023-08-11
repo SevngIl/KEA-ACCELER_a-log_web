@@ -4,6 +4,7 @@ import { Button, Form } from "react-bootstrap";
 import "./CreateProject.css";
 import { FloatingWrapper } from "../../components/FloatingWrapper";
 import { ProjectsContext } from "../../service/projects/projects.context";
+import { AuthenticationContext } from "../../service/authentication/authentication.context";
 
 const CreateProject = () => {
   const [name, setName] = useState("");
@@ -13,15 +14,14 @@ const CreateProject = () => {
   const navigate = useNavigate();
   const { PostCreateProjects } = useContext(ProjectsContext);
 
-  const userToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTk4iOiJuYW1lIiwidXNlckVtYWlsIjoiZW1haWxAbmF2ZXIuY29tIiwidXNlclBrIjoxfQ.ZkhEHRYm1tnyznIhrNf-8tbeIMOGIVhlgwKB2QbJGs8";
+  const { userToken } = useContext(AuthenticationContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    PostCreateProjects(name, description, parseInt(teamPk), parseInt(pmPk), userToken)
+    PostCreateProjects(name, description, parseInt(teamPk), userToken)
       .then((res) => {
-        if (res.code === 201 || 200) {
+        if (res.data.code === 201 || 200) {
           alert("프로젝트가 추가되었습니다");
           navigate("/myProjects");
         }
@@ -34,7 +34,7 @@ const CreateProject = () => {
     setName("");
     setDescription("");
     setTeamPk("");
-    setPmPk("");
+    // setPmPk("");
   };
 
   return (
@@ -67,10 +67,10 @@ const CreateProject = () => {
             <Form.Control className="teamPk_input" type="number" placeholder="Enter team PK" value={teamPk} onChange={(e) => setTeamPk(e.target.value)} />
           </Form.Group>
 
-          <Form.Group className="pmPk" controlId="pmPk">
+          {/* <Form.Group className="pmPk" controlId="pmPk">
             <Form.Label>PM PK</Form.Label>
             <Form.Control className="pmPk_input" type="number" placeholder="Enter PM PK" value={pmPk} onChange={(e) => setPmPk(e.target.value)} />
-          </Form.Group>
+          </Form.Group> */}
 
           <div className="button-group">
             <Button variant="secondary" type="button">

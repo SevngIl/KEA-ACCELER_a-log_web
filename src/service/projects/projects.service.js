@@ -1,15 +1,14 @@
 import axios from "axios";
 
 const PROJECT_API_URL = process.env.REACT_APP_PROJECT_API_URL;
-// const API_URL = process.env.REACT_APP_ALOG_API_URL;
-const API_URL = "https://alog.acceler.kr";
+const API_URL = process.env.REACT_APP_ALOG_API_URL;
 
-export const PostCreateProjects = async (projectName, description, teamPk, pmPk, userToken) => {
+export const PostCreateProjects = async (projectName, description, teamPk, userToken) => {
   const projectData = {
     name: projectName,
     description: description,
     teamPk: teamPk,
-    pmPk: pmPk,
+    // pmPk: pmPk,
   };
   const options = {
     headers: {
@@ -17,11 +16,13 @@ export const PostCreateProjects = async (projectName, description, teamPk, pmPk,
     },
   };
 
-  console.log("Request body:", projectData);
+  console.log("Request body1:", projectData);
+  console.log("user Token1: ", userToken);
 
   try {
     const res = await axios.post(`${API_URL}/api/projects`, projectData, options);
-    console.log(res);
+    console.log("res2:", res);
+    console.log("user Token2: ", userToken);
     return res;
   } catch (err) {
     console.error("프로젝트 생성 중 오류 발생:", err.response ? err.response.data : err.message);
@@ -126,7 +127,7 @@ export const DeleteProject = async (projectPk, userToken) => {
 
 export const GetProjectMembers = async (projectPk, keyword, page, size, userToken) => {
   try {
-    const res = await axios.get(`${PROJECT_API_URL}/api/projects/${projectPk}/members`, {
+    const res = await axios.get(`${API_URL}/api/projects/${projectPk}/members`, {
       params: {
         keyword,
         page,
@@ -155,7 +156,7 @@ export const AddProjectMembers = async (projectPk, userPks, userToken) => {
   try {
     console.log(projectPk, userPks, userToken);
     const res = await axios.post(
-      `${PROJECT_API_URL}/api/projects/${projectPk}/members`,
+      `${API_URL}/api/projects/${projectPk}/members`,
       {
         userPks: userPks,
       },
@@ -181,7 +182,7 @@ export const RemoveProjectMembers = async (projectPk, userPks, userToken) => {
 
   try {
     console.log(projectPk, userPks, userToken);
-    const res = await axios.delete(`${PROJECT_API_URL}/api/projects/${projectPk}/members`, options);
+    const res = await axios.delete(`${API_URL}/api/projects/${projectPk}/members`, options);
     console.log("Response:", res);
     return res;
   } catch (err) {
@@ -207,7 +208,7 @@ export const CreateTopic = async ({ projectPk, name, description, startDate, due
 
   try {
     console.log(projectPk, name, description, startDate, dueDate, userToken);
-    const res = await axios.post(`${PROJECT_API_URL}/api/projects/${projectPk}/topics`, requestBody, options);
+    const res = await axios.post(`${API_URL}/api/projects/${projectPk}/topics`, requestBody, options);
     console.log("Response:", res);
     return res;
   } catch (err) {
@@ -232,7 +233,7 @@ export const GetAllTopics = async ({ projectPk, keyword, sortType, page, size, u
   };
 
   try {
-    const res = await axios.get(`${PROJECT_API_URL}/api/projects/${projectPk}/topics`, options);
+    const res = await axios.get(`${API_URL}/api/projects/${projectPk}/topics`, options);
     console.log("Response:", res);
     return res;
   } catch (err) {

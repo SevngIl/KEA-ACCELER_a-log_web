@@ -148,6 +148,7 @@ export const Timeline = () => {
               <p>Expected to finish by ${end_date}</p>
               <p>${task.progress}% completed!</p>
               <p>${task.description}.</p>
+              <p>${task.id}.</p>
             </div>
             `;
         },
