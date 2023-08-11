@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const PROJECT_API_URL = process.env.REACT_APP_PROJECT_API_URL;
-const API_URL = process.env.REACT_APP_ALOG_API_URL;
+// const API_URL = process.env.REACT_APP_ALOG_API_URL;
+const API_URL = "https://alog.acceler.kr";
 
 export const PostCreateProjects = async (projectName, description, teamPk, pmPk, userToken) => {
   const projectData = {
@@ -19,7 +20,7 @@ export const PostCreateProjects = async (projectName, description, teamPk, pmPk,
   console.log("Request body:", projectData);
 
   try {
-    const res = await axios.post(`${PROJECT_API_URL}/api/projects`, projectData, options);
+    const res = await axios.post(`${API_URL}/api/projects`, projectData, options);
     console.log(res);
     return res;
   } catch (err) {
@@ -37,7 +38,7 @@ export const GetAllProjects = async (keyword, sortType, page, size, userToken) =
   console.log(userToken);
 
   try {
-    const res = await axios.get(`${PROJECT_API_URL}/api/projects?sortType=${sortType}&page=${page}&size=${size}`, options);
+    const res = await axios.get(`${API_URL}/api/projects?sortType=${sortType}&page=${page}&size=${size}`, options);
     console.log("Response:", res);
     return res;
   } catch (err) {
@@ -55,7 +56,7 @@ export const GetMyProjects = async (keyword, sortType, page, size, userToken) =>
   console.log(userToken);
 
   try {
-    const res = await axios.get(`${PROJECT_API_URL}/api/projects/mine?sortType=${sortType}&page=${page}&size=${size}`, options);
+    const res = await axios.get(`${API_URL}/api/projects/mine?sortType=${sortType}&page=${page}&size=${size}`, options);
     console.log("Response:", res);
     return res;
   } catch (err) {
@@ -71,7 +72,7 @@ export const GetProjectDetail = async (projectPk, userToken) => {
     },
   };
   try {
-    const res = await axios.get(`${PROJECT_API_URL}/api/projects/${projectPk}`, options);
+    const res = await axios.get(`${API_URL}/api/projects/${projectPk}`, options);
     console.log("Response:", res.data);
     return res;
   } catch (err) {
@@ -96,7 +97,7 @@ export const PatchUpdateProject = async (projectPk, name, description, teamPk, p
   console.log("Request body:", projectData);
 
   try {
-    const res = await axios.patch(`${PROJECT_API_URL}/api/projects/${projectPk}`, projectData, options);
+    const res = await axios.patch(`${API_URL}/api/projects/${projectPk}`, projectData, options);
     console.log(res);
     return res;
   } catch (err) {
@@ -112,7 +113,7 @@ export const DeleteProject = async (projectPk, userToken) => {
     },
   };
   try {
-    const res = await axios.delete(`${PROJECT_API_URL}/api/projects/${projectPk}`, options);
+    const res = await axios.delete(`${API_URL}/api/projects/${projectPk}`, options);
     console.log(res);
     return res;
   } catch (err) {
