@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { RemoveProjectMembers } from "../../service/projects/projects.service";
 
@@ -22,6 +22,11 @@ const RemoveProMemModal = ({ show, onHide, projectPk, projectName, onMemberRemov
       alert("멤버 삭제에 실패했습니다. 다시 시도해 주세요.");
     }
   };
+  useEffect(() => {
+    if (!show) {
+      setUserInput("");
+    }
+  }, [show]);
 
   return (
     <Modal show={show} onHide={onHide}>

@@ -14,17 +14,15 @@ export const ProjectSetting = () => {
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [teamPk, setTeamPk] = useState(0); // number로 변경
-  const [pmPk, setPmPk] = useState(0); // number로 변경
+  const [pmPk, setPmPk] = useState(0);
+  const [teamPk, projectPk] = location.pathname.split("/").slice(1, 3);
 
   const { userToken } = useContext(AuthenticationContext);
-
-  const { projectPk, projectName } = useParams();
 
   const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await PatchUpdateProject(projectPk, name, description, teamPk, pmPk, userToken);
+      await PatchUpdateProject(projectPk, name, description, teamPk, userToken);
       alert("프로젝트 수정이 완료되었습니다.");
     } catch (err) {
       alert("프로젝트 수정 중 오류가 발생했습니다.");
@@ -50,7 +48,6 @@ export const ProjectSetting = () => {
         .then((res) => {
           setName(res.data.data.name);
           setDescription(res.data.data.description);
-          setTeamPk(res.data.data.teamPk);
           setPmPk(res.data.data.pmPk);
         })
         .catch((err) => {
@@ -74,10 +71,10 @@ export const ProjectSetting = () => {
           <div>전체 프로젝트</div>
         </div>
 
-        <h5 className="leftMenuItem" onClick={() => navigate(`/${projectPk}/projectSetting/`, { state: location.state })}>
+        <h5 className="leftMenuItem" onClick={() => navigate(`/${teamPk}/${projectPk}/projectSetting/`, { state: location.state })}>
           세부 사항
         </h5>
-        <h5 className="leftMenuItem" onClick={() => navigate(`/${projectPk}/projectAccess/`, { state: location.state })}>
+        <h5 className="leftMenuItem" onClick={() => navigate(`/${teamPk}/${projectPk}/projectAccess/`, { state: location.state })}>
           액세스
         </h5>
       </FloatingWrapper>
@@ -119,7 +116,6 @@ export const ProjectSetting = () => {
                   type="number"
                   placeholder="Enter team PK"
                   value={teamPk}
-                  onChange={(e) => setTeamPk(Number(e.target.value))}
                   readOnly
                   style={{ background: "#f3f3f3", borderColor: "#ccc" }}
                 />

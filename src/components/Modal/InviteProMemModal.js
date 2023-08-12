@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { AddProjectMembers } from "../../service/projects/projects.service";
 
@@ -21,6 +21,11 @@ const InviteProMemModal = ({ show, onHide, projectPk, projectName, onMemberAdded
       alert("멤버 추가에 실패했습니다. 다시 시도해 주세요.");
     }
   };
+  useEffect(() => {
+    if (!show) {
+      setUserInput("");
+    }
+  }, [show]);
 
   return (
     <Modal show={show} onHide={onHide}>
