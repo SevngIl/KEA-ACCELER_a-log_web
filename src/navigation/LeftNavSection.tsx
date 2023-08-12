@@ -4,11 +4,12 @@ import { Button } from "react-bootstrap";
 import logo from "../assets/logo/alog-logo.png";
 import { FloatingWrapper } from "../components/FloatingWrapper";
 import React, { useState } from "react";
+import { TeamsContext } from "../service/teams/teams.context";
 
 export const LeftNavSection = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [projectPk, setProjectPk] = useState(location.pathname.split("/")[1]);
+  const [teamPk, projectPk] = location.pathname.split("/").slice(1, 3);
 
   console.log(location);
   return (
@@ -24,12 +25,12 @@ export const LeftNavSection = () => {
         <div className="planning_container">
           <div className="planning">Planning</div>
           <div className="Timeline">
-            <Button variant="outline-primary" onClick={() => navigate(`/Timeline/${projectPk}`, { state: location.state })}>
+            <Button variant="outline-primary" onClick={() => navigate(`/${teamPk}/${projectPk}/Timeline`, { state: location.state })}>
               TimeLine
             </Button>
           </div>
           <div className="Board">
-            <Button variant="outline-primary" onClick={() => navigate(`/Board/${projectPk}`, { state: location.state })}>
+            <Button variant="outline-primary" onClick={() => navigate(`/${teamPk}/${projectPk}/Board`, { state: location.state })}>
               Board
             </Button>
           </div>
@@ -38,7 +39,7 @@ export const LeftNavSection = () => {
         <div className="release_container">
           <div className="release">Release</div>
           <div className="Notes">
-            <Button variant="outline-primary" onClick={() => navigate(`/ReleaseNote/${projectPk}`, { state: location.state })}>
+            <Button variant="outline-primary" onClick={() => navigate(`/${teamPk}/${projectPk}/ReleaseNote`, { state: location.state })}>
               Notes
             </Button>
           </div>

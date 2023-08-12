@@ -39,10 +39,10 @@ const AppRouter = (): JSX.Element => {
             <Route path="/CreateProject" element={<CreateProject />} />
           </Route>
           <Route element={<LeftNavSection />}>
-            <Route path="/:projectPk/Board/" element={<Board />} />
-            <Route path="/:projectPk/Timeline" element={<Timeline />} />
-            <Route path="/:projectPk/ReleaseNote" element={<ReleaseNote />} />
-            <Route path="/:projectPk/CreateReleaseNote" element={<CreateReleaseNote />} />
+            <Route path="/:teamPk/:projectPk/Board" element={<Board />} />
+            <Route path="/:teamPk/:projectPk/Timeline" element={<Timeline />} />
+            <Route path="/:teamPk/:projectPk/ReleaseNote" element={<ReleaseNote />} />
+            <Route path="/:teamPk/:projectPk/CreateReleaseNote" element={<CreateReleaseNote />} />
           </Route>
         </Route>
       </Routes>

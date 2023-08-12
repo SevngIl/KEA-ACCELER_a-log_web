@@ -57,16 +57,22 @@ const MyProjects = () => {
           {projects &&
             projects.map((project, index) => (
               <FloatingWrapper className="project-card" key={index}>
-                <div className="projectSettingBtn" onClick={() => navigate(`/${project.pk}/projectSetting`, { state: { pk: project.pk, name: project.name } })}>
+                <div
+                  className="projectSettingBtn"
+                  onClick={() => navigate(`/${project.teamPk}/${project.pk}/projectSetting`, { state: { pk: project.pk, name: project.name } })}
+                >
                   <CiSettings size={"24px"} />
                 </div>
 
                 <img
                   src={projectImg}
                   className="projectImg"
-                  onClick={() => navigate(`/${project.pk}/Board`, { state: { pk: project.pk, name: project.name } })}
+                  onClick={() => navigate(`/${project.teamPk}/${project.pk}/Board`, { state: { pk: project.pk, name: project.name } })}
                 />
-                <div className="projectDescription" onClick={() => navigate(`/${project.pk}/Board`, { state: { pk: project.pk, name: project.name } })}>
+                <div
+                  className="projectDescription"
+                  onClick={() => navigate(`/${project.teamPk}/${project.pk}/Board`, { state: { pk: project.pk, name: project.name } })}
+                >
                   <div className="project-title">{project.name}</div>
                   <div>
                     <div className="project-info">TEAM PK: {project.teamPk}</div>
