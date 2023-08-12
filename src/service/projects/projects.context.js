@@ -15,7 +15,16 @@ export const ProjectsContext = createContext();
 export const ProjectsContextProvider = ({ children }) => {
   return (
     <ProjectsContext.Provider
-      value={{ PostCreateProjects, GetAllProjects, GetProjectDetail, DeleteProject, AddProjectMembers, GetProjectMembers, RemoveProjectMembers, GetMyProjects }}
+      value={{
+        PostCreateProjects,
+        GetAllProjects,
+        GetProjectDetail,
+        DeleteProject,
+        AddProjectMembers,
+        GetProjectMembers,
+        RemoveProjectMembers,
+        GetMyProjects,
+      }}
     >
       {children}
     </ProjectsContext.Provider>

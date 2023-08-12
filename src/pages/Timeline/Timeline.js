@@ -69,8 +69,18 @@ export const Timeline = () => {
   const Month = useRef(null);
   const Year = useRef(null);
 
-  const handleShowModal = () => setShowModal(true);
-  // const handleCloseModal = () => setShowModal(false);
+  const changeViewMode = (mode, ref) => {
+    ["Quarter Day", "Half Day", "Day", "Week", "Month", "Year"].forEach((m, idx) => {
+      [QuarterDay, HalfDay, Day, Week, Month, Year][idx].current.classList.remove("active");
+    });
+    gantt.change_view_mode(mode);
+    ref.current.classList.add("active");
+  };
+
+  const handleShowModal = () => {
+    setSelectedTopic(null); // Create Topic 버튼을 누를 때 selectedTopic을 null로 설정
+    setShowModal(true);
+  };
 
   const [selectedTopic, setSelectedTopic] = useState(null);
 
@@ -113,13 +123,24 @@ export const Timeline = () => {
     setTasks(newTasks);
   };
 
-  const changeViewMode = (mode, ref) => {
-    ["Quarter Day", "Half Day", "Day", "Week", "Month", "Year"].forEach((m, idx) => {
-      [QuarterDay, HalfDay, Day, Week, Month, Year][idx].current.classList.remove("active");
-    });
-    gantt.change_view_mode(mode);
-    ref.current.classList.add("active");
+  const handleUpdateTopic = (name, startDate, endDate, description) => {
+    const updatedTasks = tasks.map((task) => (task === selectedTopic ? { name, start: startDate, end: endDate, description } : task));
+    setTasks(updatedTasks);
   };
+
+  const [deletedTopics, setDeletedTopics] = useState([]);
+
+  const handleDeleteTopic = (topic) => {
+    const updatedDeletedTopics = [...deletedTopics, topic];
+    setDeletedTopics(updatedDeletedTopics);
+
+    const updatedTasks = tasks.filter((task) => task.id !== topic.id);
+    setTasks(updatedTasks);
+  };
+
+  // const handleClearAllTopics = () => {
+  //   setTasks([]); // 모든 토픽 초기화
+  // };
 
   useEffect(() => {
     if (tasks.length === 0 || !document.getElementById("gantt")) return;
@@ -192,7 +213,7 @@ export const Timeline = () => {
     // 초기 토픽 불러오기
     const fetchData = async () => {
       try {
-        const params = { projectPk, keyword: "", sortType: "ASC", page: 0, size: 10, userToken: userToken }; // 필요한 매개변수 설정
+        const params = { projectPk, keyword: "", sortType: "ASC", page: 0, size: 100, userToken: userToken }; // 필요한 매개변수 설정
         const res = await GetAllTopics(params);
         console.log("API Response:", res.data); // 응답 내용을 확인
         const topics = res.data.data.content.map((topic) => ({
@@ -236,10 +257,21 @@ export const Timeline = () => {
         </button>
       </div>
       <div id="gantt"></div>
+      {/* <Button className="clear-all-topics-btn" onClick={handleClearAllTopics}>
+        Clear All Topics
+      </Button> */}
       <Button className="create-topic-btn" onClick={handleShowModal}>
         Create Topic
       </Button>
-      <TopicModal show={showModal} handleClose={handleCloseModal} handleAddTopic={handleAddTopic} projectPk={projectPk} selectedTopic={selectedTopic} />
+      <TopicModal
+        show={showModal}
+        handleClose={handleCloseModal}
+        handleAddTopic={handleAddTopic}
+        handleUpdateTopic={handleUpdateTopic}
+        handleDeleteTopic={handleDeleteTopic}
+        projectPk={projectPk}
+        selectedTopic={selectedTopic}
+      />
     </FadeIn>
   );
 };

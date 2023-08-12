@@ -57,7 +57,7 @@ export const GetMyProjects = async (keyword, sortType, page, size, userToken) =>
   console.log(userToken);
 
   try {
-    const res = await axios.get(`${API_URL}/api/projects/mine?sortType=${sortType}&page=${page}&size=${size}`, options);
+    const res = await axios.get(`${API_URL}/api/aggr/projects/mine?sortType=${sortType}&page=${page}&size=${size}`, options);
     console.log("Response:", res);
     return res;
   } catch (err) {
@@ -233,11 +233,52 @@ export const GetAllTopics = async ({ projectPk, keyword, sortType, page, size, u
   };
 
   try {
-    const res = await axios.get(`${API_URL}/api/projects/${projectPk}/topics`, options);
+    const res = await axios.get(`${API_URL}/api/aggr/projects/${projectPk}/topics`, options);
     console.log("Response:", res);
     return res;
   } catch (err) {
     console.error("토픽 전체 조회 중 오류 발생:", err.response ? err.response.data : err.message);
     throw new Error("토픽 전체 조회 중 오류가 발생했습니다.");
+  }
+};
+
+export const UpdateTopic = async ({ projectPk, topicPk, name, description, startDate, dueDate, userToken }) => {
+  const body = {
+    name,
+    description,
+    startDate,
+    dueDate,
+  };
+
+  const options = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  };
+
+  try {
+    const res = await axios.patch(`${API_URL}/api/projects/${projectPk}/topics/${topicPk}`, body, options);
+    console.log("Response:", res);
+    return res;
+  } catch (err) {
+    console.error("토픽 수정 중 오류 발생:", err.response ? err.response.data : err.message);
+    throw new Error("토픽 수정 중 오류가 발생했습니다.");
+  }
+};
+
+export const DeleteTopic = async ({ projectPk, topicPk, userToken }) => {
+  const options = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  };
+
+  try {
+    const res = await axios.delete(`${API_URL}/api/projects/${projectPk}/topics/${topicPk}`, options);
+    console.log("Response:", res);
+    return res;
+  } catch (err) {
+    console.error("토픽 삭제 중 오류 발생:", err.response ? err.response.data : err.message);
+    throw new Error("토픽 삭제 중 오류가 발생했습니다.");
   }
 };
