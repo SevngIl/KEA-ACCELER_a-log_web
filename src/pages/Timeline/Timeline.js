@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 import FadeIn from "../../animation/FadeIn";
 import { useLocation } from "react-router-dom";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
-import { GetAllTopics } from "../../service/projects/projects.service";
+import { GetAllTopics, GetTopicDetail } from "../../service/projects/projects.service";
 
 export const Timeline = () => {
   const location = useLocation();
@@ -84,9 +84,32 @@ export const Timeline = () => {
 
   const [selectedTopic, setSelectedTopic] = useState(null);
 
-  const handleDoubleClick = (task) => {
-    setSelectedTopic(task);
-    setShowModal(true);
+  // const handleDoubleClick = (task) => {
+  //   setSelectedTopic(task);
+  //   setShowModal(true);
+  // };
+
+  const handleDoubleClick = async (task) => {
+    try {
+      const topicPk = task.id.split(" ")[1]; // "Task 21"에서 "21"을 추출
+
+      const res = await GetTopicDetail({ projectPk, topicPk, userToken });
+
+      const selectedTopicDetail = {
+        start: new Date(res.data.data.startDate),
+        end: new Date(res.data.data.dueDate),
+        name: res.data.data.name,
+        id: "Task " + res.data.data.pk,
+        progress: 0,
+        description: res.data.data.description,
+      };
+
+      setSelectedTopic(selectedTopicDetail);
+      setShowModal(true);
+    } catch (error) {
+      console.error("토픽 세부 정보 가져오기 실패", error.message);
+      // 필요한 경우 에러 처리를 여기에 추가합니다.
+    }
   };
 
   const handleCloseModal = () => {
@@ -134,13 +157,29 @@ export const Timeline = () => {
     const updatedDeletedTopics = [...deletedTopics, topic];
     setDeletedTopics(updatedDeletedTopics);
 
-    const updatedTasks = tasks.filter((task) => task.id !== topic.id);
+    const updatedTasks = tasks.filter((task) => task.id !== topic.pk);
     setTasks(updatedTasks);
+    fetchTopics();
   };
 
-  // const handleClearAllTopics = () => {
-  //   setTasks([]); // 모든 토픽 초기화
-  // };
+  const fetchTopics = async () => {
+    try {
+      const params = { projectPk, keyword: "", sortType: "ASC", page: 0, size: 100, userToken: userToken };
+      const res = await GetAllTopics(params);
+      console.log("API Response:", res.data);
+      const topics = res.data.data.content.map((topic) => ({
+        start: new Date(topic.startDate),
+        end: new Date(topic.dueDate),
+        name: topic.name,
+        id: "Task " + topic.pk,
+        progress: 0,
+        description: topic.description,
+      }));
+      setTasks(topics);
+    } catch (error) {
+      console.error("토픽 불러오기 실패", error);
+    }
+  };
 
   useEffect(() => {
     if (tasks.length === 0 || !document.getElementById("gantt")) return;
@@ -209,28 +248,32 @@ export const Timeline = () => {
     };
   }, [gantt]);
 
-  useEffect(() => {
-    // 초기 토픽 불러오기
-    const fetchData = async () => {
-      try {
-        const params = { projectPk, keyword: "", sortType: "ASC", page: 0, size: 100, userToken: userToken }; // 필요한 매개변수 설정
-        const res = await GetAllTopics(params);
-        console.log("API Response:", res.data); // 응답 내용을 확인
-        const topics = res.data.data.content.map((topic) => ({
-          start: new Date(topic.startDate),
-          end: new Date(topic.dueDate),
-          name: topic.name,
-          id: "Task " + topic.pk,
-          progress: 0, // 필요하다면 progress 값을 서버에서 받아올 수 있음
-          description: topic.description,
-        }));
-        setTasks(topics);
-      } catch (error) {
-        console.error("토픽 불러오기 실패", error);
-      }
-    };
+  // useEffect(() => {
+  //   // 초기 토픽 불러오기
+  //   const fetchData = async () => {
+  //     try {
+  //       const params = { projectPk, keyword: "", sortType: "ASC", page: 0, size: 100, userToken: userToken }; // 필요한 매개변수 설정
+  //       const res = await GetAllTopics(params);
+  //       console.log("API Response:", res.data); // 응답 내용을 확인
+  //       const topics = res.data.data.content.map((topic) => ({
+  //         start: new Date(topic.startDate),
+  //         end: new Date(topic.dueDate),
+  //         name: topic.name,
+  //         id: "Task " + topic.pk,
+  //         progress: 0, // 필요하다면 progress 값을 서버에서 받아올 수 있음
+  //         description: topic.description,
+  //       }));
+  //       setTasks(topics);
+  //     } catch (error) {
+  //       console.error("토픽 불러오기 실패", error);
+  //     }
+  //   };
 
-    fetchData();
+  //   fetchData();
+  // }, [projectPk]);
+
+  useEffect(() => {
+    fetchTopics();
   }, [projectPk]);
 
   return (
@@ -257,9 +300,7 @@ export const Timeline = () => {
         </button>
       </div>
       <div id="gantt"></div>
-      {/* <Button className="clear-all-topics-btn" onClick={handleClearAllTopics}>
-        Clear All Topics
-      </Button> */}
+
       <Button className="create-topic-btn" onClick={handleShowModal}>
         Create Topic
       </Button>

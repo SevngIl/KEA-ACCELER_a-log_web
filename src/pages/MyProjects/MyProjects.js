@@ -33,6 +33,7 @@ const MyProjects = () => {
             selectedTeamPk && selectedTeamPk !== 9999 ? res.data.data.content.filter((project) => project.teamPk === selectedTeamPk) : res.data.data.content;
 
           setProjects(filteredProjects);
+          console.log(projects);
         }
       })
       .catch((err) => {
