@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./ReleaseNote.css";
 import { FloatingWrapper } from "../../components/FloatingWrapper";
 import { RNBadge } from "../../components/RNBadge";
@@ -12,6 +12,8 @@ import move from "../../assets/images/move.png";
 export const ReleaseNote = () => {
   const navigation = useNavigate();
   const [RNData, setRNData] = useState<ReleaseNoteData[]>(JSON.parse(localStorage.getItem("RNData")!) || []);
+  const location = useLocation();
+  const [teamPk, projectPk] = location.pathname.split("/").slice(1, 3);
 
   return (
     <div className="ReleaseNote">
@@ -19,7 +21,7 @@ export const ReleaseNote = () => {
         <div className="topWrapper">
           <h1>ReleaseNotes</h1>
 
-          <Button className="createNewBtn" variant="outline-primary" onClick={() => navigation("/CreateReleaseNote")}>
+          <Button className="createNewBtn" variant="outline-primary" onClick={() => navigation(`/${teamPk}/${projectPk}/createReleaseNote`, { state: it })}>
             Create New
           </Button>
         </div>
@@ -30,7 +32,7 @@ export const ReleaseNote = () => {
                   <div className="titleWrapper">
                     <h5 className="version">{it.version}</h5>
                     <div className="date">{it.date}</div>
-                    <img src={move} className="moveCreateRN" onClick={() => navigation("/CreateReleaseNote", { state: it })} />
+                    <img src={move} className="moveCreateRN" onClick={() => navigation(`/${teamPk}/${projectPk}/createReleaseNote`, { state: it })} />
                   </div>
 
                   {it.content.map(
