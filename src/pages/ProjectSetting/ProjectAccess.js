@@ -5,7 +5,7 @@ import { FloatingWrapper } from "../../components/FloatingWrapper";
 import "./ProjectAccess.css";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import InviteProMemModal from "../../components/Modal/InviteProMemModal";
-import { GetProjectMembers } from "../../service/projects/projects.service";
+import { GetProjectMembers, GetProjectDetail } from "../../service/projects/projects.service";
 import RemoveProMemModal from "../../components/Modal/RemoveProMemModal";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
 
@@ -13,16 +13,17 @@ export const ProjectAccess = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { projectPk, projectName } = useParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [projectMembers, setProjectMembers] = useState([]);
   const [membersUpdated, setMembersUpdated] = useState(false);
-  // const userToken =
-  //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTk4iOiJuYW1lIiwidXNlckVtYWlsIjoiZW1haWxAbmF2ZXIuY29tIiwidXNlclBrIjoxfQ.ZkhEHRYm1tnyznIhrNf-8tbeIMOGIVhlgwKB2QbJGs8";
+
   const { userToken } = useContext(AuthenticationContext);
+  const [teamPk, projectPk] = location.pathname.split("/").slice(1, 3);
+  const [projectDetails, setProjectDetails] = useState(null);
+  const projectName = projectDetails ? projectDetails.name : "";
 
   const handleSearchChange = (e) => {
     // 타입 지정
@@ -48,6 +49,18 @@ export const ProjectAccess = () => {
   const handleMemberRemoved = () => {
     setMembersUpdated(!membersUpdated);
   };
+
+  useEffect(() => {
+    // 프로젝트 세부 정보를 가져오는 로직
+    GetProjectDetail(projectPk, userToken)
+      .then((res) => {
+        setProjectDetails(res.data.data); // 응답 데이터에서 프로젝트 세부 정보를 가져옵니다.
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("프로젝트 정보를 제대로 불러오지 못했습니다");
+      });
+  }, [projectPk, userToken]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,10 +90,10 @@ export const ProjectAccess = () => {
           <div>전체 프로젝트</div>
         </div>
 
-        <h5 className="leftMenuItem" onClick={() => navigate(`/${projectPk}/projectSetting/`, { state: location.state })}>
+        <h5 className="leftMenuItem" onClick={() => navigate(`/${teamPk}/${projectPk}/projectSetting/`, { state: location.state })}>
           세부 사항
         </h5>
-        <h5 className="leftMenuItem" onClick={() => navigate(`/${projectPk}/projectAccess/`, { state: location.state })}>
+        <h5 className="leftMenuItem" onClick={() => navigate(`/${teamPk}/${projectPk}/projectAccess/`, { state: location.state })}>
           액세스
         </h5>
       </FloatingWrapper>
@@ -101,7 +114,14 @@ export const ProjectAccess = () => {
           <div className="ProjectAccess-body">
             <div className="ProjectAccess-body-title">프로젝트 멤버</div>
             <div className="ProjectMember-search">
-              <input className="searchbar" type="text" placeholder="이름, 이메일 주소를 검색" value={searchTerm} onChange={handleSearchChange} onKeyPress={handleSearchSubmit} />
+              <input
+                className="searchbar"
+                type="text"
+                placeholder="이름, 이메일 주소를 검색"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                onKeyPress={handleSearchSubmit}
+              />
             </div>
 
             <div className="ProjectMember-list">
@@ -138,7 +158,14 @@ export const ProjectAccess = () => {
             </div>
           </div>
         </FloatingWrapper>
-        <InviteProMemModal show={showAddModal} onHide={() => setShowAddModal(false)} projectPk={projectPk} projectName={projectName} onMemberAdded={handleMemberAdded} userToken={userToken} />
+        <InviteProMemModal
+          show={showAddModal}
+          onHide={() => setShowAddModal(false)}
+          projectPk={projectPk}
+          projectName={projectName}
+          onMemberAdded={handleMemberAdded}
+          userToken={userToken}
+        />
         <RemoveProMemModal
           show={showRemoveModal}
           onHide={() => setShowRemoveModal(false)}

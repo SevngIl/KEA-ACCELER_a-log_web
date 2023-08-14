@@ -77,6 +77,8 @@ export const TeamsContextProvider = ({ children }) => {
     return res;
   };
 
+  const [selectedTeamPk, setSelectedTeamPk] = useState(null);
+
   return (
     <TeamsContext.Provider
       value={{
@@ -87,6 +89,8 @@ export const TeamsContextProvider = ({ children }) => {
         OnGetTeamMembers,
         OnAddTeamMembers,
         OnDeleteTeamMembers,
+        selectedTeamPk,
+        setSelectedTeamPk,
       }}
     >
       {children}

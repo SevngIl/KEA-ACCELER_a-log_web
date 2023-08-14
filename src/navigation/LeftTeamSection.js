@@ -14,6 +14,7 @@ const LeftTeamSection = () => {
 
   const { userData, userToken } = useContext(AuthenticationContext);
   const { OnGetTeamList } = useContext(TeamsContext);
+  const { setSelectedTeamPk } = useContext(TeamsContext);
 
   const fetchTeamList = async () => {
     const teamList = await OnGetTeamList(userData.userPk, userToken);
@@ -28,7 +29,15 @@ const LeftTeamSection = () => {
   return (
     <div className="LeftTeamSection">
       <FadeIn className="container">
-        <Button className="all-button" variant="outline-primary" onClick={() => navigate("/All")}>
+        <Button
+          className="all-button"
+          variant="outline-primary"
+          onClick={() => {
+            console.log("Select All:");
+            setSelectedTeamPk(9999);
+            navigate("/myProjects");
+          }}
+        >
           All
         </Button>
         <Button className="private-button" variant="outline-primary" onClick={() => navigate("/Private")}>
@@ -38,7 +47,15 @@ const LeftTeamSection = () => {
           <h4 className="teams-title">Teams</h4>
           {teams.map((it) => (
             <div className="teamWrapper">
-              <Button variant="outline-success" key={it.teamPk} onClick={() => navigate(`/${it.teamName}`)}>
+              <Button
+                variant="outline-success"
+                key={it.teamPk}
+                onClick={() => {
+                  console.log("Selected Team PK:", it.teamPk);
+                  setSelectedTeamPk(it.teamPk);
+                  navigate("/myProjects");
+                }}
+              >
                 {it.teamName}
               </Button>
               <div className="teamSettingBtn" onClick={() => navigate(`${it.teamPk}/teamSetting`)}>
