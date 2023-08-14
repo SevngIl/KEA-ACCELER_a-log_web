@@ -7,6 +7,7 @@ import { Button } from "react-bootstrap";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { TextButton } from "./Buttons";
 import FadeIn from "../animation/FadeIn";
+import yorkie, { type Document as YorkieDoc } from 'yorkie-js-sdk';
 
 const RNColumnContent: RNColumnContentData[] = [{ key: 0, content: "" }];
 
@@ -14,66 +15,55 @@ export const RNColumn = ({
     columnId,
     tag,
     content,
+    doc,
     data,
-    setData,
+    setRender,
 }: {
     columnId: number;
     tag: RNTag;
     content: RNColumnContentData[];
     data: ReleaseNoteData;
-    setData: Dispatch<SetStateAction<ReleaseNoteData>>;
+    doc: YorkieDoc<ReleaseNoteData>;
+    setRender: Dispatch<SetStateAction<{}>>;
 }) => {
     const contentId = useRef(1);
 
     const deleteItem = (id: number) => {
-        setData((prevData) => {
-            const newContent = prevData.content.map((column) => {
-                if (column.key === columnId) {
-                    const newColumnContentData = column.content.filter((item) => item.key !== id);
-                    return { ...column, content: newColumnContentData };
+        doc.update((root) => {
+            for (let column = 0; column < data.content.length; column++) {
+                if (data.content[column].key === columnId) {
+                    const newColumnContentData = data.content[column].content.filter((item) => item.key !== id);
+                    root.content[column].content = newColumnContentData;
+                    contentId.current -= 1;
+                    setRender({});
+                    break;
                 }
-                return column;
-            });
-            return { ...prevData, content: newContent };
-        });
+            }
+        }, `delete column item`);
     };
+
     const addItem = () => {
-        setData((prevData) => {
+        doc.update((root) => {
             const newColumnContentData: RNColumnContentData = { key: contentId.current, content: "" };
-            const columnContentData: RNColumnContentData[] = [...prevData.content[columnId].content, newColumnContentData];
-            const newColumnData: ReleaseNoteColumnData = prevData.content[columnId];
-            newColumnData.content = columnContentData;
-
-            const newContentData = prevData.content.map((column) => {
-                if (column.key === columnId) {
-                    return newColumnData;
-                }
-                return column;
-            });
-
-            const newData: ReleaseNoteData = { ...prevData, content: newContentData };
+            root.content[columnId].content.push(newColumnContentData);
             contentId.current += 1;
-            return newData;
-        });
+            setRender({});
+        }, `add column item`);
     };
 
     const handleInputChange = (itemId: number, inputValue: string) => {
-        setData((prevData) => {
-            const newContentData = prevData.content.map((column) => {
-                if (column.key === columnId) {
-                    const newColumnContentData = column.content.map((item) => {
-                        if (item.key === itemId) {
-                            return { ...item, content: inputValue };
+        doc.update((root) => {
+            for (let column = 0; column < data.content.length; column++) {
+                if (data.content[column].key === columnId) {
+                    for (let item = 0; item < data.content[column].content.length; item++) {
+                        if (data.content[column].content[item].key === itemId) {
+                            root.content[column].content[item].content = inputValue;
+                            setRender({});
                         }
-                        return item;
-                    });
-                    return { ...column, content: newColumnContentData };
+                    }
                 }
-                return column;
-            });
-
-            return { ...prevData, content: newContentData };
-        });
+            }
+        }, 'update column item');
     };
     return (
         <FloatingWrapper className="RNColumn" borderRadius="20px">
