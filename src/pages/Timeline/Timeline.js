@@ -83,6 +83,7 @@ export const Timeline = () => {
   };
 
   const [selectedTopic, setSelectedTopic] = useState(null);
+  const [reloadTopics, setReloadTopics] = useState(false);
 
   // const handleDoubleClick = (task) => {
   //   setSelectedTopic(task);
@@ -144,11 +145,13 @@ export const Timeline = () => {
 
     // 토픽 상태 업데이트
     setTasks(newTasks);
+    setReloadTopics(true);
   };
 
   const handleUpdateTopic = (name, startDate, endDate, description) => {
     const updatedTasks = tasks.map((task) => (task === selectedTopic ? { name, start: startDate, end: endDate, description } : task));
     setTasks(updatedTasks);
+    setReloadTopics(true);
   };
 
   const [deletedTopics, setDeletedTopics] = useState([]);
@@ -160,6 +163,7 @@ export const Timeline = () => {
     const updatedTasks = tasks.filter((task) => task.id !== topic.pk);
     setTasks(updatedTasks);
     fetchTopics();
+    setReloadTopics(true);
   };
 
   const fetchTopics = async () => {
@@ -247,30 +251,6 @@ export const Timeline = () => {
       Year.current?.removeEventListener("click", handleYearClick);
     };
   }, [gantt]);
-
-  // useEffect(() => {
-  //   // 초기 토픽 불러오기
-  //   const fetchData = async () => {
-  //     try {
-  //       const params = { projectPk, keyword: "", sortType: "ASC", page: 0, size: 100, userToken: userToken }; // 필요한 매개변수 설정
-  //       const res = await GetAllTopics(params);
-  //       console.log("API Response:", res.data); // 응답 내용을 확인
-  //       const topics = res.data.data.content.map((topic) => ({
-  //         start: new Date(topic.startDate),
-  //         end: new Date(topic.dueDate),
-  //         name: topic.name,
-  //         id: "Task " + topic.pk,
-  //         progress: 0, // 필요하다면 progress 값을 서버에서 받아올 수 있음
-  //         description: topic.description,
-  //       }));
-  //       setTasks(topics);
-  //     } catch (error) {
-  //       console.error("토픽 불러오기 실패", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [projectPk]);
 
   useEffect(() => {
     fetchTopics();

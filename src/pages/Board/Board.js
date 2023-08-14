@@ -54,6 +54,8 @@ const Board = () => {
   const [selectedColumn, setSelectedColumn] = useState(null); // 선택된 컬럼
   const [selectedIndex, setSelectedIndex] = useState(null); // 선택된 인덱스
   const location = useLocation();
+  const [teamPk, setTeamPk] = useState(location.pathname.split("/")[1]);
+  const [projectPk, setProjectPk] = useState(location.pathname.split("/")[2]);
 
   // 이슈 클릭을 처리하는 함수
   const handleShowIssueModal = (column, index) => {
@@ -68,7 +70,7 @@ const Board = () => {
     setShowModal(false);
   };
 
-  const handleAddIssue = (issueContent, issueStatus, imageDataUrl, assignee, reporter, startDate, endDate) => {
+  const handleAddIssue = (issueContent, issueStatus, imageDataUrl, assignee, reporter, startDate, endDate, teamPk, projectPk) => {
     // 새 이슈 객체를 생성
     const newIssue = {
       id: `${issueStatus}-${new Date().getTime()}`,
@@ -79,6 +81,8 @@ const Board = () => {
       reporter,
       startDate,
       endDate,
+      teamPk,
+      projectPk,
     };
 
     // 새 이슈를 리스트에 추가
@@ -136,6 +140,8 @@ const Board = () => {
         handleClose={handleCloseModal}
         handleAddIssue={handleAddIssue}
         column={selectedColumn}
+        teamPk={teamPk}
+        projectPk={projectPk}
       />
     </DragDropContext>
   );

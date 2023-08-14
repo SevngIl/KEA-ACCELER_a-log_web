@@ -6,6 +6,7 @@ import check from "../../assets/images/check.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { TeamsContext } from "../../service/teams/teams.context";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
+import { UploadTeamImage } from "../../service/teams/teams.service";
 
 const TeamSetting = () => {
   const location = useLocation();
@@ -37,17 +38,39 @@ const TeamSetting = () => {
     }
   };
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
+  // const handleImageUpload = (e) => {
+  //   const file = e.target.files[0];
+  //   const reader = new FileReader();
 
-    reader.onloadend = () => {
+  //   reader.onloadend = () => {
+  //     setHeaderImage(reader.result);
+  //   };
+
+  //   if (file) {
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+
+    // 미리보기와 Base64 형식의 문자열 가져오기
+    const reader = new FileReader();
+    reader.onloadend = async () => {
       setHeaderImage(reader.result);
+      // 이미지 업로드
+      try {
+        await UploadTeamImage(teamPk, userData.userPk, file, userToken);
+        alert("헤더 이미지가 저장되었습니다.");
+      } catch (err) {
+        alert("이미지 저장에 실패했습니다. 다시 시도해주세요.");
+      }
     };
 
     if (file) {
       reader.readAsDataURL(file);
     }
+    console.log(teamPk, userData.userPk, file, userToken);
   };
 
   const [deleteMember, setDeleteMember] = useState("");
