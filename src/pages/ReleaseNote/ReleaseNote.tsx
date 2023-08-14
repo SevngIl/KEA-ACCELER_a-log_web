@@ -21,7 +21,7 @@ export const ReleaseNote = () => {
         <div className="topWrapper">
           <h1>ReleaseNotes</h1>
 
-          <Button className="createNewBtn" variant="outline-primary" onClick={() => navigation(`/${teamPk}/${projectPk}/createReleaseNote`, { state: it })}>
+          <Button className="createNewBtn" variant="outline-primary" onClick={() => navigation(`/${teamPk}/${projectPk}/CreateReleaseNote`)}>
             Create New
           </Button>
         </div>
@@ -32,7 +32,7 @@ export const ReleaseNote = () => {
                   <div className="titleWrapper">
                     <h5 className="version">{it.version}</h5>
                     <div className="date">{it.date}</div>
-                    <img src={move} className="moveCreateRN" onClick={() => navigation(`/${teamPk}/${projectPk}/createReleaseNote`, { state: it })} />
+                    <img src={move} className="moveCreateRN" onClick={() => navigation(`/${teamPk}/${projectPk}/CreateReleaseNote`, { state: it })} />
                   </div>
 
                   {it.content.map(
@@ -44,7 +44,7 @@ export const ReleaseNote = () => {
                             {contentItem.content.map((item) => (
                               <div className="content">
                                 <BsDot width={18} />
-                                <div className="text">{item.content.toString()}</div>
+                                <div className="text">{item.content}</div>
                               </div>
                             ))}
                           </div>
@@ -59,7 +59,7 @@ export const ReleaseNote = () => {
       <FadeIn>
         <FloatingWrapper className="rightNavigation" width="150px" height="fit-content">
           {RNData.map((it) => (
-            <a className="navContent">{it.version.toString()}</a>
+            <a className="navContent">{it.version}</a>
           ))}
         </FloatingWrapper>
       </FadeIn>
