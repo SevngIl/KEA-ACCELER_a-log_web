@@ -4,13 +4,17 @@ import "./CreateReleaseNote.css";
 import { RNBadge } from "../../components/RNBadge";
 import { FloatingWrapper } from "../../components/FloatingWrapper";
 import { RNColumn } from "../../components/RNColumn";
-import { RNTag, ReleaseNoteColumnData, ReleaseNoteData } from "../../interfaces/releaseNote.interface";
+import { RNColumnContentData, RNTag, ReleaseNoteColumnData, ReleaseNoteData } from "../../interfaces/releaseNote.interface";
 import { useRef, useState, useEffect } from "react";
 import FadeIn from "../../animation/FadeIn";
+import yorkie, { Text as YorkieText, OperationInfo } from 'yorkie-js-sdk';
 
-const mockRNData: ReleaseNoteData = {
-  version: "0.0.0",
-  date: "2999.01.01",
+const yorkieApiURL: string = process.env.REACT_APP_YORKIE_API_URL!;
+const yorkieApiKey: string = process.env.REACT_APP_YORKIE_API_KEY!;
+
+const initialDisplayData: ReleaseNoteData = {
+  version: "",
+  date: "",
   content: [
     { key: 0, content: [{ key: 0, content: "" }], tag: "new", show: false },
     { key: 1, content: [{ key: 0, content: "" }], tag: "featured", show: false },
@@ -20,161 +24,72 @@ const mockRNData: ReleaseNoteData = {
     { key: 5, content: [{ key: 0, content: "" }], tag: "bug", show: false },
   ],
 };
-const Mock: ReleaseNoteData[] = [
-  {
-    version: "V1.0.10",
-    date: "2023.06.04",
-    content: [
-      {
-        key: 0,
-        tag: "new",
-        content: [
-          { key: 0, content: "Added homepage to allow user to show they are logged in" },
-          { key: 1, content: "Added a sort button allowing the user to filter the value array according to their needs." },
-        ],
-        show: true,
-      },
-      {
-        key: 1,
-        tag: "featured",
-        show: true,
-        content: [{ key: 0, content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In maecenas nec aenean a placerat vitae commodo." }],
-      },
-      {
-        key: 2,
-        tag: "changed",
-        show: true,
-        content: [{ key: 0, content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In maecenas nec aenean a placerat vitae commodo." }],
-      },
-      {
-        key: 3,
-        tag: "fixed",
-        show: true,
-        content: [{ key: 0, content: "Adaptation of the languages ​​and texts of the commentary part to better reflect reality" }],
-      },
-    ],
-  },
-  {
-    version: "V1.0.9",
-    date: "2023.06.04",
-    content: [
-      {
-        key: 0,
-        show: true,
-        tag: "new",
-        content: [{ key: 0, content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In maecenas nec aenean a placerat vitae commodo." }],
-      },
-      {
-        key: 1,
-        show: true,
-        tag: "featured",
-        content: [
-          { key: 0, content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In maecenas nec aenean a placerat vitae commodo." },
-          { key: 1, content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In maecenas nec aenean a placerat vitae commodo." },
-        ],
-      },
-      {
-        key: 2,
-        show: true,
-        tag: "changed",
-        content: [{ key: 0, content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In maecenas nec aenean a placerat vitae commodo." }],
-      },
-      {
-        key: 3,
-        show: true,
-        tag: "fixed",
-        content: [{ key: 0, content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In maecenas nec aenean a placerat vitae commodo." }],
-      },
-    ],
-  },
-  {
-    version: "V1.0.8",
-    date: "2023.06.04",
-    content: [
-      { key: 0, show: true, tag: "new", content: [{ key: 0, content: "content" }] },
-      {
-        key: 1,
-        show: true,
-        tag: "featured",
-        content: [
-          { key: 0, content: "content1" },
-          { key: 0, content: "content2" },
-        ],
-      },
-      { key: 2, show: true, tag: "changed", content: [{ key: 0, content: "content" }] },
-      { key: 3, show: true, tag: "fixed", content: [{ key: 0, content: "content" }] },
-    ],
-  },
-  {
-    version: "V1.0.7",
-    date: "2023.06.04",
-    content: [
-      { key: 0, show: true, tag: "new", content: [{ key: 0, content: "content" }] },
-      {
-        key: 1,
-        show: true,
-        tag: "featured",
-        content: [
-          { key: 0, content: "content1" },
-          { key: 0, content: "content2" },
-        ],
-      },
-      { key: 2, show: true, tag: "changed", content: [{ key: 0, content: "content" }] },
-      { key: 3, show: true, tag: "fixed", content: [{ key: 0, content: "content" }] },
-    ],
-  },
-];
 
 export const CreateReleaseNote = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const initialData = mockRNData; // 전달받은 데이터가 없으면 mockRNData 사용
-  const [data, setData] = useState(initialData);
-  //   const [data, setData] = useState(mockRNData);
-  const [version, setVersion] = useState("");
-  const [updateDate, setUpdateDate] = useState("");
-
-  const [categoryData, setCategoryData] = useState(mockRNData.content);
-
-  interface ContentDetail {
-    key: number;
-    content: string;
-  }
-
-  interface ContentItem {
-    key: number;
-    tag: string;
-    content: ContentDetail[];
-    show: boolean;
-  }
+  const [render, setRender] = useState({});
+  const [client, setClient] = useState(new yorkie.Client(yorkieApiURL, { apiKey: yorkieApiKey }));
+  const [doc, setDoc] = useState(new yorkie.Document<ReleaseNoteData>(
+    // `release-note-${Math.floor(Math.random() * 100000)}`,
+    `release-note-42`,
+  ));
 
   const toggleTag = (tag: RNTag) => {
-    let filteredData = data;
-    const filteredContentData = data.content.map((it) => (it.tag === tag ? { ...it, show: !it.show } : it));
-
-    console.log(filteredContentData);
-    setCategoryData(filteredContentData);
-    filteredData.content = filteredContentData;
-    setData(filteredData);
+    doc.update((root) => {
+      console.log("log: update toggle");
+      for (let column = 0; column < root.content.length; column++) {
+        if (root.content[column].tag === tag) {
+          root.content[column].show = !root.content[column].show;
+          break;
+        }
+      }
+      setRender({});
+    }, 'update toggle');
   };
 
   const onSaveRelaseNote = () => {
-    const newRNData = data;
-    data.version = version;
-    data.date = updateDate;
-    const RNData = [...Mock];
-    RNData.unshift(newRNData);
-    localStorage.setItem("RNData", JSON.stringify(RNData));
-    console.log(RNData);
     navigate("/releasenote");
   };
 
   useEffect(() => {
-    console.log(location.state);
-    if (location.state) {
-      setData(location.state);
-      setCategoryData(location.state.content);
-    }
+    client.activate().then(() => {
+      // subscribe peer change event
+      client.subscribe((event) => {
+        if (event.type === 'peers-changed') {
+
+        }
+      });
+
+      client.attach(doc).then(() => {
+        // 02-2. subscribe document event.
+        doc.update((root) => {
+          console.log(root);
+          if (!root.content) {
+            console.log('log: create content if not exists');
+            // root = initialData;
+            root.date = "";
+            root.version = "";
+            root.content = [...initialDisplayData.content];
+          }
+          setRender({});
+        }, 'create content if not exists');
+
+        doc.subscribe((event) => {
+          if (event.type === 'snapshot') {
+            // The text is replaced to snapshot and must be re-synced.
+            console.log(event);
+            setRender({});
+          } else if (event.type === 'remote-change') {
+            // The text is updated by remote changes.
+            console.log(event);
+            setRender({});
+          } else if (event.type === 'local-change') {
+            console.log(event);
+          }
+        });
+        client.sync();
+      });
+    });
   }, []);
 
   return (
@@ -196,22 +111,30 @@ export const CreateReleaseNote = () => {
             <div className="detailsWrapper">
               <div className="rnTag">AL-123</div>
               <h6>
-                Version : <input className="versionInput" value={version} onChange={(e) => setVersion(e.target.value)} placeholder={"V0.0.0"} />
+                Version : <input className="versionInput" value={doc.getRoot().version} onChange={(e) => {
+                  doc.update((root) => {
+                    root.version = e.target.value;
+                    setRender({});
+                  });
+                }} placeholder={"V0.0.0"} />
               </h6>
               <h6>
                 Update Date :{" "}
                 <input
                   className="updateDateInput"
-                  value={updateDate}
+                  value={doc.getRoot().date}
                   onChange={(e) => {
-                    setUpdateDate(e.target.value);
+                    doc.update((root) => {
+                      root.date = e.target.value;
+                      setRender({});
+                    });
                   }}
-                  placeholder={data.date}
+                  placeholder={"YYYY-MM-DD"}
                 />
               </h6>
             </div>
-            {categoryData.map((it) =>
-              it.show ? <RNColumn columnId={it.key} tag={it.tag} key={it.key} content={it.content} data={data} setData={setData} /> : null
+            {doc.getRoot().content && doc.getRoot().content.map((it) =>
+              it.show ? <RNColumn columnId={it.key} tag={it.tag} key={it.key} content={it.content} data={doc.getRoot()} doc={doc} setRender={setRender} /> : null
             )}
             {/* show 값이 true인 column만 렌더링 한다 */}
           </FloatingWrapper>

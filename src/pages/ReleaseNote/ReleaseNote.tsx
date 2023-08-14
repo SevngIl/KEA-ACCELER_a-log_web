@@ -28,8 +28,8 @@ export const ReleaseNote = () => {
             ? RNData!.map((it) => (
                 <FloatingWrapper className="releaseNote" width="90%" borderRadius="25px">
                   <div className="titleWrapper">
-                    <h5 className="version">{it.version}</h5>
-                    <div className="date">{it.date}</div>
+                    <h5 className="version">{it.version.toString()}</h5>
+                    <div className="date">{it.date.toString()}</div>
                     <img src={move} className="moveCreateRN" onClick={() => navigation("/CreateReleaseNote", { state: it })} />
                   </div>
 
@@ -42,7 +42,7 @@ export const ReleaseNote = () => {
                             {contentItem.content.map((item) => (
                               <div className="content">
                                 <BsDot width={18} />
-                                <div className="text">{item.content}</div>
+                                <div className="text">{item.content.toString()}</div>
                               </div>
                             ))}
                           </div>
@@ -57,7 +57,7 @@ export const ReleaseNote = () => {
       <FadeIn>
         <FloatingWrapper className="rightNavigation" width="150px" height="fit-content">
           {RNData.map((it) => (
-            <a className="navContent">{it.version}</a>
+            <a className="navContent">{it.version.toString()}</a>
           ))}
         </FloatingWrapper>
       </FadeIn>
