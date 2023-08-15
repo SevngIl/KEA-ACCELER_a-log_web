@@ -12,7 +12,7 @@ import { TeamsContext } from "../../service/teams/teams.context";
 
 const MyProjects = () => {
   const [projects, setProjects] = useState([]);
-  const { GetMyProjects } = useContext(ProjectsContext);
+  const { GetMyTeamProjects, GetMyAllProjects } = useContext(ProjectsContext);
 
   const { userToken } = useContext(AuthenticationContext);
   console.log(userToken);
@@ -25,21 +25,26 @@ const MyProjects = () => {
   };
 
   useEffect(() => {
-    GetMyProjects("", "DESC", 0, 10, userToken)
+    const fetchProjects =
+      !selectedTeamPk || selectedTeamPk === 9999
+        ? () => GetMyAllProjects("", "DESC", 0, 100, userToken)
+        : () => GetMyTeamProjects("", "DESC", 0, 100, selectedTeamPk, userToken);
+
+    fetchProjects()
       .then((res) => {
         if (res.status === 200) {
-          // 선택된 팀이 9999(all)가 아니라면 해당 팀의 프로젝트만 필터링
-          const filteredProjects =
-            selectedTeamPk && selectedTeamPk !== 9999 ? res.data.data.content.filter((project) => project.teamPk === selectedTeamPk) : res.data.data.content;
-
-          setProjects(filteredProjects);
-          console.log(projects);
+          setProjects(res.data.data.content);
+          console.log(res.data.data.content);
         }
       })
       .catch((err) => {
         console.error(err);
         alert("프로젝트 목록을 제대로 불러오지 못했습니다");
       });
+  }, [selectedTeamPk]);
+
+  useEffect(() => {
+    console.log("Projects before fetching:", projects);
   }, [selectedTeamPk]);
 
   return (
@@ -60,7 +65,7 @@ const MyProjects = () => {
               <FloatingWrapper className="project-card" key={index}>
                 <div
                   className="projectSettingBtn"
-                  onClick={() => navigate(`/${project.teamPk}/${project.pk}/projectSetting`, { state: { pk: project.pk, name: project.name } })}
+                  onClick={() => navigate(`/${project.team.teamPk}/${project.pk}/projectSetting`, { state: { pk: project.pk, name: project.name } })}
                 >
                   <CiSettings size={"24px"} />
                 </div>
@@ -68,15 +73,15 @@ const MyProjects = () => {
                 <img
                   src={projectImg}
                   className="projectImg"
-                  onClick={() => navigate(`/${project.teamPk}/${project.pk}/Board`, { state: { pk: project.pk, name: project.name } })}
+                  onClick={() => navigate(`/${project.team.teamPk}/${project.pk}/Board`, { state: { pk: project.pk, name: project.name } })}
                 />
                 <div
                   className="projectDescription"
-                  onClick={() => navigate(`/${project.teamPk}/${project.pk}/Board`, { state: { pk: project.pk, name: project.name } })}
+                  onClick={() => navigate(`/${project.team.teamPk}/${project.pk}/Board`, { state: { pk: project.pk, name: project.name } })}
                 >
                   <div className="project-title">{project.name}</div>
                   <div>
-                    <div className="project-info">TEAM PK: {project.teamPk}</div>
+                    <div className="project-info">TEAM PK: {project.team.teamPk}</div>
                     {/* <div className="project-info">PM PK: {project.pmPk}</div> */}
                     <div className="project-info">DESCRIPTION: {project.description}</div>
                   </div>

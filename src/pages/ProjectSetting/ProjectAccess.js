@@ -24,22 +24,13 @@ export const ProjectAccess = () => {
   const [teamPk, projectPk] = location.pathname.split("/").slice(1, 3);
   const [projectDetails, setProjectDetails] = useState(null);
   const projectName = projectDetails ? projectDetails.name : "";
+  const filteredProjectMembers = projectMembers.filter((member) => member.userNN.includes(searchTerm));
+  const [currentPage, setCurrentPage] = useState(0);
+  const pageSize = 10;
 
   const handleSearchChange = (e) => {
     // 타입 지정
     setSearchTerm(e.target.value);
-  };
-
-  const handleSearchSubmit = (e) => {
-    // 타입 지정
-    if (e.key === "Enter") {
-      // 검색 로직
-      const results = [
-        { name: "홍길동", email: "hong@example.com" },
-        { name: "김철수", email: "kim@example.com" },
-      ];
-      setSearchResults(results);
-    }
   };
 
   const handleMemberAdded = () => {
@@ -54,7 +45,7 @@ export const ProjectAccess = () => {
     // 프로젝트 세부 정보를 가져오는 로직
     GetProjectDetail(projectPk, userToken)
       .then((res) => {
-        setProjectDetails(res.data.data); // 응답 데이터에서 프로젝트 세부 정보를 가져옵니다.
+        setProjectDetails(res.data.data);
       })
       .catch((err) => {
         console.error(err);
@@ -65,16 +56,31 @@ export const ProjectAccess = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await GetProjectMembers(projectPk, "", 0, 10, userToken);
-        const userPks = response.data.data.content.map((member) => member);
-        setProjectMembers(userPks);
+        const response = await GetProjectMembers(projectPk, "", currentPage, pageSize, userToken);
+        console.log("Project Members:", response);
+        const userPksAndNNs = response.data.data.content.map((member) => ({
+          userPk: member.userPk,
+          userNN: member.userNN,
+          userEmail: member.email,
+        }));
+        setProjectMembers(userPksAndNNs);
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchData();
-  }, [projectPk, membersUpdated]); // projectPk, 멤버가 변경될 때마다
+  }, [projectPk, membersUpdated, currentPage]); // projectPk, 멤버가 변경될 때마다
+
+  // 다음 페이지로 이동하는 함수
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  // 이전 페이지로 이동하는 함수
+  const handlePreviousPage = () => {
+    if (currentPage > 0) setCurrentPage(currentPage - 1);
+  };
 
   return (
     <div className="ProjectAccess">
@@ -117,44 +123,39 @@ export const ProjectAccess = () => {
               <input
                 className="searchbar"
                 type="text"
-                placeholder="이름, 이메일 주소를 검색"
+                placeholder="닉네임으로 검색 해보세요 :)"
                 value={searchTerm}
                 onChange={handleSearchChange}
-                onKeyPress={handleSearchSubmit}
+                // onKeyPress={handleSearchSubmit}
               />
             </div>
 
             <div className="ProjectMember-list">
               <Table striped bordered hover>
-                {/* <thead>
-                  <tr>
-                    <th>이름</th>
-                    <th>이메일</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {searchResults.map((result, index) => (
-                    <tr key={index}>
-                      <td>{result.name}</td>
-                      <td>{result.email}</td>
-                    </tr>
-                  ))}
-                </tbody> */}
                 <thead>
                   <tr>
-                    <th>이름 (유저 pk)</th>
+                    <th style={{ width: "40%" }}>닉네임</th>
                     <th>이메일</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {projectMembers.map((memberPk, index) => (
+                  {filteredProjectMembers.map((member, index) => (
                     <tr key={index}>
-                      <td>{memberPk}</td>
-                      <td></td> {/* 이메일 칸은 비워둠 */}
+                      <td>{`${member.userNN}`}</td>
+                      <td>{`${member.userEmail}`}</td>
                     </tr>
                   ))}
                 </tbody>
               </Table>
+            </div>
+
+            <div className="pagination" style={{ display: "flex", justifyContent: "space-between" }}>
+              <Button variant="outline-primary" onClick={handlePreviousPage} disabled={currentPage === 0}>
+                이전 페이지
+              </Button>
+              <Button variant="outline-primary" onClick={handleNextPage} disabled={projectMembers.length < pageSize}>
+                다음 페이지
+              </Button>
             </div>
           </div>
         </FloatingWrapper>

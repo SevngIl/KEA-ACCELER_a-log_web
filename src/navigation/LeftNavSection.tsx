@@ -19,7 +19,7 @@ export const LeftNavSection = () => {
           <div className="logo">
             <img src={logo} alt="logo" />
           </div>
-          <div className="project-name">{location.state.name}</div>
+          <div className="project-name">{location.state?.name}</div>
         </div>
 
         <div className="planning_container">

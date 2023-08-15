@@ -95,12 +95,32 @@ const TeamSetting = () => {
     }
   };
 
+  useEffect(() => {
+    // teamInfo가 존재하면 팀 이미지 URL을 콘솔에 로그
+    if (teamInfo) {
+      console.log(teamInfo.teamImage);
+    } else {
+      console.log("teamInfo is not yet available");
+    }
+  }, [teamInfo]);
+
+  const modifyLink = (url) => {
+    // 슬래시 2개를 기준으로 뒷부분만 사용
+    const urlObj = new URL(url);
+    const path = urlObj.pathname.split("//")[1];
+    // 앞부분에 https://alog.acceler.kr/를 붙이기
+    const newUrl = "https://alog.acceler.kr/" + path;
+    return newUrl;
+  };
+
+  const modifiedTeamImageUrl = teamInfo.teamImage ? modifyLink(teamInfo.teamImage) : null;
+
   return (
     <div className="TeamSetting">
       <h3 style={{ marginLeft: "10%" }}>{teamInfo.teamName}</h3>
       <div className="teamSetting-Header">
-        <div className="header-image-container" style={{ backgroundImage: `url(${headerImage})` }}>
-          {!headerImage && <span className="header-image-text">헤더 이미지</span>}
+        <div className="header-image-container" style={{ backgroundImage: `url(${headerImage || modifiedTeamImageUrl})` }}>
+          {!headerImage && !modifiedTeamImageUrl && <span className="header-image-text">헤더 이미지</span>}
         </div>
         <input type="file" accept="image/*" onChange={handleImageUpload} id="header-image-upload" style={{ display: "none" }} />
         <div style={{ display: "flex", width: "100%", justifyContent: "space-around", alignItems: "center" }}>

@@ -17,10 +17,15 @@ const LeftTeamSection = () => {
   const { setSelectedTeamPk } = useContext(TeamsContext);
 
   const fetchTeamList = async () => {
+    if (!userData || userData.userPk == null) {
+      console.error("userPk is null or undefined");
+      return;
+    }
     const teamList = await OnGetTeamList(userData.userPk, userToken);
     console.log("list : ", teamList);
     setTeams(teamList);
   };
+
   useEffect(() => {
     // 로컬 스토리지에서 팀 정보 가져오기
     fetchTeamList();

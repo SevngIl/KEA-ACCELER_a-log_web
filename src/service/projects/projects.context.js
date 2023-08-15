@@ -1,13 +1,13 @@
 import React, { useState, createContext, useEffect } from "react";
 import {
   PostCreateProjects,
-  GetAllProjects,
+  GetMyAllProjects,
   GetProjectDetail,
   DeleteProject,
   AddProjectMembers,
   GetProjectMembers,
   RemoveProjectMembers,
-  GetMyProjects,
+  GetMyTeamProjects,
 } from "./projects.service";
 
 export const ProjectsContext = createContext();
@@ -17,13 +17,13 @@ export const ProjectsContextProvider = ({ children }) => {
     <ProjectsContext.Provider
       value={{
         PostCreateProjects,
-        GetAllProjects,
+        GetMyAllProjects,
         GetProjectDetail,
         DeleteProject,
         AddProjectMembers,
         GetProjectMembers,
         RemoveProjectMembers,
-        GetMyProjects,
+        GetMyTeamProjects,
       }}
     >
       {children}

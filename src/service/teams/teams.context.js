@@ -1,5 +1,14 @@
 import React, { useState, createContext, useEffect } from "react";
-import { DeleteTeamMembers, DeleteTeams, GetTeamInfo, GetTeamList, GetTeamMembers, PostAddTeamMembers, PostCreateTeams } from "./teams.service";
+import {
+  DeleteTeamMembers,
+  DeleteTeams,
+  GetTeamInfo,
+  GetTeamList,
+  GetTeamMembers,
+  PostAddTeamMembers,
+  PostCreateTeams,
+  GetUserPkByNickname,
+} from "./teams.service";
 
 export const TeamsContext = createContext();
 
@@ -91,6 +100,7 @@ export const TeamsContextProvider = ({ children }) => {
         OnDeleteTeamMembers,
         selectedTeamPk,
         setSelectedTeamPk,
+        GetUserPkByNickname,
       }}
     >
       {children}

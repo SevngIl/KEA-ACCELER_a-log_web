@@ -7,7 +7,7 @@ import { RNColumn } from "../../components/RNColumn";
 import { RNColumnContentData, RNTag, ReleaseNoteColumnData, ReleaseNoteData } from "../../interfaces/releaseNote.interface";
 import { useRef, useState, useEffect } from "react";
 import FadeIn from "../../animation/FadeIn";
-import yorkie, { Text as YorkieText, OperationInfo } from 'yorkie-js-sdk';
+import yorkie, { Text as YorkieText, OperationInfo } from "yorkie-js-sdk";
 
 const yorkieApiURL: string = process.env.REACT_APP_YORKIE_API_URL!;
 const yorkieApiKey: string = process.env.REACT_APP_YORKIE_API_KEY!;
@@ -29,10 +29,12 @@ export const CreateReleaseNote = () => {
   const navigate = useNavigate();
   const [render, setRender] = useState({});
   const [client, setClient] = useState(new yorkie.Client(yorkieApiURL, { apiKey: yorkieApiKey }));
-  const [doc, setDoc] = useState(new yorkie.Document<ReleaseNoteData>(
-    // `release-note-${Math.floor(Math.random() * 100000)}`,
-    `release-note-42`,
-  ));
+  const [doc, setDoc] = useState(
+    new yorkie.Document<ReleaseNoteData>(
+      // `release-note-${Math.floor(Math.random() * 100000)}`,
+      `release-note-42`
+    )
+  );
 
   const toggleTag = (tag: RNTag) => {
     doc.update((root) => {
@@ -44,7 +46,7 @@ export const CreateReleaseNote = () => {
         }
       }
       setRender({});
-    }, 'update toggle');
+    }, "update toggle");
   };
 
   const onSaveRelaseNote = () => {
@@ -55,8 +57,7 @@ export const CreateReleaseNote = () => {
     client.activate().then(() => {
       // subscribe peer change event
       client.subscribe((event) => {
-        if (event.type === 'peers-changed') {
-
+        if (event.type === "peers-changed") {
         }
       });
 
@@ -65,25 +66,25 @@ export const CreateReleaseNote = () => {
         doc.update((root) => {
           console.log(root);
           if (!root.content) {
-            console.log('log: create content if not exists');
+            console.log("log: create content if not exists");
             // root = initialData;
             root.date = "";
             root.version = "";
             root.content = [...initialDisplayData.content];
           }
           setRender({});
-        }, 'create content if not exists');
+        }, "create content if not exists");
 
         doc.subscribe((event) => {
-          if (event.type === 'snapshot') {
+          if (event.type === "snapshot") {
             // The text is replaced to snapshot and must be re-synced.
             console.log(event);
             setRender({});
-          } else if (event.type === 'remote-change') {
+          } else if (event.type === "remote-change") {
             // The text is updated by remote changes.
             console.log(event);
             setRender({});
-          } else if (event.type === 'local-change') {
+          } else if (event.type === "local-change") {
             console.log(event);
           }
         });
@@ -111,12 +112,18 @@ export const CreateReleaseNote = () => {
             <div className="detailsWrapper">
               <div className="rnTag">AL-123</div>
               <h6>
-                Version : <input className="versionInput" value={doc.getRoot().version} onChange={(e) => {
-                  doc.update((root) => {
-                    root.version = e.target.value;
-                    setRender({});
-                  });
-                }} placeholder={"V0.0.0"} />
+                Version :{" "}
+                <input
+                  className="versionInput"
+                  value={doc.getRoot().version}
+                  onChange={(e) => {
+                    doc.update((root) => {
+                      root.version = e.target.value;
+                      setRender({});
+                    });
+                  }}
+                  placeholder={"V0.0.0"}
+                />
               </h6>
               <h6>
                 Update Date :{" "}
@@ -133,9 +140,14 @@ export const CreateReleaseNote = () => {
                 />
               </h6>
             </div>
-            {doc.getRoot().content && doc.getRoot().content.map((it) =>
-              it.show ? <RNColumn columnId={it.key} tag={it.tag} key={it.key} content={it.content} data={doc.getRoot()} doc={doc} setRender={setRender} /> : null
-            )}
+            {doc.getRoot().content &&
+              doc
+                .getRoot()
+                .content.map((it) =>
+                  it.show ? (
+                    <RNColumn columnId={it.key} tag={it.tag} key={it.key} content={it.content} data={doc.getRoot()} doc={doc} setRender={setRender} />
+                  ) : null
+                )}
             {/* show 값이 true인 column만 렌더링 한다 */}
           </FloatingWrapper>
         </div>

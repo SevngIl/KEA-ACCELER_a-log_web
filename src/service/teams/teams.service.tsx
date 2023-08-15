@@ -156,57 +156,6 @@ export const DeleteTeamMembers = (teamPk: number, userNNList: string[], userPk: 
   return deleteResult;
 };
 
-// export const UploadTeamImage = (teamPk: number, userPk: number, teamImage: string, userToken: string): Promise<AxiosResponse> => {
-//   const options = {
-//     headers: {
-//       Authorization: `Bearer ${userToken}`,
-//     },
-//   };
-//   const body = {
-//     teamPk: teamPk,
-//     teamImage: teamImage,
-//   };
-//   const postResult: Promise<AxiosResponse> = axios
-//     .post(`${API_URL}/api/users/teams/image?teamPk=${teamPk}&userPk=${userPk}&teamImage=${teamImage}`, body, options)
-//     .then((res: AxiosResponse) => {
-//       return res;
-//     })
-//     .catch((err: AxiosError) => {
-//       alert(err);
-//       throw err;
-//     });
-
-//   return postResult;
-// };
-
-// export const UploadTeamImage = async (teamPk: number, userPk: number, teamImage: File, userToken: string): Promise<AxiosResponse> => {
-//   const requestData = {
-//     imgs: teamImage,
-//     teamPk: teamPk,
-//     userPk: userPk,
-//   };
-
-//   const formData = new FormData();
-//   formData.append("teamImage", teamImage);
-
-//   const options = {
-//     headers: {
-//       Authorization: `Bearer ${userToken}`,
-//       "Content-Type": "multipart/form-data",
-//     },
-//   };
-
-//   formData.append("data", JSON.stringify(requestData));
-
-//   try {
-//     const postResult = await axios.post(`${API_URL}/api/aggr/users/teams/image`, formData, options);
-//     return postResult;
-//   } catch (err) {
-//     alert(err);
-//     throw err;
-//   }
-// };
-
 export const UploadTeamImage = async (teamPk: number, userPk: number, teamImage: File, userToken: string): Promise<AxiosResponse> => {
   const formData = new FormData();
 
@@ -230,4 +179,23 @@ export const UploadTeamImage = async (teamPk: number, userPk: number, teamImage:
     alert(err);
     throw err;
   }
+};
+
+export const GetUserPkByNickname = (userNn: string, userToken: string): Promise<AxiosResponse> => {
+  const options = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  };
+  const getResult: Promise<AxiosResponse> = axios
+    .get(`${API_URL}/api/users/ntop?userNn=${userNn}`, options)
+    .then((res: AxiosResponse) => {
+      return res;
+    })
+    .catch((err: AxiosError) => {
+      alert(err);
+      throw err;
+    });
+
+  return getResult;
 };
