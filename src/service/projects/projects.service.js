@@ -30,7 +30,7 @@ export const PostCreateProjects = async (projectName, description, teamPk, userT
   }
 };
 
-export const GetAllProjects = async (keyword, sortType, page, size, userToken) => {
+export const GetMyAllProjects = async (keyword, sortType, page, size, userToken) => {
   const options = {
     headers: {
       Authorization: `Bearer ${userToken}`,
@@ -39,7 +39,7 @@ export const GetAllProjects = async (keyword, sortType, page, size, userToken) =
   console.log(userToken);
 
   try {
-    const res = await axios.get(`${API_URL}/api/projects?sortType=${sortType}&page=${page}&size=${size}`, options);
+    const res = await axios.get(`${API_URL}/api/aggr/projects/mine?sortType=${sortType}&page=${page}&size=${size}`, options);
     console.log("Response:", res);
     return res;
   } catch (err) {
@@ -48,7 +48,7 @@ export const GetAllProjects = async (keyword, sortType, page, size, userToken) =
   }
 };
 
-export const GetMyProjects = async (keyword, sortType, page, size, userToken) => {
+export const GetMyTeamProjects = async (keyword, sortType, page, size, teamPk, userToken) => {
   const options = {
     headers: {
       Authorization: `Bearer ${userToken}`,
@@ -57,7 +57,7 @@ export const GetMyProjects = async (keyword, sortType, page, size, userToken) =>
   console.log(userToken);
 
   try {
-    const res = await axios.get(`${API_URL}/api/projects/mine?sortType=${sortType}&page=${page}&size=${size}`, options);
+    const res = await axios.get(`${API_URL}/api/aggr/projects/mine?sortType=${sortType}&page=${page}&size=${size}&teamPk=${teamPk}`, options);
     console.log("Response:", res);
     return res;
   } catch (err) {
@@ -127,7 +127,7 @@ export const DeleteProject = async (projectPk, userToken) => {
 
 export const GetProjectMembers = async (projectPk, keyword, page, size, userToken) => {
   try {
-    const res = await axios.get(`${API_URL}/api/projects/${projectPk}/members`, {
+    const res = await axios.get(`${API_URL}/api/aggr/projects/${projectPk}/members`, {
       params: {
         keyword,
         page,
@@ -233,7 +233,7 @@ export const GetAllTopics = async ({ projectPk, keyword, sortType, page, size, u
   };
 
   try {
-    const res = await axios.get(`${API_URL}/api/projects/${projectPk}/topics`, options);
+    const res = await axios.get(`${API_URL}/api/aggr/projects/${projectPk}/topics`, options);
     console.log("Response:", res);
     return res;
   } catch (err) {
