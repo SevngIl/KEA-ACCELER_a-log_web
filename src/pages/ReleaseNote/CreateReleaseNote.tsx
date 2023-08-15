@@ -1,13 +1,15 @@
 import { Button, Fade } from "react-bootstrap";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import "./CreateReleaseNote.css";
 import { RNBadge } from "../../components/RNBadge";
 import { FloatingWrapper } from "../../components/FloatingWrapper";
 import { RNColumn } from "../../components/RNColumn";
 import { RNColumnContentData, RNTag, ReleaseNoteColumnData, ReleaseNoteData } from "../../interfaces/releaseNote.interface";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
+import { AuthenticationContext } from "../../service/authentication/authentication.context";
+import axios from "axios";
 import FadeIn from "../../animation/FadeIn";
-import yorkie, { Text as YorkieText, OperationInfo } from "yorkie-js-sdk";
+import yorkie, { Text as YorkieText, Document as YorkieDocument } from 'yorkie-js-sdk';
 
 const yorkieApiURL: string = process.env.REACT_APP_YORKIE_API_URL!;
 const yorkieApiKey: string = process.env.REACT_APP_YORKIE_API_KEY!;
@@ -27,14 +29,14 @@ const initialDisplayData: ReleaseNoteData = {
 
 export const CreateReleaseNote = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const pjPk = useParams().projectPk;
+  const teamPk = useParams().teamPk;
+  const notePk = useParams().notePk;
+  const { userToken } = useContext(AuthenticationContext);
   const [render, setRender] = useState({});
   const [client, setClient] = useState(new yorkie.Client(yorkieApiURL, { apiKey: yorkieApiKey }));
-  const [doc, setDoc] = useState(
-    new yorkie.Document<ReleaseNoteData>(
-      // `release-note-${Math.floor(Math.random() * 100000)}`,
-      `release-note-42`
-    )
-  );
+  const [doc, setDoc] = useState<YorkieDocument<ReleaseNoteData>>(new YorkieDocument<ReleaseNoteData>('rn-' + notePk));
 
   const toggleTag = (tag: RNTag) => {
     doc.update((root) => {
@@ -50,7 +52,7 @@ export const CreateReleaseNote = () => {
   };
 
   const onSaveRelaseNote = () => {
-    navigate("/releasenote");
+    navigate(`/${teamPk}/${pjPk}/ReleaseNote`, { state: location.state });
   };
 
   useEffect(() => {
