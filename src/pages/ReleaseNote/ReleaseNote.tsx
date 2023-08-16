@@ -34,7 +34,7 @@ export const ReleaseNote = () => {
       console.log("get release note data", data[i])
       const client = new yorkie.Client(yorkieApiURL, { apiKey: yorkieApiKey });
       await client.activate();
-      const doc = new YorkieDocument<ReleaseNoteData>('rn-' + data[i].notePk);
+      const doc = new YorkieDocument<ReleaseNoteData>('releasenote-' + data[i].notePk);
       await client.attach(doc);
       newReleaseNoteList.push({ data: doc.getRoot(), pk: data[i].notePk });
       await client.detach(doc);
@@ -69,14 +69,14 @@ export const ReleaseNote = () => {
             ? RNData!.map((it) => (
                 <FloatingWrapper className="releaseNote" width="90%" borderRadius="25px">
                   <div className="titleWrapper">
-                    <h5 className="version">{it.data.version}</h5>
-                    <div className="date">{it.data.date}</div>
+                    <h5 className="version">{it.data.version ? it.data.version.content : ''}</h5>
+                    <div className="date">{it.data.date ? it.data.version.content : ''}</div>
                     <img src={move} className="moveCreateRN" alt="moveCreateRN" onClick={() => {
                       navigation(`/${teamPk}/${pjPk}/CreateReleaseNote/${it.pk}`, { state: location.state } );
                     }} />
                   </div>
 
-                  {it.data.content.map(
+                  {it.data.content && it.data.content.map(
                     (contentItem) =>
                       contentItem.show && (
                         <div className="releaseNoteContentItem">
@@ -85,7 +85,7 @@ export const ReleaseNote = () => {
                             {contentItem.content.map((item) => (
                               <div className="content">
                                 <BsDot width={18} />
-                                <div className="text">{item.content}</div>
+                                <div className="text">{item.content.content}</div>
                               </div>
                             ))}
                           </div>
@@ -100,7 +100,7 @@ export const ReleaseNote = () => {
       <FadeIn>
         <FloatingWrapper className="rightNavigation" width="150px" height="fit-content">
           {RNData.map((it) => (
-            <a className="navContent">{it.data.version}</a>
+            <a className="navContent">{it.data.version ? it.data.version.content : ''}</a>
           ))}
         </FloatingWrapper>
       </FadeIn>
