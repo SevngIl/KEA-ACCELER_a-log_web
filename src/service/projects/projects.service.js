@@ -73,7 +73,7 @@ export const GetProjectDetail = async (projectPk, userToken) => {
     },
   };
   try {
-    const res = await axios.get(`${API_URL}/api/projects/${projectPk}`, options);
+    const res = await axios.get(`${API_URL}/api/aggr/projects/${projectPk}`, options);
     console.log("Response:", res.data);
     return res;
   } catch (err) {
@@ -229,12 +229,12 @@ export const GetAllTopics = async ({ projectPk, keyword, sortType, page, size, u
     headers: {
       Authorization: `Bearer ${userToken}`,
     },
-    params,
   };
 
   try {
-    const res = await axios.get(`${API_URL}/api/aggr/projects/${projectPk}/topics`, options);
-    console.log("Response:", res);
+    const res = await axios.get(`${API_URL}/api/aggr/projects/${projectPk}/topics?sortType=${sortType}&page=${page}&size=${size}`, options);
+    console.log("project Pk", projectPk);
+    console.log("Topic Response:", res);
     return res;
   } catch (err) {
     console.error("토픽 전체 조회 중 오류 발생:", err.response ? err.response.data : err.message);

@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import DateTimePicker from "react-datetime-picker";
 import "react-datetime-picker/dist/DateTimePicker.css";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import "./IssueModal.css";
-import { CreateIssue } from "../../service/issues/issues.service";
+import { AuthenticationContext } from "../../service/authentication/authentication.context";
+import { PostCreateIssue } from "../../service/issues/issues.service";
 
 const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, column, teamPk, projectPk }) => {
+  const { userToken } = useContext(AuthenticationContext);
+
   const [issueContent, setIssueContent] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewSource, setPreviewSource] = useState(null);
-  const [issueStatus, setIssueStatus] = useState("TO DO");
+  const [issueStatus, setIssueStatus] = useState("TODO");
   const [assignee, setAssignee] = useState("할당되지 않음");
   const reporter = "한승일";
   const [startDate, setStartDate] = useState(new Date());
@@ -37,18 +40,6 @@ const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, colum
     }
   }, [isEditing, issue]);
 
-  const handleSubmit = () => {
-    handleAddIssue(issueContent, issueStatus, previewSource, assignee, reporter, startDate, endDate);
-    setIssueContent("");
-    setSelectedFile(null);
-    setPreviewSource(null);
-    setIssueStatus("TO DO");
-    setAssignee("할당되지 않음");
-    setStartDate(new Date());
-    setEndDate(new Date());
-    handleClose();
-  };
-
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     previewFile(file);
@@ -63,38 +54,51 @@ const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, colum
     };
   };
 
-  // const handleSubmit = async () => {
-  //   // 여기서 API 호출을 통해 이슈 생성
-  //   try {
-  //     const response = await CreateIssue(
-  //       projectPk, // 프로젝트 키
-  //       teamPk, // 팀 키
-  //       issueContent, // 이슈 제목
-  //       issueContent, // 이슈 설명
-  //       reporter, // 이슈 작성자 키
-  //       issueStatus, // 이슈 상태
-  //       issueLabel= "NONE", // 이슈 레이블
-  //       todoPk= 1, // 할 일 키
-  //       issueOpened = "true", // 이슈 오픈 여부
-  //       assignee, // 이슈 담당자 키
-  //       previewSource, // 파일 링크
-  //       id // 이슈 ID
-  //     );
-
-  //     handleAddIssue(issueContent, issueStatus, previewSource, assignee, reporter, startDate, endDate);
-  //     setIssueContent("");
-  //     setSelectedFile(null);
-  //     setPreviewSource(null);
-  //     setIssueStatus("TO DO");
-  //     setAssignee("할당되지 않음");
-  //     setStartDate(new Date());
-  //     setEndDate(new Date());
-  //     handleClose();
-  //   } catch (err) {
-  //     console.error(err);
-  //     // 여기서 에러 처리를 수행할 수 있음
-  //   }
+  // const handleSubmit = () => {
+  //   handleAddIssue(issueContent, issueStatus, previewSource, assignee, reporter, startDate, endDate);
+  //   setIssueContent("");
+  //   setSelectedFile(null);
+  //   setPreviewSource(null);
+  //   setIssueStatus("TO DO");
+  //   setAssignee("할당되지 않음");
+  //   setStartDate(new Date());
+  //   setEndDate(new Date());
+  //   handleClose();
   // };
+
+  const handleSubmit = async () => {
+    const issueData = {
+      pjPk: projectPk,
+      teamPk: teamPk,
+      topicPk: 1, // topicPk 임시로 설정
+      issueAuthorPk: 1,
+      issueContent: issueContent,
+      issueStatus: issueStatus,
+      issueLabel: "NONE",
+      issueAssigneePk: 1,
+      issueId: "Id 1",
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+    };
+
+    try {
+      // API 호출
+      await PostCreateIssue(selectedFile, issueData, userToken);
+
+      // 성공적으로 완료된 후 처리
+      handleAddIssue(issueContent, issueStatus, previewSource, assignee, reporter, startDate, endDate);
+      setIssueContent("");
+      setSelectedFile(null);
+      setPreviewSource(null);
+      setIssueStatus("TODO");
+      setAssignee("할당되지 않음");
+      setStartDate(new Date());
+      setEndDate(new Date());
+      handleClose();
+    } catch (err) {
+      console.error("이슈 생성에 실패했습니다:", err);
+    }
+  };
 
   return (
     <Modal show={show} onHide={handleClose}>

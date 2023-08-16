@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import "./Board.css";
 import IssueModal from "../../components/Modal/IssueModal";
@@ -7,6 +7,8 @@ import { FloatingWrapper } from "../../components/FloatingWrapper";
 import { Button } from "react-bootstrap";
 import FadeIn from "../../animation/FadeIn";
 import { useLocation } from "react-router-dom";
+import { GetIssue, PostCreateIssue, GetAllIssues } from "../../service/issues/issues.service";
+import { AuthenticationContext } from "../../service/authentication/authentication.context";
 
 const BoardColumn = ({ column, issues, handleShowIssueModal }) => {
   return (
@@ -48,14 +50,15 @@ const BoardColumn = ({ column, issues, handleShowIssueModal }) => {
 };
 
 const Board = () => {
-  const columns = ["TO DO", "IN PROGRESS", "DONE", "EMERGENCY"];
-  const [issues, setIssues] = useState({ "TO DO": [], "IN PROGRESS": [], DONE: [], EMERGENCY: [] });
+  const columns = ["TODO", "INPROGRESS", "DONE", "EMERGENCY"];
+  const [issues, setIssues] = useState({ TODO: [], INPROGRESS: [], DONE: [], EMERGENCY: [] });
   const [showModal, setShowModal] = useState(false); // 모달을 표시할지 여부
   const [selectedColumn, setSelectedColumn] = useState(null); // 선택된 컬럼
   const [selectedIndex, setSelectedIndex] = useState(null); // 선택된 인덱스
   const location = useLocation();
   const [teamPk, setTeamPk] = useState(location.pathname.split("/")[1]);
   const [projectPk, setProjectPk] = useState(location.pathname.split("/")[2]);
+  const { userToken } = useContext(AuthenticationContext);
 
   // 이슈 클릭을 처리하는 함수
   const handleShowIssueModal = (column, index) => {
@@ -68,6 +71,15 @@ const Board = () => {
     setSelectedColumn(null);
     setSelectedIndex(null);
     setShowModal(false);
+  };
+
+  const modifyLink = (url) => {
+    // 슬래시 2개를 기준으로 뒷부분만 사용
+    const urlObj = new URL(url);
+    const path = urlObj.pathname.split("//")[1];
+    // 앞부분에 https://alog.acceler.kr/를 붙이기
+    const newUrl = "https://alog.acceler.kr/" + path;
+    return newUrl;
   };
 
   const handleAddIssue = (issueContent, issueStatus, imageDataUrl, assignee, reporter, startDate, endDate, teamPk, projectPk) => {
@@ -119,6 +131,40 @@ const Board = () => {
       }));
     }
   };
+
+  const fetchIssues = async () => {
+    try {
+      // userToken은 적절한 방법으로 얻어야 합니다.
+      const response = await GetAllIssues(projectPk, 0, 100, userToken);
+      const issuesData = response.data;
+
+      const categorizedIssues = { TODO: [], INPROGRESS: [], DONE: [], EMERGENCY: [] };
+      issuesData.forEach((issue) => {
+        const status = issue.issueStatus.toUpperCase();
+        let imageDataUrl = issue.fileLink;
+
+        // 이미지 URL이 존재하면 modifyLink 함수로 수정
+        if (imageDataUrl) {
+          imageDataUrl = modifyLink(imageDataUrl);
+        }
+
+        if (categorizedIssues[status]) {
+          categorizedIssues[status].push({
+            id: `draggable-${issue.issuePk}`,
+            content: issue.issueDescription,
+            imageDataUrl: imageDataUrl,
+          });
+        }
+      });
+      setIssues(categorizedIssues);
+    } catch (err) {
+      console.error("이슈를 불러오는 중 오류가 발생했습니다.", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchIssues();
+  }, [projectPk]);
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
