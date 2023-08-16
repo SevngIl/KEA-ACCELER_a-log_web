@@ -7,7 +7,7 @@ import { FloatingWrapper } from "../../components/FloatingWrapper";
 import { Button } from "react-bootstrap";
 import FadeIn from "../../animation/FadeIn";
 import { useLocation } from "react-router-dom";
-import { GetIssue, PostCreateIssue, GetAllIssues } from "../../service/issues/issues.service";
+import { GetOneIssue, PostCreateIssue, GetAllIssues } from "../../service/issues/issues.service";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
 
 const BoardColumn = ({ column, issues, handleShowIssueModal }) => {
@@ -60,10 +60,62 @@ const Board = () => {
   const [projectPk, setProjectPk] = useState(location.pathname.split("/")[2]);
   const { userToken } = useContext(AuthenticationContext);
 
+  // // 이슈 클릭을 처리하는 함수
+  // const handleShowIssueModal = (column, index) => {
+  //   setSelectedColumn(column);
+  //   setSelectedIndex(index);
+
+  //   setShowModal(true);
+  // };
+
   // 이슈 클릭을 처리하는 함수
-  const handleShowIssueModal = (column, index) => {
+  const handleShowIssueModal = async (column, index) => {
     setSelectedColumn(column);
+
+    // 이슈 생성 버튼을 누른 경우 index가 undefined일 것이므로 바로 모달을 표시
+    if (index === undefined) {
+      setShowModal(true);
+      return;
+    }
     setSelectedIndex(index);
+
+    const selectedIssueId = issues[column][index].id.split("-")[1]; // 예를 들어 draggable-1234에서 1234 추출
+    console.log("issue id: ", issues[column][index].id);
+    console.log("selectedIssueId: ", selectedIssueId);
+    try {
+      const issueData = await GetOneIssue(selectedIssueId, userToken);
+      console.log(issueData);
+
+      const startDate = new Date(...issueData.startDate);
+      const endDate = new Date(...issueData.endDate);
+      const fileLink = issueData.fileLink ? modifyLink(issueData.fileLink) : null;
+
+      setIssues((prevIssues) => ({
+        ...prevIssues,
+        [column]: prevIssues[column].map((issue, idx) =>
+          idx === index
+            ? {
+                ...issue,
+                issueDescription: issueData.issueDescription,
+                issueAssigneePk: issueData.issueAssigneePk,
+                issueAuthorPk: issueData.issueAuthorPk,
+                issueLabel: issueData.issueLabel,
+                issueOpened: issueData.issueOpened,
+                issuePk: issueData.issuePk,
+                issueStatus: issueData.issueStatus,
+                teamPk: issueData.teamPk,
+                topicPk: issueData.topicPk,
+                imageDataUrl: fileLink,
+                startDate: startDate,
+                endDate: endDate,
+              }
+            : issue
+        ),
+      }));
+    } catch (err) {
+      console.error("이슈 받아오기 중 오류 발생:", err);
+    }
+
     setShowModal(true);
   };
 

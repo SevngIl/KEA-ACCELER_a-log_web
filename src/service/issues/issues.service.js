@@ -39,15 +39,37 @@ export const PostCreateIssue = async (imgs, issue, userToken) => {
   }
 };
 
-export const GetOneIssue = async (issuePk) => {
-  try {
-    const res = await axios.get(`${API_URL}/api/issue`, {
-      params: {
-        issuePk: issuePk,
-      },
-    });
+// export const GetOneIssue = async (issuePk) => {
+//   try {
+//     const res = await axios.get(`${API_URL}/api/issue`, {
+//       params: {
+//         issuePk: issuePk,
+//       },
+//     });
 
+//     if (res.data.isSuccess) {
+//       return res.data.data;
+//     } else {
+//       console.error("이슈 받아오기 오류:", res.data.message);
+//       throw new Error("이슈를 받아올 수 없습니다.");
+//     }
+//   } catch (err) {
+//     console.error("이슈 받아오기 중 오류 발생:", err.response ? err.response.data : err.message);
+//     throw new Error("이슈 받아오기 중 오류가 발생했습니다.");
+//   }
+// };
+
+export const GetOneIssue = async (issuePk, userToken) => {
+  const options = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  };
+
+  try {
+    const res = await axios.get(`${API_URL}/api/issue?issuePk=${issuePk}`, options);
     if (res.data.isSuccess) {
+      console.log("Get one Issue:", res.data.data);
       return res.data.data;
     } else {
       console.error("이슈 받아오기 오류:", res.data.message);
@@ -86,7 +108,7 @@ export const updateIssueStatus = async (issuePk, issueStatus, userToken) => {
 
   try {
     const response = await axios.patch(`${API_URL}/api/issue/status?issuePk=${issuePk}&issueStatus=${issueStatus}`, options);
-    return response.data;
+    return response;
   } catch (error) {
     console.error("이슈 상태 업데이트 중 오류 발생:", error);
     throw error;
