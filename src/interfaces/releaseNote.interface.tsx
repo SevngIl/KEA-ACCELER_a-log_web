@@ -1,6 +1,14 @@
+import { type Counter as YorkieCounter } from 'yorkie-js-sdk'
+
 export interface ReleaseNoteData {
-    version: string;
-    date: string;
+    version: {
+        editing: Presence[];
+        content: string;
+    }
+    date: {
+        editing: Presence[];
+        content: string;
+    }
     content: ReleaseNoteColumnData[];
 }
 
@@ -13,14 +21,22 @@ export interface ReleaseNoteColumnData {
     show?: boolean;
 }
 export interface RNColumnContentData {
-    content: string;
+    content: {
+        editing: Presence[];
+        content: string;
+    }
     issue?: string;
-    key: number;
 }
 
 export interface Peer {
     clientID: string;
     presence: {
         name: string;
+        color: string;
     }
+}
+
+export interface Presence {
+    name: string;
+    color: string;
 }
