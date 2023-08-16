@@ -6,7 +6,7 @@ import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import "./IssueModal.css";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
-import { PostCreateIssue } from "../../service/issues/issues.service";
+import { PostCreateIssue, UpdateIssueImage, UpdateIssueDate } from "../../service/issues/issues.service";
 
 const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, column, teamPk, projectPk }) => {
   const { userToken } = useContext(AuthenticationContext);
@@ -19,6 +19,18 @@ const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, colum
   const reporter = "한승일";
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+
+  const handleUpdateIssueImage = async () => {
+    try {
+      // 이미지 수정 API 호출
+      await UpdateIssueImage(issue.issuePk, selectedFile, userToken);
+
+      // 성공적으로 완료된 후 처리
+      handleClose();
+    } catch (err) {
+      console.error("이미지 수정에 실패했습니다:", err);
+    }
+  };
 
   useEffect(() => {
     if (isEditing && issue) {
@@ -40,10 +52,39 @@ const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, colum
     }
   }, [isEditing, issue]);
 
-  const handleFileChange = (e) => {
+  useEffect(() => {
+    if (isEditing && issue) {
+      // startDate나 endDate가 변경될 때마다 UpdateIssueDate API를 호출
+      console.log("issuePk:", issue.issuePk);
+      console.log("StartDate:", startDate);
+      console.log("endDate: ", endDate);
+      console.log("userToken: ", userToken);
+
+      const updateDate = async () => {
+        try {
+          await UpdateIssueDate(issue.issuePk, startDate, endDate, userToken);
+          console.log("날짜가 성공적으로 업데이트되었습니다.");
+        } catch (error) {
+          console.error("이슈 날짜 업데이트 중 오류 발생:", error);
+        }
+      };
+
+      updateDate();
+    }
+  }, [startDate, endDate, isEditing, issue, userToken]); // startDate, endDate의 변화를 감지
+
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
     previewFile(file);
     setSelectedFile(file);
+
+    try {
+      // 이미지 수정 API 호출
+      await UpdateIssueImage(issue.issuePk, file, userToken);
+      console.log("이미지가 성공적으로 수정되었습니다.");
+    } catch (err) {
+      console.error("이미지 수정에 실패했습니다:", err);
+    }
   };
 
   const previewFile = (file) => {
@@ -156,9 +197,11 @@ const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, colum
         <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
-        <Button variant="primary" onClick={() => handleSubmit(issueContent, issueStatus)}>
-          Create Issue
-        </Button>
+        {isEditing ? null : (
+          <Button variant="primary" onClick={() => handleSubmit(issueContent, issueStatus)}>
+            Create Issue
+          </Button>
+        )}
       </Modal.Footer>
     </Modal>
   );

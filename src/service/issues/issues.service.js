@@ -92,3 +92,58 @@ export const UpdateIssueStatus = async (issuePk, issueStatus, userToken) => {
     throw error;
   }
 };
+
+export const UpdateIssueImage = async (issuePk, imgs, userToken) => {
+  const formData = new FormData();
+  formData.append("issuePk", issuePk.toString());
+  formData.append("imgs", imgs);
+
+  const options = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+      "Content-Type": "multipart/form-data",
+    },
+  };
+
+  try {
+    console.log("issuePk in api:", issuePk);
+    console.log("imgs in api:", imgs);
+    console.log("token in api:", userToken);
+    const response = await axios.post(`${API_URL}/api/aggr/issue/image`, formData, options);
+
+    return response;
+  } catch (error) {
+    console.error("이슈 이미지 업데이트 중 오류 발생:", error);
+    throw error;
+  }
+};
+
+export const UpdateIssueDate = async (issuePk, startDate, endDate, userToken) => {
+  const options = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  };
+
+  const formatDateTime = (dateString) => {
+    const date = new Date(dateString);
+    return date.toISOString().slice(0, 19);
+  };
+
+  const formattedStartDate = formatDateTime(startDate);
+  const formattedEndDate = formatDateTime(endDate);
+
+  try {
+    console.log("issuePk in api:", issuePk);
+    console.log("startDate in api:", formattedStartDate);
+    console.log("endDate in api:", formattedEndDate);
+    console.log("token in api:", userToken);
+
+    const response = await axios.patch(`${API_URL}/api/issue/date?issuePk=${issuePk}&startDate=${formattedStartDate}&endDate=${formattedEndDate}`, [], options);
+
+    return response;
+  } catch (err) {
+    console.error("이슈 받아오기 중 오류 발생:", err.response ? err.response.data : err.message);
+    throw new Error("이슈 받아오기 중 오류가 발생했습니다.");
+  }
+};
