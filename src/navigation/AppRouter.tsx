@@ -18,6 +18,7 @@ import { ProjectAccess } from "../pages/ProjectSetting/ProjectAccess";
 import { ProjectSetting } from "../pages/ProjectSetting/ProjectSetting";
 import { Profile } from "../pages/Profile/Profile";
 import { GithubLogin } from "../pages/Login/GithubLogin";
+import React from "react";
 
 const AppRouter = (): JSX.Element => {
   return (
