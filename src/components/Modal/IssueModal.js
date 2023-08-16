@@ -114,8 +114,8 @@ const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, colum
           <Form.Group className="issueStatus mb-3" controlId="issueStatus">
             <Form.Label>상태</Form.Label>
             <Form.Select value={issueStatus} onChange={(e) => setIssueStatus(e.target.value)}>
-              <option value="TO DO">TO DO</option>
-              <option value="IN PROGRESS">IN PROGRESS</option>
+              <option value="TODO">TO DO</option>
+              <option value="INPROGRESS">IN PROGRESS</option>
               <option value="DONE">DONE</option>
               <option value="EMERGENCY">EMERGENCY</option>
             </Form.Select>

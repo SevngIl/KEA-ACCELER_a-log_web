@@ -1,5 +1,5 @@
 import React, { useState, createContext, useEffect } from "react";
-import { PostCreateIssue, GetOneIssue } from "./issues.service";
+import { PostCreateIssue, GetOneIssue, UpdateIssueStatus, GetAllIssues } from "./issues.service";
 
 export const IssuesContext = createContext();
 
@@ -9,6 +9,8 @@ export const ProjectsContextProvider = ({ children }) => {
       value={{
         PostCreateIssue,
         GetOneIssue,
+        UpdateIssueStatus,
+        GetAllIssues,
       }}
     >
       {children}

@@ -7,7 +7,7 @@ import { FloatingWrapper } from "../../components/FloatingWrapper";
 import { Button } from "react-bootstrap";
 import FadeIn from "../../animation/FadeIn";
 import { useLocation } from "react-router-dom";
-import { GetOneIssue, PostCreateIssue, GetAllIssues } from "../../service/issues/issues.service";
+import { GetOneIssue, PostCreateIssue, GetAllIssues, UpdateIssueStatus } from "../../service/issues/issues.service";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
 
 const BoardColumn = ({ column, issues, handleShowIssueModal }) => {
@@ -156,13 +156,53 @@ const Board = () => {
     }));
   };
 
-  const handleDragEnd = (result) => {
+  // const handleDragEnd = (result) => {
+  //   if (!result.destination) return;
+
+  //   const { source, destination } = result;
+
+  //   if (source.droppableId !== destination.droppableId) {
+  //     const newIssue = { ...issues[source.droppableId][source.index], status: destination.droppableId };
+
+  //     setIssues((prevIssues) => {
+  //       const newIssues = { ...prevIssues };
+
+  //       newIssues[source.droppableId].splice(source.index, 1);
+  //       newIssues[destination.droppableId].splice(destination.index, 0, newIssue);
+
+  //       return newIssues;
+  //     });
+  //   } else {
+  //     const newIssues = Array.from(issues[source.droppableId]);
+  //     const [removed] = newIssues.splice(source.index, 1);
+  //     newIssues.splice(destination.index, 0, removed);
+
+  //     setIssues((prevIssues) => ({
+  //       ...prevIssues,
+  //       [source.droppableId]: newIssues,
+  //     }));
+  //   }
+  // };
+
+  const handleDragEnd = async (result) => {
     if (!result.destination) return;
 
     const { source, destination } = result;
 
+    const draggedIssue = issues[source.droppableId][source.index];
+    const issuePk = draggedIssue.id.split("-")[1]; // 이슈 ID 추출
+    const newStatus = destination.droppableId;
+    console.log("issuePk, status:", issuePk, newStatus);
+
+    try {
+      await UpdateIssueStatus(issuePk, newStatus, userToken); // 상태 업데이트 API 호출
+    } catch (err) {
+      console.error("이슈 상태 업데이트 중 오류 발생:", err);
+      return; // 에러 발생 시 함수 종료
+    }
+
     if (source.droppableId !== destination.droppableId) {
-      const newIssue = { ...issues[source.droppableId][source.index], status: destination.droppableId };
+      const newIssue = { ...draggedIssue, status: destination.droppableId };
 
       setIssues((prevIssues) => {
         const newIssues = { ...prevIssues };
