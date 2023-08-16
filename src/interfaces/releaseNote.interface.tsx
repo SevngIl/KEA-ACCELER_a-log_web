@@ -17,3 +17,10 @@ export interface RNColumnContentData {
     issue?: string;
     key: number;
 }
+
+export interface Peer {
+    clientID: string;
+    presence: {
+        name: string;
+    }
+}

@@ -4,7 +4,7 @@ import "./CreateReleaseNote.css";
 import { RNBadge } from "../../components/RNBadge";
 import { FloatingWrapper } from "../../components/FloatingWrapper";
 import { RNColumn } from "../../components/RNColumn";
-import { RNColumnContentData, RNTag, ReleaseNoteColumnData, ReleaseNoteData } from "../../interfaces/releaseNote.interface";
+import { RNColumnContentData, RNTag, ReleaseNoteColumnData, ReleaseNoteData, Peer } from "../../interfaces/releaseNote.interface";
 import { useRef, useState, useEffect, useContext } from "react";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
 import axios from "axios";
@@ -34,9 +34,13 @@ export const CreateReleaseNote = () => {
   const teamPk = useParams().teamPk;
   const notePk = useParams().notePk;
   const { userToken } = useContext(AuthenticationContext);
+  const tokenParts = userToken.split(".");
+  const decodedToken = JSON.parse(atob(tokenParts[1]));
+
   const [render, setRender] = useState({});
-  const [client, setClient] = useState(new yorkie.Client(yorkieApiURL, { apiKey: yorkieApiKey }));
+  const [client, setClient] = useState(new yorkie.Client(yorkieApiURL, { apiKey: yorkieApiKey, presence: { name: decodedToken.userNN } }));
   const [doc, setDoc] = useState<YorkieDocument<ReleaseNoteData>>(new YorkieDocument<ReleaseNoteData>('rn-' + notePk));
+  const [peers, setPeers] = useState<Peer[]>([]);
 
   const toggleTag = (tag: RNTag) => {
     doc.update((root) => {
@@ -52,14 +56,61 @@ export const CreateReleaseNote = () => {
   };
 
   const onSaveRelaseNote = () => {
+    client.deactivate();
     navigate(`/${teamPk}/${pjPk}/ReleaseNote`, { state: location.state });
   };
+
+  const addPeers = (newPeers: Peer[]) => {
+    for (let i = 0; i < newPeers.length; i++) {
+      if (newPeers[i].presence.name) {
+        peers.push(newPeers[i]);
+      }
+    }
+    setPeers([...peers]);
+  };
+
+  const removePeers = (list: Peer[]) => {
+    let newPeers = [...peers];
+    for (let i = 0; i < list.length; i++) {
+      for (let j = 0; j < peers.length; j++) {
+        if (list[i].clientID === peers[j].clientID) {
+          newPeers.splice(j, 1);
+          break;
+        }
+      }
+    }
+    setPeers(newPeers);
+  }
 
   useEffect(() => {
     client.activate().then(() => {
       // subscribe peer change event
       client.subscribe((event) => {
         if (event.type === "peers-changed") {
+          // const remotePeers: Peer[] = event.value.peers[doc.getKey()];
+          console.log(client.getPeersByDocKey(doc.getKey()));
+          setPeers([...client.getPeersByDocKey(doc.getKey())])
+          // switch (event.value.type) {
+          //   case 'initialized':
+          //     setPeers(remotePeers);
+          //     break;
+          //   case 'watched':
+          //     addPeers(remotePeers);
+          //     // peer as follows:
+          //     // {
+          //     //   clientID: 'xxxxxxxxxxxxxxxxxxxx',
+          //     //   presence: {username: 'bob', color: 'red'}
+          //     // }
+          //     break;
+          //   case 'unwatched':
+          //     removePeers(remotePeers);
+          //     break;
+          //   case 'presence-changed':
+          //     // setPeers([...client.getPeersByDocKey(doc.getKey())])
+          //     break;
+          //   default:
+          //     break;
+          // }
         }
       });
 
@@ -102,7 +153,7 @@ export const CreateReleaseNote = () => {
           <div className="topWrapper">
             <h1>Create New Release Note</h1>
             <div className="btnWrapper">
-              <Button className="backBtn" variant="outline-primary" onClick={() => navigate(-1)}>
+              <Button className="backBtn" variant="outline-primary" onClick={() => onSaveRelaseNote()}>
                 Back
               </Button>
               <Button className="saveBtn" variant="outline-primary" onClick={() => onSaveRelaseNote()}>
@@ -175,6 +226,17 @@ export const CreateReleaseNote = () => {
           <div className="tagButton" onClick={() => toggleTag("bug")}>
             <RNBadge tag={"bug"} />
           </div>
+        </FadeIn>
+        <FadeIn className="rightNavigationWrapper" childClassName="childClassName">
+          <h4 style={{marginTop: '2rem'}}>Current Editor</h4>
+          {peers.map((peer) => {
+            return (
+              <div key={peer.clientID} className="peer">
+                <div className="peerName">{peer.presence.name}</div>
+                {/* <div className="peerStatus">{peer.presence.status}</div> */}
+              </div>
+            );
+          })}
         </FadeIn>
       </FloatingWrapper>
     </div>
