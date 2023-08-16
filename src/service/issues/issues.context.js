@@ -1,5 +1,14 @@
 import React, { useState, createContext, useEffect } from "react";
-import { PostCreateIssue, GetOneIssue, UpdateIssueStatus, GetAllIssues, UpdateIssueImage, UpdateIssueDate } from "./issues.service";
+import {
+  PostCreateIssue,
+  GetOneIssue,
+  UpdateIssueStatus,
+  GetAllIssues,
+  UpdateIssueImage,
+  UpdateIssueDate,
+  UpdateIssueAssignee,
+  DeleteIssueImage,
+} from "./issues.service";
 
 export const IssuesContext = createContext();
 
@@ -12,7 +21,9 @@ export const ProjectsContextProvider = ({ children }) => {
         UpdateIssueStatus,
         GetAllIssues,
         UpdateIssueImage,
+        DeleteIssueImage,
         UpdateIssueDate,
+        UpdateIssueAssignee,
       }}
     >
       {children}

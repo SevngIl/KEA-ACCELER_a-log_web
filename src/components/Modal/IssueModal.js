@@ -6,18 +6,18 @@ import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import "./IssueModal.css";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
-import { PostCreateIssue, UpdateIssueImage, UpdateIssueDate } from "../../service/issues/issues.service";
+import { PostCreateIssue, UpdateIssueImage, UpdateIssueDate, UpdateIssueAssignee, RemoveIssueImage } from "../../service/issues/issues.service";
 import { GetProjectMembers } from "../../service/projects/projects.service";
 
 const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, column, teamPk, projectPk }) => {
-  const { userToken } = useContext(AuthenticationContext);
+  const { userToken, userData } = useContext(AuthenticationContext);
 
   const [issueContent, setIssueContent] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewSource, setPreviewSource] = useState(null);
   const [issueStatus, setIssueStatus] = useState("TODO");
   const [assignee, setAssignee] = useState("할당되지 않음");
-  const reporter = "한승일";
+  const reporter = userData.userNN;
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [projectMembers, setProjectMembers] = useState([]);
@@ -27,7 +27,11 @@ const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, colum
       setIssueContent(issue.content);
       setPreviewSource(issue.imageDataUrl);
       setIssueStatus(issue.status);
-      setAssignee(issue.assignee);
+
+      // projectMembers에서 issueAssigneePk와 일치하는 멤버 찾기
+      const matchingAssignee = projectMembers.find((member) => member.userPk === issue.issueAssigneePk);
+      setAssignee(matchingAssignee ? matchingAssignee.userNN : "할당되지 않음");
+      // setAssignee(issue.assignee);
       setStartDate(issue.startDate);
       setEndDate(issue.endDate);
     } else {
@@ -40,7 +44,7 @@ const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, colum
       setStartDate(new Date());
       setEndDate(new Date());
     }
-  }, [isEditing, issue]);
+  }, [isEditing, issue, projectMembers]);
 
   useEffect(() => {
     if (isEditing && issue) {
@@ -77,6 +81,27 @@ const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, colum
 
     fetchProjectMembers();
   }, [projectPk, userToken, isEditing]);
+
+  useEffect(() => {
+    const updateAssignee = async () => {
+      if (isEditing && issue) {
+        try {
+          // 현재 선택된 담당자의 PK 값을 얻어야 함. projectMembers에서 얻을 수 있을 것 같습니다.
+          const selectedAssigneePk = projectMembers.find((member) => member.userNN === assignee)?.userPk;
+          if (selectedAssigneePk) {
+            await UpdateIssueAssignee(issue.issuePk, selectedAssigneePk, userToken);
+            console.log("담당자가 성공적으로 업데이트되었습니다.");
+          } else {
+            console.warn("선택된 담당자의 PK 값을 찾을 수 없습니다.");
+          }
+        } catch (error) {
+          console.error("담당자 업데이트 중 오류 발생:", error);
+        }
+      }
+    };
+
+    updateAssignee();
+  }, [assignee, isEditing, issue, projectMembers, userToken]); // assignee의 변화를 감지
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
@@ -176,7 +201,7 @@ const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, colum
         </Form.Group>
         <Form.Group className="issueReporter mb-3" controlId="issueReporter">
           <Form.Label>보고자</Form.Label>
-          <Form.Control type="text" readOnly value={reporter} />
+          <Form.Control type="text" readOnly value={reporter} disabled />
         </Form.Group>
         <Form.Group className="issueDate mb-3" controlId="issueStartDate">
           <div className="issue_date-picker-group">

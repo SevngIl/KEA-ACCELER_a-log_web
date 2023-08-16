@@ -118,6 +118,25 @@ export const UpdateIssueImage = async (issuePk, imgs, userToken) => {
   }
 };
 
+export const RemoveIssueImage = async (issuePk, fileLink = "", userToken) => {
+  const options = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  };
+
+  try {
+    console.log("issuePk in api:", issuePk);
+    console.log("fileLink in api:", fileLink);
+    const response = await axios.post(`${API_URL}/api/issue/image?issuePk=${parseInt(issuePk)}&fileLink=`, options);
+
+    return response;
+  } catch (err) {
+    console.error("이슈 이미지 삭제 중 오류 발생:", err.response ? err.response.data : err.message);
+    throw new Error("이슈 이미지 삭제 중 오류가 발생했습니다.");
+  }
+};
+
 export const UpdateIssueDate = async (issuePk, startDate, endDate, userToken) => {
   const options = {
     headers: {
@@ -140,6 +159,25 @@ export const UpdateIssueDate = async (issuePk, startDate, endDate, userToken) =>
     console.log("token in api:", userToken);
 
     const response = await axios.patch(`${API_URL}/api/issue/date?issuePk=${issuePk}&startDate=${formattedStartDate}&endDate=${formattedEndDate}`, [], options);
+
+    return response;
+  } catch (err) {
+    console.error("이슈 받아오기 중 오류 발생:", err.response ? err.response.data : err.message);
+    throw new Error("이슈 받아오기 중 오류가 발생했습니다.");
+  }
+};
+
+export const UpdateIssueAssignee = async (issuePk, issueAssigneePk, userToken) => {
+  const options = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  };
+
+  try {
+    console.log("issuePk in api:", issuePk);
+    console.log("issueAssigneePk in api:", issueAssigneePk);
+    const response = await axios.patch(`${API_URL}/api/issue/assignee?issuePk=${issuePk}&issueAssigneePk=${issueAssigneePk}`, [], options);
 
     return response;
   } catch (err) {
