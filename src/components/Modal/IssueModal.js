@@ -7,6 +7,7 @@ import "react-clock/dist/Clock.css";
 import "./IssueModal.css";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
 import { PostCreateIssue, UpdateIssueImage, UpdateIssueDate } from "../../service/issues/issues.service";
+import { GetProjectMembers } from "../../service/projects/projects.service";
 
 const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, column, teamPk, projectPk }) => {
   const { userToken } = useContext(AuthenticationContext);
@@ -19,18 +20,7 @@ const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, colum
   const reporter = "한승일";
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-
-  const handleUpdateIssueImage = async () => {
-    try {
-      // 이미지 수정 API 호출
-      await UpdateIssueImage(issue.issuePk, selectedFile, userToken);
-
-      // 성공적으로 완료된 후 처리
-      handleClose();
-    } catch (err) {
-      console.error("이미지 수정에 실패했습니다:", err);
-    }
-  };
+  const [projectMembers, setProjectMembers] = useState([]);
 
   useEffect(() => {
     if (isEditing && issue) {
@@ -73,6 +63,21 @@ const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, colum
     }
   }, [startDate, endDate, isEditing, issue, userToken]); // startDate, endDate의 변화를 감지
 
+  useEffect(() => {
+    const fetchProjectMembers = async () => {
+      try {
+        const response = await GetProjectMembers(projectPk, "", 0, 100, userToken);
+        console.log("Project Members Response:", response);
+        setProjectMembers(response.data.data.content);
+        console.log(response.data.data.content);
+      } catch (error) {
+        console.error("프로젝트 멤버 가져오기에 실패했습니다:", error);
+      }
+    };
+
+    fetchProjectMembers();
+  }, [projectPk, userToken, isEditing]);
+
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     previewFile(file);
@@ -94,18 +99,6 @@ const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, colum
       setPreviewSource(reader.result);
     };
   };
-
-  // const handleSubmit = () => {
-  //   handleAddIssue(issueContent, issueStatus, previewSource, assignee, reporter, startDate, endDate);
-  //   setIssueContent("");
-  //   setSelectedFile(null);
-  //   setPreviewSource(null);
-  //   setIssueStatus("TO DO");
-  //   setAssignee("할당되지 않음");
-  //   setStartDate(new Date());
-  //   setEndDate(new Date());
-  //   handleClose();
-  // };
 
   const handleSubmit = async () => {
     const issueData = {
@@ -172,8 +165,13 @@ const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, colum
           <Form.Label>담당자</Form.Label>
           <Form.Select value={assignee} onChange={(e) => setAssignee(e.target.value)}>
             <option value="할당되지 않음">할당되지 않음</option>
-            <option value="한승일">한승일</option>
-            <option value="이지민">이지민</option>
+            {projectMembers &&
+              projectMembers.length > 0 &&
+              projectMembers.map((member) => (
+                <option value={member.userNN} key={member.userPk}>
+                  {member.userNN}
+                </option>
+              ))}
           </Form.Select>
         </Form.Group>
         <Form.Group className="issueReporter mb-3" controlId="issueReporter">
