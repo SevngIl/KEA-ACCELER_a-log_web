@@ -118,7 +118,9 @@ const TeamSetting = () => {
 
   return (
     <FadeIn className="TeamSetting">
-      <h3 style={{ marginLeft: "10%" }}>{teamInfo.teamName}</h3>
+      <h3 className="teamTitle" style={{ marginLeft: "10%" }}>
+        {teamInfo.teamName}
+      </h3>
       <div className="teamSetting-Header">
         <div className="header-image-container" style={{ backgroundImage: `url(${headerImage || modifiedTeamImageUrl})` }}>
           {!headerImage && !modifiedTeamImageUrl && <span className="header-image-text">헤더 이미지</span>}

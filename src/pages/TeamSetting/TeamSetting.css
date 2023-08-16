@@ -6,6 +6,15 @@
   display: flex;
   flex-direction: column;
 }
+.TeamSetting .teamTitle {
+  padding: 10px;
+  position: absolute;
+  background-color: #8f6ce15f;
+  border-radius: 20px;
+  top: 78px;
+  left: -40px;
+  width: fit-content;
+}
 
 .TeamSetting .teamSetting-Header {
   display: flex;
