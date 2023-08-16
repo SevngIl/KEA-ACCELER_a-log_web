@@ -42,7 +42,7 @@ const AppRouter = (): JSX.Element => {
             <Route path="/:teamPk/:projectPk/Board" element={<Board />} />
             <Route path="/:teamPk/:projectPk/Timeline" element={<Timeline />} />
             <Route path="/:teamPk/:projectPk/ReleaseNote" element={<ReleaseNote />} />
-            <Route path="/:teamPk/:projectPk/CreateReleaseNote" element={<CreateReleaseNote />} />
+            <Route path="/:teamPk/:projectPk/CreateReleaseNote/:notePk" element={<CreateReleaseNote />} />
           </Route>
         </Route>
       </Routes>

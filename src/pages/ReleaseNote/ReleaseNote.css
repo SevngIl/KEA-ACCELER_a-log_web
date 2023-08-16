@@ -17,7 +17,7 @@
 .ReleaseNote .mainWrapper {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   width: 100%;
   padding-right: 6%;
 }
