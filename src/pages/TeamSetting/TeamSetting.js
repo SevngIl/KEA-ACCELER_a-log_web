@@ -39,19 +39,6 @@ const TeamSetting = () => {
     }
   };
 
-  // const handleImageUpload = (e) => {
-  //   const file = e.target.files[0];
-  //   const reader = new FileReader();
-
-  //   reader.onloadend = () => {
-  //     setHeaderImage(reader.result);
-  //   };
-
-  //   if (file) {
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
 
@@ -100,6 +87,7 @@ const TeamSetting = () => {
     // teamInfo가 존재하면 팀 이미지 URL을 콘솔에 로그
     if (teamInfo) {
       console.log(teamInfo.teamImage);
+      console.log(teamInfo);
     } else {
       console.log("teamInfo is not yet available");
     }
@@ -178,7 +166,7 @@ const TeamSetting = () => {
           )}
         </div>
 
-        <div className="teamActivity">
+        {/* <div className="teamActivity">
           <FloatingWrapper className="teamActivity-container">
             <div className="teamActivity-head">팀 활동</div>
             <div className="teamActivity-body">
@@ -195,7 +183,7 @@ const TeamSetting = () => {
               </div>
             </div>
           </FloatingWrapper>
-        </div>
+        </div> */}
       </div>
     </FadeIn>
   );

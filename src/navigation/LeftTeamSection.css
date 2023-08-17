@@ -30,7 +30,13 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  margin-top: 10%;
 }
+
+.LeftTeamSection .teams .teams-title {
+  margin-top: 20px;
+}
+
 .LeftTeamSection .teamWrapper {
   display: flex;
   align-items: center;

@@ -134,7 +134,7 @@ const Board = () => {
     return newUrl;
   };
 
-  const handleAddIssue = (issueContent, issueStatus, imageDataUrl, assignee, reporter, startDate, endDate, teamPk, projectPk) => {
+  const handleAddIssue = (issueContent, issueStatus, imageDataUrl, assignee, reporter, startDate, endDate, issuePk, teamPk, projectPk) => {
     // 새 이슈 객체를 생성
     const newIssue = {
       id: `${issueStatus}-${new Date().getTime()}`,
@@ -147,6 +147,7 @@ const Board = () => {
       endDate,
       teamPk,
       projectPk,
+      issuePk,
     };
 
     // 새 이슈를 리스트에 추가

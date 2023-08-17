@@ -34,7 +34,7 @@ const MyProjects = () => {
       .then((res) => {
         if (res.status === 200) {
           setProjects(res.data.data.content);
-          console.log(res.data.data.content);
+          console.log("my projects:", res);
         }
       })
       .catch((err) => {
@@ -61,33 +61,41 @@ const MyProjects = () => {
         <h2>Projects</h2>
         <div className="projects-container">
           {projects &&
-            projects.map((project, index) => (
-              <FloatingWrapper className="project-card" key={index}>
-                <div
-                  className="projectSettingBtn"
-                  onClick={() => navigate(`/${project.team.teamPk}/${project.pk}/projectSetting`, { state: { pk: project.pk, name: project.name } })}
-                >
-                  <CiSettings size={"24px"} />
-                </div>
+            projects.map((project, index) => {
+              // 이미지 인덱스 계산 (1부터 7까지 순환)
+              const imageIndex = (index % 7) + 1;
+              // 해당 이미지의 경로 생성
+              const projectImg = require(`../../../src/assets/projectImages/ProjectImg${imageIndex}.png`); // 확장자는 실제 파일 확장자로 변경
 
-                <img
-                  src={projectImg}
-                  className="projectImg"
-                  onClick={() => navigate(`/${project.team.teamPk}/${project.pk}/Board`, { state: { pk: project.pk, name: project.name } })}
-                />
-                <div
-                  className="projectDescription"
-                  onClick={() => navigate(`/${project.team.teamPk}/${project.pk}/Board`, { state: { pk: project.pk, name: project.name } })}
-                >
-                  <div className="project-title">{project.name}</div>
-                  <div>
-                    <div className="project-info">TEAM PK: {project.team.teamPk}</div>
-                    {/* <div className="project-info">PM PK: {project.pmPk}</div> */}
-                    <div className="project-info">DESCRIPTION: {project.description}</div>
+              return (
+                <FloatingWrapper className="project-card" key={index}>
+                  <div
+                    className="projectSettingBtn"
+                    onClick={() => navigate(`/${project.team.teamPk}/${project.pk}/projectSetting`, { state: { pk: project.pk, name: project.name } })}
+                  >
+                    <CiSettings size={"24px"} />
                   </div>
-                </div>
-              </FloatingWrapper>
-            ))}
+
+                  <img
+                    src={projectImg}
+                    className="projectImg"
+                    style={{ width: "150px", height: "150px", margin: "10px", cursor: "pointer" }}
+                    onClick={() => navigate(`/${project.team.teamPk}/${project.pk}/Board`, { state: { pk: project.pk, name: project.name } })}
+                  />
+                  <div
+                    className="projectDescription"
+                    onClick={() => navigate(`/${project.team.teamPk}/${project.pk}/Board`, { state: { pk: project.pk, name: project.name } })}
+                  >
+                    <div className="project-title">{project.name}</div>
+                    <div>
+                      <div className="project-info">TEAM PK: {project.team.teamPk}</div>
+                      <div className="project-info">DESCRIPTION: {project.description}</div>
+                    </div>
+                  </div>
+                </FloatingWrapper>
+              );
+            })}
+
           <FloatingWrapper className="project-add">
             <button onClick={addProject}>
               <img src={plusImage} alt="add project" className="add-btn" />

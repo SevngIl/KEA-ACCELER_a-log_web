@@ -1,7 +1,6 @@
 .MyWork .offcanvas-body {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   height: 100%;
 }
 
@@ -45,4 +44,8 @@
 
 .MyWork .issue-container .issue-content {
   font-size: 1.2rem;
+}
+
+.MyWork .MyWork-issue-container {
+  margin: 10%;
 }
