@@ -41,3 +41,19 @@ export const UpdateUserNN = async (userPk, userNN, userToken) => {
     throw new Error("프로필 닉네임 변경 중 오류가 발생했습니다.");
   }
 };
+
+export const GetUserInfo = async (userPk, userToken) => {
+  const options = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  };
+  try {
+    const res = await axios.get(`${API_URL}/api/users/info/${userPk}`, options);
+    console.log("update NN: ", res);
+    return res;
+  } catch (err) {
+    console.error("유저 정보를 받아 오는 중 오류 발생:", err.response ? err.response.data : err.message);
+    throw new Error("유저 정보를 받아 오는 중 오류가 발생했습니다.");
+  }
+};

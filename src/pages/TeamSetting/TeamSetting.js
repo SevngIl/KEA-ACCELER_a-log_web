@@ -39,19 +39,6 @@ const TeamSetting = () => {
     }
   };
 
-  // const handleImageUpload = (e) => {
-  //   const file = e.target.files[0];
-  //   const reader = new FileReader();
-
-  //   reader.onloadend = () => {
-  //     setHeaderImage(reader.result);
-  //   };
-
-  //   if (file) {
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
 

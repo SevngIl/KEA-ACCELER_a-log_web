@@ -5,13 +5,23 @@ import { useContext, useEffect, useState } from "react";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
 import React from "react";
 import FadeIn from "../../animation/FadeIn";
-import { UploadUserProfileImage, UpdateUserNN } from "../../service/user/users.service";
+import { UploadUserProfileImage, UpdateUserNN, GetUserInfo } from "../../service/user/users.service";
 
 const Profile = () => {
   const { userData, userToken } = useContext(AuthenticationContext);
-  console.log(userData);
-  const [profileImage, setProfileImage] = useState(ProfileImg);
+  const [profileImage, setProfileImage] = useState(userData.userImage || ProfileImg); // 서버에서 이미지 URL을 가져와 초기값 설정
   const [nickname, setNickname] = useState(userData.userNN);
+  const [userInfo, setUserInfo] = useState(null);
+
+  const fetchUserInfo = async () => {
+    try {
+      const response = await GetUserInfo(userData.userPk, userToken);
+      setUserInfo(response.data); // 유저 정보를 상태에 저장
+      setProfileImage(modifyLink(response.data.userProfile)); // 프로필 이미지 URL을 상태에 저장
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const modifyLink = (url) => {
     // 슬래시 2개를 기준으로 뒷부분만 사용
@@ -51,8 +61,6 @@ const Profile = () => {
     if (newNickname) {
       console.log("userPk, nickname, userToken", userData.userPk, newNickname, userToken);
 
-      // 닉네임 업데이트 로직에 따라서 서버에 변경 사항을 전송하고,
-      // 정상적으로 변경되었다면 상태 업데이트
       try {
         await UpdateUserNN(userData.userPk, newNickname, userToken);
         setNickname(newNickname); // 상태 업데이트
@@ -65,7 +73,20 @@ const Profile = () => {
     }
   };
 
-  useEffect(() => {}, [userData.userNN]);
+  useEffect(() => {
+    setNickname(userData.userNN); // nickname 상태 업데이트
+  }, [userData.userNN]);
+
+  useEffect(() => {
+    if (userData.userProfile) {
+      setProfileImage(modifyLink(userData.userProfile));
+      console.log("profile img:", profileImage);
+    }
+  }, [userData.userProfile]);
+
+  useEffect(() => {
+    fetchUserInfo(); // 컴포넌트 마운트 시 유저 정보 가져오기
+  }, []);
 
   return (
     <FadeIn>
