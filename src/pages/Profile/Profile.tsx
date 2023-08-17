@@ -4,6 +4,7 @@ import ProfileImg from "../../assets/images/profile.png";
 import { useContext } from "react";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
 import React from "react";
+
 export const Profile = () => {
   const { userData } = useContext(AuthenticationContext);
   console.log(userData);
@@ -12,7 +13,11 @@ export const Profile = () => {
       <FloatingWrapper>
         <div className="leftContainer">
           <img className="profileImg" src={ProfileImg} />
-          <div>{userData.userEmail}</div>
+          <div className="userEmail-container">
+            <div className="userEmail-header">이메일</div>
+            <div>{userData.userEmail}</div>
+          </div>
+
           <div>{userData.userNN}</div>
         </div>
         <div className="rightContainer">
