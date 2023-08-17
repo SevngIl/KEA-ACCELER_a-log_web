@@ -1,19 +1,24 @@
 .Profile {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .Profile .leftContainer {
-    width: 250px;
+  width: 250px;
 }
 
 .Profile .profileImg {
-    width: 250px;
+  width: 250px;
+  margin-bottom: 40px;
+}
+
+.Profile .floatingWrapper {
+  display: flex;
 }
 
 .Profile .rightContainer {
-    width: 250px;
+  width: 250px;
 }
