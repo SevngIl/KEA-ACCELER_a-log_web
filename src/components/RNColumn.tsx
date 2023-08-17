@@ -64,7 +64,7 @@ export const RNColumn = ({
             <BsDot />
             {
               it.content.editing.filter((it) => it.name !== myPresence.name).length > 0 ? (
-                <input className="rnBoxItemContent" value={it.content.content} style={{ border: `${peers.filter((it) => it.presence.name !== myPresence.name).length > 0 ? '1px solid ' + peers.filter((it) => it.presence.name !== myPresence.name)[0].presence : ''}` }}
+                <input className="rnBoxItemContent" value={it.content.content} style={{ border: `${peers.filter((it) => it.presence.name !== myPresence.name).length > 0 ? '1px solid ' + peers.filter((it) => it.presence.name !== myPresence.name)[0].presence.color : ''}` }}
                   onFocus={() => {
                     doc.update((root) => {
                       root.content[columnIndex].content[index].content.editing.push(myPresence);
