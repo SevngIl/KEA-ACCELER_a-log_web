@@ -8,6 +8,7 @@ import InviteProMemModal from "../../components/Modal/InviteProMemModal";
 import { GetProjectMembers, GetProjectDetail } from "../../service/projects/projects.service";
 import RemoveProMemModal from "../../components/Modal/RemoveProMemModal";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
+import FadeIn from "../../animation/FadeIn";
 
 export const ProjectAccess = () => {
   const navigate = useNavigate();
@@ -83,8 +84,8 @@ export const ProjectAccess = () => {
   };
 
   return (
-    <div className="ProjectAccess">
-      <FloatingWrapper width="250px" height="80vh" padding="2%">
+    <FadeIn className="ProjectAccess">
+      <FloatingWrapper className="leftContainer" width="250px" height="80vh" padding="2%">
         <div className="title">Project Setting</div>
 
         <div className="projectNameWrapper">
@@ -103,7 +104,7 @@ export const ProjectAccess = () => {
           액세스
         </h5>
       </FloatingWrapper>
-      <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div className="rightContainer">
         <FloatingWrapper style={{ width: "600px", display: "flex", alignItems: "center", justifyContent: "center" }} padding="6%">
           <div className="ProjectAccess-header">
             <h2 className="ProjectAccess-header-title">액세스</h2>
@@ -159,14 +160,7 @@ export const ProjectAccess = () => {
             </div>
           </div>
         </FloatingWrapper>
-        <InviteProMemModal
-          show={showAddModal}
-          onHide={() => setShowAddModal(false)}
-          projectPk={projectPk}
-          projectName={projectName}
-          onMemberAdded={handleMemberAdded}
-          userToken={userToken}
-        />
+        <InviteProMemModal show={showAddModal} onHide={() => setShowAddModal(false)} projectPk={projectPk} projectName={projectName} onMemberAdded={handleMemberAdded} userToken={userToken} />
         <RemoveProMemModal
           show={showRemoveModal}
           onHide={() => setShowRemoveModal(false)}
@@ -176,6 +170,6 @@ export const ProjectAccess = () => {
           userToken={userToken}
         />
       </div>
-    </div>
+    </FadeIn>
   );
 };

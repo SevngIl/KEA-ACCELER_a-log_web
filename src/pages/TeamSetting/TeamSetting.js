@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { TeamsContext } from "../../service/teams/teams.context";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
 import { UploadTeamImage } from "../../service/teams/teams.service";
+import FadeIn from "../../animation/FadeIn";
 
 const TeamSetting = () => {
   const location = useLocation();
@@ -116,8 +117,10 @@ const TeamSetting = () => {
   const modifiedTeamImageUrl = teamInfo.teamImage ? modifyLink(teamInfo.teamImage) : null;
 
   return (
-    <div className="TeamSetting">
-      <h3 style={{ marginLeft: "10%" }}>{teamInfo.teamName}</h3>
+    <FadeIn className="TeamSetting">
+      <h3 className="teamTitle" style={{ marginLeft: "10%" }}>
+        {teamInfo.teamName}
+      </h3>
       <div className="teamSetting-Header">
         <div className="header-image-container" style={{ backgroundImage: `url(${headerImage || modifiedTeamImageUrl})` }}>
           {!headerImage && !modifiedTeamImageUrl && <span className="header-image-text">헤더 이미지</span>}
@@ -194,7 +197,7 @@ const TeamSetting = () => {
           </FloatingWrapper>
         </div>
       </div>
-    </div>
+    </FadeIn>
   );
 };
 

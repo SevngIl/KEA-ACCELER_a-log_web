@@ -7,6 +7,7 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 import { GetProjectDetail, PatchUpdateProject, DeleteProject } from "../../service/projects/projects.service";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
 import React from "react";
+import FadeIn from "../../animation/FadeIn";
 
 export const ProjectSetting = () => {
   const navigate = useNavigate();
@@ -58,8 +59,8 @@ export const ProjectSetting = () => {
   }, [projectPk]);
 
   return (
-    <div className="ProjectSetting">
-      <FloatingWrapper width="250px" height="80vh" padding="2%">
+    <FadeIn className="ProjectSetting">
+      <FloatingWrapper className="leftContainer" width="250px" height="80vh" padding="2%">
         <div className="title">Project Setting</div>
 
         <div className="projectNameWrapper">
@@ -79,7 +80,7 @@ export const ProjectSetting = () => {
         </h5>
       </FloatingWrapper>
 
-      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div className="rightContainer">
         <FloatingWrapper style={{ width: "400px", display: "flex", alignItems: "center", justifyContent: "center" }} padding="6%">
           <div className="Project-Detail">
             <h2 className="Project-Detail-header">프로젝트 세부 사항</h2>
@@ -100,25 +101,12 @@ export const ProjectSetting = () => {
 
               <Form.Group className="projectDesc" controlId="projectDesc">
                 <Form.Label>설명</Form.Label>
-                <Form.Control
-                  className="projectDesc_input"
-                  type="text"
-                  placeholder="Enter project description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
+                <Form.Control className="projectDesc_input" type="text" placeholder="Enter project description" value={description} onChange={(e) => setDescription(e.target.value)} />
               </Form.Group>
 
               <Form.Group className="teamPk" controlId="teamPk">
                 <Form.Label>팀 PK</Form.Label>
-                <Form.Control
-                  className="teamPk_input"
-                  type="number"
-                  placeholder="Enter team PK"
-                  value={teamPk}
-                  readOnly
-                  style={{ background: "#f3f3f3", borderColor: "#ccc" }}
-                />
+                <Form.Control className="teamPk_input" type="number" placeholder="Enter team PK" value={teamPk} readOnly style={{ background: "#f3f3f3", borderColor: "#ccc" }} />
               </Form.Group>
 
               <Form.Group className="pmPk" controlId="pmPk">
@@ -146,6 +134,6 @@ export const ProjectSetting = () => {
           </div>
         </FloatingWrapper>
       </div>
-    </div>
+    </FadeIn>
   );
 };
