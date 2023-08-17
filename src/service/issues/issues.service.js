@@ -185,3 +185,21 @@ export const UpdateIssueAssignee = async (issuePk, issueAssigneePk, userToken) =
     throw new Error("이슈 받아오기 중 오류가 발생했습니다.");
   }
 };
+
+export const GetMyIssues = async (issueAssigneePk, page, size, userToken) => {
+  const options = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  };
+
+  try {
+    const res = await axios.get(`${API_URL}/api/issue/by/assignee?issueAssigneePk=${issueAssigneePk}&page=${page}&size=${size}`, options);
+
+    console.log("My Issue Response:", res);
+    return res;
+  } catch (err) {
+    console.error("나의 이슈 받아오기 중 오류 발생:", err.response ? err.response.data : err.message);
+    throw new Error("나의 이슈 받아오기 중 오류가 발생했습니다.");
+  }
+};

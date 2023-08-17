@@ -1,71 +1,106 @@
 .MyIssues {
-    width: 100%;
-    background-color: #e9e3f5;
-    display: flex;
-    align-items: center;
-    margin-right: 4%;
-    flex-direction: column;
+  width: 100%;
+  background-color: #e9e3f5;
+  display: flex;
+  align-items: center;
+  margin-right: 4%;
+  flex-direction: column;
 }
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 
 .MyIssues .top-buttons {
-    display: flex;
-    flex-direction: row;
-    margin-top: 5%;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: row;
+  margin-top: 5%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 .MyIssues .top-button-link1,
 .MyIssues .top-button-link2 {
-    text-decoration: none;
+  text-decoration: none;
 
-    font-size: 2rem;
-    font-family: "Spoqa Han Sans Neo", "sans-serif";
-    font-weight: 500;
-    transition: transform 0.3s ease;
+  font-size: 2rem;
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+  font-weight: 500;
+  transition: transform 0.3s ease;
 }
 
 .MyIssues .top-button-link1 {
-    margin-left: 20%;
-    margin-right: 5%;
-    color: gray;
+  margin-left: 20%;
+  margin-right: 5%;
+  color: gray;
 }
 
 .MyIssues .top-button-link2 {
-    margin-right: 20%;
-    margin-left: 5%;
-    color: black;
+  margin-right: 20%;
+  margin-left: 5%;
+  color: black;
 }
 
 .MyIssues .top-button-link1:hover,
 .MyIssues .top-button-link2:hover {
-    transform: translateY(-5px);
+  transform: translateY(-5px);
 }
 
 .MyIssues .Issue-container {
-    display: flex;
-    width: 100%;
-    margin-top: 5%;
-    align-items: flex-start;
-    height: 60vh;
+  display: flex;
+  width: 100%;
+  margin-top: 3%;
+  align-items: flex-start;
+  height: 60vh;
 }
 
-.MyIssues .Issue-container .TODO .TODO-head,
-.MyIssues .Issue-container .TODO .TODO-body {
-    text-align: left;
-}
-
-.MyIssues .Issue-container .TODO .TODO-head,
+/* .MyIssues .Issue-container .TODO .TODO-head,
 .MyIssues .Issue-container .INPROGRESS .INPROGRESS-head,
-.MyIssues .Issue-container .DONE .DONE-head {
-    font-size: 2rem;
+.MyIssues .Issue-container .DONE .DONE-head,
+.MyIssues .Issue-container .EMERGENCY .EMERGENCY-head {
+  font-size: 1.5rem;
 }
 
 .MyIssues .Issue-container .TODO .TODO-body,
 .MyIssues .Issue-container .INPROGRESS .INPROGRESS-body,
-.MyIssues .Issue-container .DONE .DONE-body {
-    font-size: 1.2rem;
-    margin-bottom: 7%;
+.MyIssues .Issue-container .DONE .DONE-body,
+.MyIssues .Issue-container .EMERGENCY .EMERGENCY-body {
+  font-size: 1rem;
+  margin-bottom: 7%;
+} */
+
+.MyIssues .TODO,
+.MyIssues .INPROGRESS,
+.MyIssues .DONE,
+.MyIssues .EMERGENCY {
+  border: 2px solid #ccc;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  width: 60%;
+}
+
+.MyIssues .TODO-head,
+.MyIssues .INPROGRESS-head,
+.MyIssues .DONE-head,
+.MyIssues .EMERGENCY-head {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 1.3rem;
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+}
+
+.MyIssues .TODO-body,
+.MyIssues .INPROGRESS-body,
+.MyIssues .DONE-body,
+.MyIssues .EMERGENCY-body {
+  margin: 5px 0;
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
+}
+
+.issue-detail {
+  display: flex;
+  justify-content: space-between; /* 오른쪽 정렬을 위해 */
+}
+
+.end-date {
+  margin-left: auto; /* 오른쪽 정렬을 위해 */
 }

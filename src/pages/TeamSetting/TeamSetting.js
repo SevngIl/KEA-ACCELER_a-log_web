@@ -179,7 +179,7 @@ const TeamSetting = () => {
           )}
         </div>
 
-        <div className="teamActivity">
+        {/* <div className="teamActivity">
           <FloatingWrapper className="teamActivity-container">
             <div className="teamActivity-head">팀 활동</div>
             <div className="teamActivity-body">
@@ -196,7 +196,7 @@ const TeamSetting = () => {
               </div>
             </div>
           </FloatingWrapper>
-        </div>
+        </div> */}
       </div>
     </FadeIn>
   );

@@ -34,21 +34,18 @@ const LeftTeamSection = () => {
   return (
     <div className="LeftTeamSection">
       <FadeIn className="container">
-        <Button
-          className="all-button"
-          variant="outline-primary"
-          onClick={() => {
-            console.log("Select All:");
-            setSelectedTeamPk(9999);
-            navigate("/myProjects");
-          }}
-        >
-          All
-        </Button>
-        <Button className="private-button" variant="outline-primary" onClick={() => navigate("/Private")}>
-          Private
-        </Button>
         <div className="teams">
+          <Button
+            className="all-button"
+            variant="outline-primary"
+            onClick={() => {
+              console.log("Select All:");
+              setSelectedTeamPk(9999);
+              navigate("/myProjects");
+            }}
+          >
+            All
+          </Button>
           <h4 className="teams-title">Teams</h4>
           {teams.map((it) => (
             <div className="teamWrapper">

@@ -9,7 +9,7 @@ import Logo from "../assets/logo/alog-logo.png";
 import { useNavigate } from "react-router-dom";
 import { TextButton } from "../components/Buttons";
 import { AuthenticationContext } from "../service/authentication/authentication.context";
-
+import Bell from "../assets/images/bell.png";
 import Notification from "../components/Notification/Notification";
 import MyWork from "../components/MyWork/MyWork";
 
@@ -27,26 +27,20 @@ const LoggedInNav = ({ onNotificationClick, onMyWorkClick }: LoggedInNavProps) =
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="me-auto">
           <TextButton onClick={onMyWorkClick}>내 작업</TextButton>
-          <NavDropdown title="프로젝트" id="basic-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-          </NavDropdown>
-          <NavDropdown title="팀" id="basic-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item onClick={() => navigate("/teamInfo")}>Team Info</NavDropdown.Item>
-          </NavDropdown>
-          <Button variant="outline-primary">만들기</Button>
+          <TextButton title="프로젝트" onClick={() => navigate("/myProjects")}>
+            프로젝트
+          </TextButton>
         </Nav>
       </Navbar.Collapse>
       <Navbar.Collapse className="justify-content-end">
-        <TextButton onClick={onNotificationClick}>알람</TextButton>
-        <TextButton>설정</TextButton>
+        <img
+          src={Bell}
+          className="moveCreateRN"
+          alt="moveCreateRN"
+          onClick={onNotificationClick}
+          style={{ width: "20px", height: "20px", margin: "10px", cursor: "pointer" }}
+        />
+
         <TextButton
           onClick={() => {
             navigate("/profile");
