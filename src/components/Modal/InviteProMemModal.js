@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { AddProjectMembers } from "../../service/projects/projects.service";
+import { GetUserPkByNickname } from "../../service/teams/teams.service";
 
 const InviteProMemModal = ({ show, onHide, projectPk, projectName, onMemberAdded, userToken }) => {
   const [userInput, setUserInput] = useState("");
@@ -11,7 +12,15 @@ const InviteProMemModal = ({ show, onHide, projectPk, projectName, onMemberAdded
 
   const handleInviteMember = async () => {
     try {
-      const userPks = userInput.split(",").map((value) => parseInt(value.trim()));
+      const nicknames = userInput.split(",").map((value) => value.trim());
+      const userPks = [];
+
+      for (const nickname of nicknames) {
+        const response = await GetUserPkByNickname(nickname, userToken);
+        console.log("userPk: ", response);
+        userPks.push(response.data);
+      }
+
       console.log(userPks);
       await AddProjectMembers(projectPk, userPks, userToken);
       alert("멤버가 성공적으로 추가되었습니다.");
@@ -22,6 +31,12 @@ const InviteProMemModal = ({ show, onHide, projectPk, projectName, onMemberAdded
     }
   };
 
+  useEffect(() => {
+    if (!show) {
+      setUserInput("");
+    }
+  }, [show]);
+
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
@@ -29,8 +44,8 @@ const InviteProMemModal = ({ show, onHide, projectPk, projectName, onMemberAdded
       </Modal.Header>
       <Modal.Body>
         <Form.Group>
-          <Form.Label>이름 또는 이메일</Form.Label>
-          <Form.Control type="text" placeholder="예: 1, 2, 3" value={userInput} onChange={handleInputChange} />
+          <Form.Label>닉네임</Form.Label>
+          <Form.Control type="text" placeholder="예: 홍길동" value={userInput} onChange={handleInputChange} />
         </Form.Group>
       </Modal.Body>
       <Modal.Footer>

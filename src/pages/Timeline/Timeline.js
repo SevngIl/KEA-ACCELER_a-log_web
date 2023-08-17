@@ -1,11 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import Gantt from "frappe-gantt";
 import "./Timeline.css";
 import TopicModal from "../../components/Modal/TopicModal";
 import Button from "react-bootstrap/Button";
 import FadeIn from "../../animation/FadeIn";
+import { useLocation } from "react-router-dom";
+import { AuthenticationContext } from "../../service/authentication/authentication.context";
+import { GetAllTopics, GetTopicDetail } from "../../service/projects/projects.service";
 
 export const Timeline = () => {
+  const location = useLocation();
+  const [projectPk, setProjectPk] = useState(location.pathname.split("/")[2]);
+  const { userToken } = useContext(AuthenticationContext);
+
   const [tasks, setTasks] = useState([
     {
       start: new Date(),
@@ -62,10 +69,56 @@ export const Timeline = () => {
   const Month = useRef(null);
   const Year = useRef(null);
 
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
+  const changeViewMode = (mode, ref) => {
+    ["Quarter Day", "Half Day", "Day", "Week", "Month", "Year"].forEach((m, idx) => {
+      [QuarterDay, HalfDay, Day, Week, Month, Year][idx].current.classList.remove("active");
+    });
+    gantt.change_view_mode(mode);
+    ref.current.classList.add("active");
+  };
 
-  const handleAddTopic = (topicName, startDate, endDate, topicAssignee) => {
+  const handleShowModal = () => {
+    setSelectedTopic(null); // Create Topic 버튼을 누를 때 selectedTopic을 null로 설정
+    setShowModal(true);
+  };
+
+  const [selectedTopic, setSelectedTopic] = useState(null);
+  const [reloadTopics, setReloadTopics] = useState(false);
+
+  // const handleDoubleClick = (task) => {
+  //   setSelectedTopic(task);
+  //   setShowModal(true);
+  // };
+
+  const handleDoubleClick = async (task) => {
+    try {
+      const topicPk = task.id.split(" ")[1]; // "Task 21"에서 "21"을 추출
+
+      const res = await GetTopicDetail({ projectPk, topicPk, userToken });
+
+      const selectedTopicDetail = {
+        start: new Date(res.data.data.startDate),
+        end: new Date(res.data.data.dueDate),
+        name: res.data.data.name,
+        id: "Task " + res.data.data.pk,
+        progress: 0,
+        description: res.data.data.description,
+      };
+
+      setSelectedTopic(selectedTopicDetail);
+      setShowModal(true);
+    } catch (error) {
+      console.error("토픽 세부 정보 가져오기 실패", error.message);
+      // 필요한 경우 에러 처리를 여기에 추가합니다.
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedTopic(null);
+  };
+
+  const handleAddTopic = (topicName, topicDescription, startDate, endDate, projectPk) => {
     // 실제 토픽을 세는 변수
     const realTaskCount = tasks.findIndex((task) => task.name === "" || task.name === "Welcome! Please add your Topic");
 
@@ -74,7 +127,7 @@ export const Timeline = () => {
       start: startDate,
       end: endDate,
       name: topicName,
-      assignee: topicAssignee,
+      description: topicDescription,
       id: "Task " + realTaskCount,
       progress: 0,
     };
@@ -92,14 +145,44 @@ export const Timeline = () => {
 
     // 토픽 상태 업데이트
     setTasks(newTasks);
+    setReloadTopics(true);
   };
 
-  const changeViewMode = (mode, ref) => {
-    ["Quarter Day", "Half Day", "Day", "Week", "Month", "Year"].forEach((m, idx) => {
-      [QuarterDay, HalfDay, Day, Week, Month, Year][idx].current.classList.remove("active");
-    });
-    gantt.change_view_mode(mode);
-    ref.current.classList.add("active");
+  const handleUpdateTopic = (name, startDate, endDate, description) => {
+    const updatedTasks = tasks.map((task) => (task === selectedTopic ? { name, start: startDate, end: endDate, description } : task));
+    setTasks(updatedTasks);
+    setReloadTopics(true);
+  };
+
+  const [deletedTopics, setDeletedTopics] = useState([]);
+
+  const handleDeleteTopic = (topic) => {
+    const updatedDeletedTopics = [...deletedTopics, topic];
+    setDeletedTopics(updatedDeletedTopics);
+
+    const updatedTasks = tasks.filter((task) => task.id !== topic.pk);
+    setTasks(updatedTasks);
+    fetchTopics();
+    setReloadTopics(true);
+  };
+
+  const fetchTopics = async () => {
+    try {
+      const params = { projectPk, keyword: "", sortType: "ASC", page: 0, size: 100, userToken: userToken };
+      const res = await GetAllTopics(params);
+      console.log("API Response:", res.data);
+      const topics = res.data.data.content.map((topic) => ({
+        start: new Date(topic.startDate),
+        end: new Date(topic.dueDate),
+        name: topic.name,
+        id: "Task " + topic.pk,
+        progress: 0,
+        description: topic.description,
+      }));
+      setTasks(topics);
+    } catch (error) {
+      console.error("토픽 불러오기 실패", error);
+    }
   };
 
   useEffect(() => {
@@ -128,10 +211,12 @@ export const Timeline = () => {
               <p>Started on ${start_date}</p>
               <p>Expected to finish by ${end_date}</p>
               <p>${task.progress}% completed!</p>
-              <p>Assigned to ${task.assignee}.</p>
+              <p>${task.description}.</p>
+              <p>${task.id}.</p>
             </div>
             `;
         },
+        on_click: (task) => handleDoubleClick(task),
       });
       newGantt.change_view_mode("Week");
       setGantt(newGantt);
@@ -167,6 +252,10 @@ export const Timeline = () => {
     };
   }, [gantt]);
 
+  useEffect(() => {
+    fetchTopics();
+  }, [projectPk]);
+
   return (
     <FadeIn className="Timeline">
       <h1 className="ProjectTimelineName">Project Timeline</h1>
@@ -191,10 +280,19 @@ export const Timeline = () => {
         </button>
       </div>
       <div id="gantt"></div>
+
       <Button className="create-topic-btn" onClick={handleShowModal}>
         Create Topic
       </Button>
-      <TopicModal show={showModal} handleClose={handleCloseModal} handleAddTopic={handleAddTopic} />
+      <TopicModal
+        show={showModal}
+        handleClose={handleCloseModal}
+        handleAddTopic={handleAddTopic}
+        handleUpdateTopic={handleUpdateTopic}
+        handleDeleteTopic={handleDeleteTopic}
+        projectPk={projectPk}
+        selectedTopic={selectedTopic}
+      />
     </FadeIn>
   );
 };

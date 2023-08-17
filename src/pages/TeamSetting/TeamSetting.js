@@ -1,32 +1,77 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./TeamSetting.css";
 import { FloatingWrapper } from "../../components/FloatingWrapper";
 import { Button } from "react-bootstrap";
 import check from "../../assets/images/check.png";
+import { useLocation, useNavigate } from "react-router-dom";
+import { TeamsContext } from "../../service/teams/teams.context";
+import { AuthenticationContext } from "../../service/authentication/authentication.context";
+import { UploadTeamImage } from "../../service/teams/teams.service";
+import FadeIn from "../../animation/FadeIn";
 
 const TeamSetting = () => {
-  const [members, setMembers] = useState(["Member1", "Member2", "Member3"]);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { OnGetTeamInfo, OnGetTeamMembers, OnAddTeamMembers, OnDeleteTeam, OnDeleteTeamMembers } = useContext(TeamsContext);
+  const { userData, userToken } = useContext(AuthenticationContext);
+
+  const [teamInfo, setTeamInfo] = useState("");
+  const [teamPk, setTeamPk] = useState(location.pathname.split("/")[1]);
+  const [members, setMembers] = useState({});
+
   const [headerImage, setHeaderImage] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
 
-  const handleAddUser = () => {
+  const FetchTeamData = async () => {
+    setTeamInfo(await OnGetTeamInfo(teamPk, userData.userPk, userToken));
+    setMembers(await OnGetTeamMembers(teamPk, userData.userPk, userToken));
+  };
+  useEffect(() => {
+    FetchTeamData();
+  }, []);
+
+  const handleAddUser = async () => {
     const newMember = prompt("새로운 사용자를 추가하세요");
     if (newMember) {
-      setMembers([...members, newMember]);
+      await OnAddTeamMembers(teamPk, [newMember], userData.userPk, userToken);
+      FetchTeamData();
     }
   };
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
+  // const handleImageUpload = (e) => {
+  //   const file = e.target.files[0];
+  //   const reader = new FileReader();
 
-    reader.onloadend = () => {
+  //   reader.onloadend = () => {
+  //     setHeaderImage(reader.result);
+  //   };
+
+  //   if (file) {
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+
+    // 미리보기와 Base64 형식의 문자열 가져오기
+    const reader = new FileReader();
+    reader.onloadend = async () => {
       setHeaderImage(reader.result);
+      // 이미지 업로드
+      try {
+        await UploadTeamImage(teamPk, userData.userPk, file, userToken);
+        alert("헤더 이미지가 저장되었습니다.");
+      } catch (err) {
+        alert("이미지 저장에 실패했습니다. 다시 시도해주세요.");
+      }
     };
 
     if (file) {
       reader.readAsDataURL(file);
     }
+    console.log(teamPk, userData.userPk, file, userToken);
   };
 
   const [deleteMember, setDeleteMember] = useState("");
@@ -35,23 +80,60 @@ const TeamSetting = () => {
     setDeleteMember(event.target.value);
   };
 
-  const handleDelete = () => {
-    const updatedMembers = members.filter((member) => member !== deleteMember);
-    setMembers(updatedMembers); // 멤버 목록을 업데이트
+  const handleDelete = async () => {
+    console.log(teamPk, [deleteMember], userData.userPk, userToken);
+    await OnDeleteTeamMembers(teamPk, [deleteMember], userData.userPk, userToken);
+    FetchTeamData();
     setDeleteMember(""); // 삭제할 멤버 상태 초기화
     setShowPopup(false);
   };
 
+  const DeleteTeamHandler = async () => {
+    console.log(teamPk, userData.userPk, userToken);
+    const res = await OnDeleteTeam(teamPk, userData.userPk, userToken);
+    if (res === true) {
+      navigate(-1, { replace: true });
+    }
+  };
+
+  useEffect(() => {
+    // teamInfo가 존재하면 팀 이미지 URL을 콘솔에 로그
+    if (teamInfo) {
+      console.log(teamInfo.teamImage);
+    } else {
+      console.log("teamInfo is not yet available");
+    }
+  }, [teamInfo]);
+
+  const modifyLink = (url) => {
+    // 슬래시 2개를 기준으로 뒷부분만 사용
+    const urlObj = new URL(url);
+    const path = urlObj.pathname.split("//")[1];
+    // 앞부분에 https://alog.acceler.kr/를 붙이기
+    const newUrl = "https://alog.acceler.kr/" + path;
+    return newUrl;
+  };
+
+  const modifiedTeamImageUrl = teamInfo.teamImage ? modifyLink(teamInfo.teamImage) : null;
+
   return (
-    <div className="TeamSetting">
+    <FadeIn className="TeamSetting">
+      <h3 className="teamTitle" style={{ marginLeft: "10%" }}>
+        {teamInfo.teamName}
+      </h3>
       <div className="teamSetting-Header">
-        <div className="header-image-container" style={{ backgroundImage: `url(${headerImage})` }}>
-          {!headerImage && <span className="header-image-text">헤더 이미지</span>}
+        <div className="header-image-container" style={{ backgroundImage: `url(${headerImage || modifiedTeamImageUrl})` }}>
+          {!headerImage && !modifiedTeamImageUrl && <span className="header-image-text">헤더 이미지</span>}
         </div>
         <input type="file" accept="image/*" onChange={handleImageUpload} id="header-image-upload" style={{ display: "none" }} />
-        <label htmlFor="header-image-upload" className="add-header-btn">
-          헤더 이미지 추가
-        </label>
+        <div style={{ display: "flex", width: "100%", justifyContent: "space-around", alignItems: "center" }}>
+          <label htmlFor="header-image-upload" className="add-header-btn">
+            헤더 이미지 추가
+          </label>
+          <Button style={{}} variant="outline-danger" onClick={() => DeleteTeamHandler()}>
+            팀 삭제
+          </Button>
+        </div>
       </div>
 
       <div className="teamSetting-Body">
@@ -68,11 +150,13 @@ const TeamSetting = () => {
                 </button>
               </div>
               <div className="teamMembers-list">
-                {members.map((member, index) => (
-                  <p key={index} className="teamMember-name">
-                    {member}
-                  </p>
-                ))}
+                <h5>leader : {members && members.teamLeaderNN}</h5>
+                {members.teamMemberNNs &&
+                  members.teamMemberNNs.map((member, index) => (
+                    <p key={index} className="teamMember-name">
+                      {member}
+                    </p>
+                  ))}
               </div>
             </div>
           </FloatingWrapper>
@@ -113,7 +197,7 @@ const TeamSetting = () => {
           </FloatingWrapper>
         </div>
       </div>
-    </div>
+    </FadeIn>
   );
 };
 

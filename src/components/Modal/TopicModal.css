@@ -2,3 +2,19 @@
   display: flex;
   flex-direction: column;
 }
+
+.Topic-delete-button {
+  margin-right: auto;
+}
+
+.Topic-modal-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+  margin: 10%;
+}
+
+.Topic-close-button {
+  margin-right: 3%;
+}

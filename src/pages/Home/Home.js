@@ -14,9 +14,7 @@ export default function Home() {
     if (isLogin == true) {
       navigation("/myProjects");
     } else {
-      navigation("/myProjects");
-
-      // navigation("/login");
+      navigation("/signin");
     }
   };
   return (

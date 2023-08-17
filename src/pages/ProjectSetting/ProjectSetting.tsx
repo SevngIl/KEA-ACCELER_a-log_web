@@ -1,27 +1,29 @@
 import { useState, useContext, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FloatingWrapper } from "../../components/FloatingWrapper";
 import "./ProjectSetting.css";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { GetProjectDetail, PatchUpdateProject, DeleteProject } from "../../service/projects/projects.service";
+import { AuthenticationContext } from "../../service/authentication/authentication.context";
 import React from "react";
+import FadeIn from "../../animation/FadeIn";
 
 export const ProjectSetting = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [teamPk, setTeamPk] = useState(0); // number로 변경
-  const [pmPk, setPmPk] = useState(0); // number로 변경
-  const userToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTk4iOiJuYW1lIiwidXNlckVtYWlsIjoiZW1haWxAbmF2ZXIuY29tIiwidXNlclBrIjoxfQ.ZkhEHRYm1tnyznIhrNf-8tbeIMOGIVhlgwKB2QbJGs8";
+  const [pmPk, setPmPk] = useState(0);
+  const [teamPk, projectPk] = location.pathname.split("/").slice(1, 3);
 
-  const navigate = useNavigate();
-  const { projectPk, projectName } = useParams();
+  const { userToken } = useContext(AuthenticationContext);
 
   const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await PatchUpdateProject(projectPk, name, description, teamPk, pmPk, userToken);
+      await PatchUpdateProject(projectPk, name, description, teamPk, userToken);
       alert("프로젝트 수정이 완료되었습니다.");
     } catch (err) {
       alert("프로젝트 수정 중 오류가 발생했습니다.");
@@ -47,7 +49,6 @@ export const ProjectSetting = () => {
         .then((res) => {
           setName(res.data.data.name);
           setDescription(res.data.data.description);
-          setTeamPk(res.data.data.teamPk);
           setPmPk(res.data.data.pmPk);
         })
         .catch((err) => {
@@ -58,28 +59,28 @@ export const ProjectSetting = () => {
   }, [projectPk]);
 
   return (
-    <div className="ProjectSetting">
-      <FloatingWrapper width="250px" height="80vh" padding="2%">
+    <FadeIn className="ProjectSetting">
+      <FloatingWrapper className="leftContainer" width="250px" height="80vh" padding="2%">
         <div className="title">Project Setting</div>
 
         <div className="projectNameWrapper">
           <div className="icon"></div>
-          <h2>A-Log</h2>
+          <h2>{location.state.name}</h2>
         </div>
         <div className="prevPageWrapper">
           <AiOutlineArrowLeft className="arrow" size={24} />
           <div>전체 프로젝트</div>
         </div>
 
-        <h5 className="leftMenuItem" onClick={() => navigate(`/projectSetting/${projectPk}/${projectName}`)}>
+        <h5 className="leftMenuItem" onClick={() => navigate(`/${teamPk}/${projectPk}/projectSetting/`, { state: location.state })}>
           세부 사항
         </h5>
-        <h5 className="leftMenuItem" onClick={() => navigate(`/projectAccess/${projectPk}/${projectName}`)}>
+        <h5 className="leftMenuItem" onClick={() => navigate(`/${teamPk}/${projectPk}/projectAccess/`, { state: location.state })}>
           액세스
         </h5>
       </FloatingWrapper>
 
-      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div className="rightContainer">
         <FloatingWrapper style={{ width: "400px", display: "flex", alignItems: "center", justifyContent: "center" }} padding="6%">
           <div className="Project-Detail">
             <h2 className="Project-Detail-header">프로젝트 세부 사항</h2>
@@ -100,26 +101,12 @@ export const ProjectSetting = () => {
 
               <Form.Group className="projectDesc" controlId="projectDesc">
                 <Form.Label>설명</Form.Label>
-                <Form.Control
-                  className="projectDesc_input"
-                  type="text"
-                  placeholder="Enter project description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
+                <Form.Control className="projectDesc_input" type="text" placeholder="Enter project description" value={description} onChange={(e) => setDescription(e.target.value)} />
               </Form.Group>
 
               <Form.Group className="teamPk" controlId="teamPk">
                 <Form.Label>팀 PK</Form.Label>
-                <Form.Control
-                  className="teamPk_input"
-                  type="number"
-                  placeholder="Enter team PK"
-                  value={teamPk}
-                  onChange={(e) => setTeamPk(Number(e.target.value))}
-                  readOnly
-                  style={{ background: "#f3f3f3", borderColor: "#ccc" }}
-                />
+                <Form.Control className="teamPk_input" type="number" placeholder="Enter team PK" value={teamPk} readOnly style={{ background: "#f3f3f3", borderColor: "#ccc" }} />
               </Form.Group>
 
               <Form.Group className="pmPk" controlId="pmPk">
@@ -147,6 +134,6 @@ export const ProjectSetting = () => {
           </div>
         </FloatingWrapper>
       </div>
-    </div>
+    </FadeIn>
   );
 };

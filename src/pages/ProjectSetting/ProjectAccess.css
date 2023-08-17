@@ -11,6 +11,13 @@
   justify-content: center;
   width: 100%;
 }
+.ProjectAccess .rightContainer {
+  margin-top: 30px;
+  margin-left: 100px;
+}
+.ProjectAccess .leftContainer {
+  padding-top: 30px;
+}
 .ProjectAccess .prevPageWrapper {
   display: flex;
   align-items: center;

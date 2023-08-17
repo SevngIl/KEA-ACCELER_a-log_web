@@ -1,5 +1,5 @@
 .ProjectSetting {
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   display: flex;
   padding: 4%;
@@ -26,6 +26,13 @@
 
 .ProjectSetting .teamPk {
   margin-bottom: 10%;
+}
+.ProjectSetting .rightContainer {
+  margin-top: 30px;
+  margin-left: 100px;
+}
+.ProjectSetting .leftContainer {
+  padding-top: 30px;
 }
 
 .ProjectSetting .projectName .projectName_input {
