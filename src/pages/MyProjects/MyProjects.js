@@ -34,7 +34,7 @@ const MyProjects = () => {
       .then((res) => {
         if (res.status === 200) {
           setProjects(res.data.data.content);
-          console.log(res.data.data.content);
+          console.log("my projects:", res);
         }
       })
       .catch((err) => {

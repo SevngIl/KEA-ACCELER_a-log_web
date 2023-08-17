@@ -7,7 +7,7 @@ import "react-clock/dist/Clock.css";
 import "./IssueModal.css";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
 import { PostCreateIssue, UpdateIssueImage, UpdateIssueDate, UpdateIssueAssignee, RemoveIssueImage } from "../../service/issues/issues.service";
-import { GetProjectMembers } from "../../service/projects/projects.service";
+import { GetProjectMembers, GetAllTopics } from "../../service/projects/projects.service";
 
 const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, column, teamPk, projectPk }) => {
   const { userToken, userData } = useContext(AuthenticationContext);
@@ -21,19 +21,24 @@ const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, colum
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [projectMembers, setProjectMembers] = useState([]);
+  const [selectedTopic, setSelectedTopic] = useState(null);
+  const [issueTopics, setIssueTopics] = useState([]);
 
   useEffect(() => {
     if (isEditing && issue) {
       setIssueContent(issue.content);
       setPreviewSource(issue.imageDataUrl);
       setIssueStatus(issue.status);
-
       // projectMembers에서 issueAssigneePk와 일치하는 멤버 찾기
       const matchingAssignee = projectMembers.find((member) => member.userPk === issue.issueAssigneePk);
       setAssignee(matchingAssignee ? matchingAssignee.userNN : "할당되지 않음");
-      // setAssignee(issue.assignee);
+
+      const matchingTopic = issueTopics.find((topic) => topic.pk === issue.topicPk);
+      setSelectedTopic(matchingTopic ? matchingTopic : null);
+
       setStartDate(issue.startDate);
       setEndDate(issue.endDate);
+      console.log("Issue: ", issue);
     } else {
       // 이 부분은 새 이슈를 만들거나 다른 이슈를 선택했을 때 초기화를 위함
       setIssueContent("");
@@ -43,8 +48,9 @@ const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, colum
       setAssignee("할당되지 않음");
       setStartDate(new Date());
       setEndDate(new Date());
+      setSelectedTopic("할당되지 않음");
     }
-  }, [isEditing, issue, projectMembers]);
+  }, [isEditing, issue, projectMembers, issueTopics]);
 
   useEffect(() => {
     if (isEditing && issue) {
@@ -80,6 +86,22 @@ const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, colum
     };
 
     fetchProjectMembers();
+  }, [projectPk, userToken, isEditing]);
+
+  useEffect(() => {
+    const fetchIssueTopic = async () => {
+      const params = { projectPk, keyword: "", sortType: "ASC", page: 0, size: 100, userToken: userToken };
+      try {
+        const response = await GetAllTopics(params);
+        console.log("Project Topic Response:", response);
+        setIssueTopics(response.data.data.content); // 상태 변수 이름 변경
+        console.log(response.data.data.content);
+      } catch (error) {
+        console.error("프로젝트 토픽 가져오기에 실패했습니다:", error);
+      }
+    };
+
+    fetchIssueTopic();
   }, [projectPk, userToken, isEditing]);
 
   useEffect(() => {
@@ -129,7 +151,7 @@ const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, colum
     const issueData = {
       pjPk: projectPk,
       teamPk: teamPk,
-      topicPk: 1, // topicPk 임시로 설정
+      topicPk: selectedTopic ? selectedTopic.pk : 0,
       issueAuthorPk: 1,
       issueContent: issueContent,
       issueStatus: issueStatus,
@@ -177,6 +199,30 @@ const IssueModal = ({ issue, show, handleClose, handleAddIssue, isEditing, colum
               <option value="INPROGRESS">IN PROGRESS</option>
               <option value="DONE">DONE</option>
               <option value="EMERGENCY">EMERGENCY</option>
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group className="issueTopic mb-3" controlId="issueTopic">
+            <Form.Label>연결 토픽</Form.Label>
+            <Form.Select
+              value={selectedTopic?.pk}
+              onChange={(e) => {
+                const selectedTopicPk = e.target.value;
+                const selected = issueTopics.find((topic) => parseInt(topic.pk) === parseInt(selectedTopicPk));
+                setSelectedTopic(selected);
+                console.log("issueTopics:", issueTopics);
+                console.log("selected topic:", selectedTopicPk);
+                console.log("selected:", selected);
+              }}
+            >
+              <option value="할당되지 않음">할당되지 않음</option>
+              {issueTopics &&
+                issueTopics.length > 0 &&
+                issueTopics.map((topic) => (
+                  <option value={topic.pk} key={topic.pk}>
+                    {topic.name}
+                  </option>
+                ))}
             </Form.Select>
           </Form.Group>
 

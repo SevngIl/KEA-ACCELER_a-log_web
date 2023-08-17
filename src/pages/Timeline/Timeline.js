@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 import FadeIn from "../../animation/FadeIn";
 import { useLocation } from "react-router-dom";
 import { AuthenticationContext } from "../../service/authentication/authentication.context";
-import { GetAllTopics, GetTopicDetail } from "../../service/projects/projects.service";
+import { GetAllTopics, GetTopicDetail, UpdateTopic } from "../../service/projects/projects.service";
 
 export const Timeline = () => {
   const location = useLocation();
@@ -84,11 +84,6 @@ export const Timeline = () => {
 
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [reloadTopics, setReloadTopics] = useState(false);
-
-  // const handleDoubleClick = (task) => {
-  //   setSelectedTopic(task);
-  //   setShowModal(true);
-  // };
 
   const handleDoubleClick = async (task) => {
     try {
@@ -185,6 +180,11 @@ export const Timeline = () => {
     }
   };
 
+  const formatDateTime = (date) => {
+    date.setHours(date.getHours() + 9);
+    return date.toISOString().slice(0, 19);
+  };
+
   useEffect(() => {
     if (tasks.length === 0 || !document.getElementById("gantt")) return;
 
@@ -201,6 +201,40 @@ export const Timeline = () => {
         view_mode: "Day",
         date_format: "YYYY-MM-DD",
         language: "en",
+        on_date_change: async (task, start, end) => {
+          try {
+            const topicPk = task.id.split(" ")[1];
+            const startDate = formatDateTime(new Date(start));
+            const endDate = formatDateTime(new Date(end));
+
+            if (!projectPk || !topicPk) {
+              console.error("projectPk or topicPk is undefined.");
+              return;
+            }
+
+            console.log("projectPk: ", projectPk);
+            console.log("topicPk:", topicPk);
+            console.log("name: ", task.name);
+            console.log("des: ", task.description);
+            console.log("start: ", startDate);
+            console.log("end: ", endDate);
+            console.log("userToken: ", userToken);
+
+            await UpdateTopic({
+              projectPk: parseInt(projectPk),
+              topicPk: parseInt(topicPk),
+              name: task.name,
+              description: task.description,
+              startDate: startDate,
+              dueDate: endDate,
+              userToken: userToken,
+            });
+            console.log("토픽 기간이 성공적으로 업데이트되었습니다.");
+          } catch (error) {
+            console.error("토픽 기간 업데이트 중 오류 발생:", error.message);
+          }
+        },
+
         custom_popup_html: function (task) {
           //커스텀 팝업
           const start_date = task._start.toLocaleDateString();

@@ -100,6 +100,7 @@ const TeamSetting = () => {
     // teamInfo가 존재하면 팀 이미지 URL을 콘솔에 로그
     if (teamInfo) {
       console.log(teamInfo.teamImage);
+      console.log(teamInfo);
     } else {
       console.log("teamInfo is not yet available");
     }

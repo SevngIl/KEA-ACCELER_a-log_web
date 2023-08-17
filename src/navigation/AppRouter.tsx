@@ -16,7 +16,7 @@ import TeamInfo from "../pages/TeamInfo/TeamInfo";
 import TeamSetting from "../pages/TeamSetting/TeamSetting";
 import { ProjectAccess } from "../pages/ProjectSetting/ProjectAccess";
 import { ProjectSetting } from "../pages/ProjectSetting/ProjectSetting";
-import { Profile } from "../pages/Profile/Profile";
+import Profile from "../pages/Profile/Profile";
 import { GithubLogin } from "../pages/Login/GithubLogin";
 import React from "react";
 
