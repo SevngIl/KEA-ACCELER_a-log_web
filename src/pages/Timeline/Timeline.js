@@ -140,6 +140,7 @@ export const Timeline = () => {
 
     // 토픽 상태 업데이트
     setTasks(newTasks);
+    fetchTopics();
     setReloadTopics(true);
   };
 

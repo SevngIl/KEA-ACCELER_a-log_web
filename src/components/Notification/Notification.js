@@ -27,27 +27,13 @@ function Notification({ show, handleClose }) {
     return Math.round((now.getTime() - date.getTime()) / 60000);
   }
 
-  // const alarms = [
-  //   {
-  //     datetime: "2023-07-27",
-  //     issues: [
-  //       {
-  //         message: "Faker이(가) 귀하에게 이슈를 할당",
-  //         time: "5분 전",
-  //         content: "주관식 답변 처리",
-  //         status: "해야 할 일",
-  //       },
-  //     ],
-  //   },
-  // ];
-
   useEffect(() => {
     GetNotifications(userToken).then((newNoti) => {
       if (newNoti != null) {
         setNotifications(newNoti);
       }
     });
-  }, []);
+  }, [userToken]);
 
   return (
     <div>

@@ -95,20 +95,20 @@ const Board = () => {
         [column]: prevIssues[column].map((issue, idx) =>
           idx === index
             ? {
-                ...issue,
-                issueDescription: issueData.issueDescription,
-                issueAssigneePk: issueData.issueAssigneePk,
-                issueAuthorPk: issueData.issueAuthorPk,
-                issueLabel: issueData.issueLabel,
-                issueOpened: issueData.issueOpened,
-                issuePk: issueData.issuePk,
-                issueStatus: issueData.issueStatus,
-                teamPk: issueData.teamPk,
-                topicPk: issueData.topicPk,
-                imageDataUrl: fileLink,
-                startDate: startDate,
-                endDate: endDate,
-              }
+              ...issue,
+              issueDescription: issueData.issueDescription,
+              issueAssigneePk: issueData.issueAssigneePk,
+              issueAuthorPk: issueData.issueAuthorPk,
+              issueLabel: issueData.issueLabel,
+              issueOpened: issueData.issueOpened,
+              issuePk: issueData.issuePk,
+              issueStatus: issueData.issueStatus,
+              teamPk: issueData.teamPk,
+              topicPk: issueData.topicPk,
+              imageDataUrl: fileLink,
+              startDate: startDate,
+              endDate: endDate,
+            }
             : issue
         ),
       }));
@@ -194,6 +194,16 @@ const Board = () => {
     const issuePk = draggedIssue.id.split("-")[1]; // 이슈 ID 추출
     const newStatus = destination.droppableId;
     console.log("issuePk, status:", issuePk, newStatus);
+    const newIssue = { ...draggedIssue, status: destination.droppableId };
+
+    setIssues((prevIssues) => {
+      const newIssues = { ...prevIssues };
+
+      newIssues[source.droppableId].splice(source.index, 1);
+      newIssues[destination.droppableId].splice(destination.index, 0, newIssue);
+
+      return newIssues;
+    });
 
     try {
       await UpdateIssueStatus(issuePk, newStatus, userToken); // 상태 업데이트 API 호출
@@ -202,18 +212,7 @@ const Board = () => {
       return; // 에러 발생 시 함수 종료
     }
 
-    if (source.droppableId !== destination.droppableId) {
-      const newIssue = { ...draggedIssue, status: destination.droppableId };
-
-      setIssues((prevIssues) => {
-        const newIssues = { ...prevIssues };
-
-        newIssues[source.droppableId].splice(source.index, 1);
-        newIssues[destination.droppableId].splice(destination.index, 0, newIssue);
-
-        return newIssues;
-      });
-    } else {
+    if (source.droppableId === destination.droppableId) {
       const newIssues = Array.from(issues[source.droppableId]);
       const [removed] = newIssues.splice(source.index, 1);
       newIssues.splice(destination.index, 0, removed);
