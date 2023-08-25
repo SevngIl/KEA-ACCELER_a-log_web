@@ -20,10 +20,15 @@
 ## 🛠 기능 엿보기
 
 3. [🛠 기능 엿보기](#-기능-엿보기)
+   - [Landing Page](#landing-page)
    - [Timeline](#timeline)
    - [Board](#board)
    - [Release Note](#release-note)
-   - [Landing Page](#landing-page)
+
+## Landing Page
+
+<img src="src/assets/readmeImages/landingpage-1.png">
+<br>
 
 ## Timeline
 
@@ -32,10 +37,10 @@
 
 ## Board
 
+<img src="src/assets/readmeImages/board-1.png">
 <br>   
    
 ## Release Note
-
-<br>   
-   
-## Landing Page
+<img src="src/assets/readmeImages/releasenote-1.png">
+<img src="src/assets/readmeImages/releasenote-2.png">
+<br>
