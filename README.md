@@ -1,46 +1,43 @@
-# Getting Started with Create React App
+## 🙌 동시편집 기능을 제공하는 프로젝트 관리 플랫폼, A-Log
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## ❓ A-Log가 뭐예요?
 
-## Available Scripts
+- **A-Log**는 **<u>프로젝트 멤버들간의 협업을 촉진시키기 위해</u>** 만들었어요.
+- **실시간 동시편집** 기능을 제공하며 노션()처럼 다른 프로젝트 멤버의 작성내용을 실시간으로 확인할 수 있어요.
+- Timeline, Board, Release Note를 통하여 프로젝트의 토픽, 이슈, 릴리즈 노트를 관리할 수 있어요.
+- 깃헙 로그인의 간편 로그인 기능도 제공해요.
 
-In the project directory, you can run:
+## 🙋‍♀️ 좀 더 구체적으로 가르쳐주세요!
 
-### `npm start`
+1. 사용자는 팀을 만들 수 있고 팀을 만든 사람이 팀장(Team Leader)이예요.
+2. 팀 안에서 프로젝트를 만들 수 있고 프로젝트를 만든 사람이 프로젝트장(Project Leader)이예요.
+3. 팀장, 프로젝트장만 권한이 있는 기능들이 있어요. (팀 멤버 삭제, 프로젝트 멤버 삭제)
+4. Timeline 페이지에서 프로젝트의 토픽(Topic)을 생성할 수 있어요.
+5. Board 페이지에서 토픽의 하위항목인 이슈(Issue)를 생성할 수 있고 이때 연걸할 토픽을 고를 수 있어요.
+6. Release Note 페이지에서는 작성된 릴리즈노트를 볼 수 있고, 릴리즈노트 작성페이지로 이동할 수 있어요.
+7. 릴리즈노트 작성페이지에서는 작성 중인 곳이 다른 유저에게 **시각적으로** 표시되고, 작성 내용이 **실시간**으로 보여요.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 🛠 기능 엿보기
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+3. [🛠 기능 엿보기](#-기능-엿보기)
+   - [Timeline](#timeline)
+   - [Board](#board)
+   - [Release Note](#release-note)
+   - [Landing Page](#landing-page)
+   - [Link](#link)
+   - [Code Block](#code-block)
+   - [Table](#table)
 
-### `npm test`
+## Timeline
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<br>
 
-### `npm run build`
+## Board
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<br>   
+   
+## Release Note
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+<br>   
+   
+## Landing Page
