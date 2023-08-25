@@ -19,11 +19,12 @@
 
 ## 🛠 기능 엿보기
 
-3. [🛠 기능 엿보기](#-기능-엿보기)
-   - [Landing Page](#landing-page)
-   - [Timeline](#timeline)
-   - [Board](#board)
-   - [Release Note](#release-note)
+[🛠 기능 엿보기](#-기능-엿보기)
+
+- [Landing Page](#landing-page)
+- [Timeline](#timeline)
+- [Board](#board)
+- [Release Note](#release-note)
 
 ## Landing Page
 
