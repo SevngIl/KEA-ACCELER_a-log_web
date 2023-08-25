@@ -24,12 +24,10 @@
    - [Board](#board)
    - [Release Note](#release-note)
    - [Landing Page](#landing-page)
-   - [Link](#link)
-   - [Code Block](#code-block)
-   - [Table](#table)
 
 ## Timeline
 
+<img src="src/assets/readmeImages/timeline-1.png">
 <br>
 
 ## Board
