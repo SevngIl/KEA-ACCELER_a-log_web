@@ -19,32 +19,30 @@ function MyWork({ show, handleClose }) {
 
   const [tasks, setTasks] = useState([]);
 
-  const issueAssigneePk = userData ? userData.userPk : null;
+  const issueAssigneePk = userData ? userData.userPk : 0;
   const page = 0;
   const size = 10;
 
   useEffect(() => {
-    if (issueAssigneePk) {
-      GetMyIssues(issueAssigneePk, page, size, userToken)
-        .then((res) => {
-          const todoIssues = res.data.filter((issue) => issue.issueStatus === "TODO");
-          const inProgressIssues = res.data.filter((issue) => issue.issueStatus === "INPROGRESS");
+    GetMyIssues(issueAssigneePk, page, size, userToken)
+      .then((res) => {
+        const todoIssues = res.data.filter((issue) => issue.issueStatus === "TODO");
+        const inProgressIssues = res.data.filter((issue) => issue.issueStatus === "INPROGRESS");
 
-          setTasks([
-            {
-              type: "진행중",
-              issues: inProgressIssues.map((issue) => ({ content: issue.issueDescription })),
-            },
-            {
-              type: "해야 할 일",
-              issues: todoIssues.map((issue) => ({ content: issue.issueDescription })),
-            },
-          ]);
-        })
-        .catch((err) => {
-          // 오류 처리 로직
-        });
-    }
+        setTasks([
+          {
+            type: "진행중",
+            issues: inProgressIssues.map((issue) => ({ content: issue.issueDescription })),
+          },
+          {
+            type: "해야 할 일",
+            issues: todoIssues.map((issue) => ({ content: issue.issueDescription })),
+          },
+        ]);
+      })
+      .catch((err) => {
+        // 오류 처리 로직
+      });
   }, []);
 
   return (
